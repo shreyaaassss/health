@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --nav-height: 64px;
+}
+
+/* Prevent layout shift from system UI on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+/* Scrollable content inside patient shell */
+.page-scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Bottom nav safe area padding */
+.bottom-nav {
+  padding-bottom: var(--safe-bottom);
+}
+
+/* Minimum tap target size per accessibility guidelines */
+.tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Hide scrollbar on category tab row (still scrollable) */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
