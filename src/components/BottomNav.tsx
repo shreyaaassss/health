@@ -1,9 +1,21 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const NAV_ITEMS = [
+const NAV_ITEMS: { href: string; label: string; exactMatch?: boolean; icon: (active: boolean) => React.ReactNode }[] = [
+  {
+    href: '/patient',
+    label: 'Home',
+    exactMatch: true,
+    icon: (active: boolean) => (
+      <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6" stroke="currentColor" strokeWidth={active ? 2.5 : 1.8}>
+        <path strokeLinecap="round" strokeLinejoin="round"
+          d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+      </svg>
+    ),
+  },
   {
     href: '/patient/records',
     label: 'Records',
@@ -52,8 +64,8 @@ export function BottomNav() {
   return (
     <nav className="bottom-nav fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
       <div className="flex">
-        {NAV_ITEMS.map(({ href, label, icon }) => {
-          const active = pathname.startsWith(href);
+        {NAV_ITEMS.map(({ href, label, icon, exactMatch }) => {
+          const active = exactMatch ? pathname === href : pathname.startsWith(href);
           return (
             <Link
               key={href}
