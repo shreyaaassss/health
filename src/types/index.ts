@@ -3,12 +3,62 @@
 //  Matches Phase 1 data model definitions exactly
 // ─────────────────────────────────────────────
 
-// ── Actor 1: Patient ──────────────────────────
+// ── Actor 1: Patient (base) ───────────────────
 export interface Patient {
   id: string;
   name: string;
   email: string;
   created_at: string;
+}
+
+// ── Patient Profile (extended with appointment/form fields) ──
+export interface PatientProfile extends Patient {
+  phone: string | null;
+  date_of_birth: string | null;       // ISO date "YYYY-MM-DD"
+  emergency_contact: string | null;
+  allergies: string | null;
+  current_medications: string | null;
+}
+
+// ─────────────────────────────────────────────
+//  Appointment Form — new in dashboard phase
+// ─────────────────────────────────────────────
+
+export interface AppointmentFormData {
+  name: string;
+  phone: string;
+  dateOfBirth: string;         // ISO date
+  emergencyContact: string;
+  allergies?: string;
+  currentMedications?: string;
+}
+
+export interface AppointmentRecord {
+  id: string;
+  patientId: string;
+  source: {
+    type: 'qr_scan' | 'manual_entry';
+    rawCode?: string;          // whatever was scanned/entered
+    hospitalId?: string;       // reserved for future hospital integration
+    hospitalName?: string;     // reserved for future hospital integration
+  };
+  formData: AppointmentFormData;
+  status: 'draft' | 'submitted';
+  createdAt: string;
+  submittedAt?: string;
+  // Reserved for future doctor-side prescription phase — leave undefined now.
+  prescription?: {
+    medications?: Array<{
+      name: string;
+      dosage: string;
+      frequency: string;
+      duration: string;
+    }>;
+    doctorInstructions?: string;
+    followUpDate?: string;
+    prescribedAt?: string;
+    prescribedBy?: string;
+  };
 }
 
 // ── Medical Record ────────────────────────────

@@ -20,6 +20,12 @@ export const API = {
 
     // ── Patient: Providers list ────────────────
     providers:      '/api/patient/providers',
+
+    // ── Patient: Profile ───────────────────────
+    profile:        '/api/patient/profile',
+
+    // ── Patient: Appointments ──────────────────
+    appointments:   '/api/patient/appointments',
   },
 
   // ── Provider Portal ──────────────────────────
@@ -40,12 +46,15 @@ export const API = {
 // ── App Routes (frontend pages) ───────────────
 export const ROUTES = {
   patient: {
-    home:       '/patient',
-    records:    '/patient/records',
-    record:     (id: string) => `/patient/records/${id}`,
-    share:      '/patient/share',
-    access:     '/patient/access',
-    history:    '/patient/history',
+    home:        '/patient',
+    records:     '/patient/records',
+    record:      (id: string) => `/patient/records/${id}`,
+    share:       '/patient/share',
+    access:      '/patient/access',
+    history:     '/patient/history',
+    profile:     '/patient/profile',
+    appointment: '/patient/appointment',
+    appointmentForm: '/patient/appointment/form',
   },
   provider: {
     access:     (token: string) => `/provider/access/${token}`,
