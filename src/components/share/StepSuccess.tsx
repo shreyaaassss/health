@@ -14,8 +14,8 @@ interface Props {
 }
 
 export function StepSuccess({ token, expiresAt, providerName, recordCount, duration }: Props) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? (typeof window !== 'undefined' ? window.location.origin : '');
-  const accessUrl = `${appUrl}/provider/access/${token}`;
+  // Always use the current domain — works on localhost, Vercel, and any custom domain automatically
+  const accessUrl = `${window.location.origin}/provider/access/${token}`;
 
   const expires = new Date(expiresAt);
   const isUntilRevoked = expires.getFullYear() > new Date().getFullYear() + 50;
