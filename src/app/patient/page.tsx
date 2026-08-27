@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { DEMO } from '@/constants/api';
 import { RecordCard } from '@/components/RecordCard';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import type { MedicalRecord, AccessGrant, Provider, AccessGrantWithDetails } from '@/types';
 import { RECORD_TYPE_COLORS } from '@/lib/records';
 
@@ -68,7 +67,6 @@ export default async function HomePage() {
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--ink)', marginTop: 2 }}>Hello, {firstName}</p>
         </div>
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           {/* Bell → access history */}
           <Link
             href="/patient/history"
@@ -208,23 +206,6 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* ── My health records ─────────────────────── */}
-      <div className="mb-4">
-        <div className="flex items-center justify-between mb-3">
-          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>My health records</p>
-          <Link href="/patient/records" style={{ fontSize: 13, fontWeight: 600, color: '#2F6BFF' }}>See all</Link>
-        </div>
-        {recentRecords.length === 0 ? (
-          <p style={{ fontSize: 13, color: 'var(--muted)', textAlign: 'center', padding: '24px 0' }}>No records yet</p>
-        ) : (
-          <div className="space-y-2">
-            {recentRecords.map((record) => (
-              <RecordCard key={record.id} record={record} />
-            ))}
-          </div>
-        )}
-      </div>
-
       {/* ── Appointment Form card ─────────────────── */}
       <Link
         href="/patient/appointment"
@@ -251,6 +232,23 @@ export default async function HomePage() {
           <path d="M9 5l7 7-7 7"/>
         </svg>
       </Link>
+
+      {/* ── My health records ─────────────────────── */}
+      <div className="mb-4">
+        <div className="flex items-center justify-between mb-3">
+          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>My health records</p>
+          <Link href="/patient/records" style={{ fontSize: 13, fontWeight: 600, color: '#2F6BFF' }}>See all</Link>
+        </div>
+        {recentRecords.length === 0 ? (
+          <p style={{ fontSize: 13, color: 'var(--muted)', textAlign: 'center', padding: '24px 0' }}>No records yet</p>
+        ) : (
+          <div className="space-y-2">
+            {recentRecords.map((record) => (
+              <RecordCard key={record.id} record={record} />
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* ── Share CTA ─────────────────────────────── */}
       <Link

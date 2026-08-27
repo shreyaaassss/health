@@ -13,7 +13,7 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
 
   if (accessError) {
     return (
-      <div className="fixed inset-0 z-50 bg-black/40 flex items-end" onClick={onClose}>
+      <div className="fixed inset-0 bg-black/40 flex items-end" style={{ zIndex: 100 }} onClick={onClose}>
         <div
           className="w-full rounded-t-3xl p-6 text-center"
           style={{ background: '#FFEDED' }}
@@ -46,7 +46,7 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-end" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/40 flex items-end" style={{ zIndex: 100 }} onClick={onClose}>
       <div
         className="w-full bg-white rounded-t-3xl max-h-[85vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}

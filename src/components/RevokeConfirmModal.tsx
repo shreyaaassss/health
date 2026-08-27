@@ -11,10 +11,13 @@ interface Props {
 
 export function RevokeConfirmModal({ grant, onConfirm, onCancel, revoking }: Props) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end bg-black/50" onClick={onCancel}>
+    <div className="fixed inset-0 flex items-end bg-black/50" style={{ zIndex: 100 }} onClick={onCancel}>
       <div
-        className="w-full rounded-t-3xl px-5 pt-5 pb-8"
-        style={{ background: 'var(--card)' }}
+        className="w-full rounded-t-3xl px-5 pt-5"
+        style={{
+          background: 'var(--card)',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 28px)',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle */}

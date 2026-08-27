@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { PWARegister } from '@/components/PWARegister';
-import { ThemeProvider } from '@/components/ThemeProvider';
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -37,24 +36,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
-        {/*
-          Anti-flash script: runs before React hydrates so the correct
-          theme is applied instantly — prevents white flash on dark mode reload.
-        */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('hw-theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})()`,
-          }}
-        />
       </head>
       <body
         className={`${plusJakarta.variable} plus-jakarta antialiased h-full`}
         style={{ backgroundColor: 'var(--page)', color: 'var(--ink)' }}
       >
-        <ThemeProvider>
-          <PWARegister />
-          {children}
-        </ThemeProvider>
+        <PWARegister />
+        {children}
       </body>
     </html>
   );

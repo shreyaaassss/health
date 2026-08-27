@@ -31,23 +31,6 @@
   --radius-sm: 12px;
 }
 
-/* ── Dark theme override ─────────────────────── */
-html[data-theme="dark"] {
-  --page: #0D1117;
-  --card: #161B27;
-  --card-2: #1A2035;
-  --ink: #F2F4F8;
-  --ink-soft: #A8B3C4;
-  --muted: #6B7890;
-  --line: #252A3A;
-  --blue-tint: #1A2540;
-  --blue-tint-2: #111826;
-  --green-tint: #0D2418;
-  --amber-tint: #251C08;
-  --purple-tint: #1A1530;
-  --coral-tint: #2A1010;
-  /* accent colors unchanged — they work on dark bg */
-}
 
 /* Prevent layout shift from system UI on mobile */
 * {
