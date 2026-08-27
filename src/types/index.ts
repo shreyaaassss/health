@@ -78,7 +78,10 @@ export interface MedicalRecord {
   provider_name: string;
   record_date: string;        // ISO date string
   description: string;
-  file_url: string | null;    // demo: null (structured data used instead)
+  file_url: string | null;    // Supabase Storage path: {user_id}/{uuid}.{ext}
+  file_name: string | null;   // original filename for display
+  file_size: number | null;   // bytes
+  file_type: string | null;   // 'pdf' | 'docx' | 'image'
   created_at: string;
 }
 

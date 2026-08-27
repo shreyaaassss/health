@@ -5,6 +5,7 @@ import { requirePatientId } from '@/lib/auth';
 import { RecordTypeBadge } from '@/components/RecordTypeBadge';
 import { RecordTypeIcon } from '@/components/RecordTypeIcon';
 import { RECORD_TYPE_COLORS, formatRecordDate } from '@/lib/records';
+import { getSignedUrl, getFileTypeLabel, formatFileSize } from '@/lib/storage';
 import type { MedicalRecord } from '@/types';
 
 async function getRecord(id: string): Promise<MedicalRecord | null> {
@@ -26,6 +27,8 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
   if (!record) notFound();
 
   const c = RECORD_TYPE_COLORS[record.type];
+  // Generate a 1-hour signed URL so the patient can download their own file
+  const signedUrl = record.file_url ? await getSignedUrl(record.file_url, 3600) : null;
 
   return (
     <div className="pb-6">
@@ -79,17 +82,46 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
             <p style={{ fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.6 }}>{record.description}</p>
           </div>
 
-          {/* Document preview placeholder */}
+          {/* Document section */}
           <div className="px-4 py-4">
             <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 12 }}>Document</p>
-            <div
-              className="rounded-xl flex flex-col items-center justify-center py-8 gap-3"
-              style={{ background: c.bg, border: `2px dashed ${c.stroke}` }}
-            >
-              <RecordTypeIcon type={record.type} strokeColor={c.stroke} size={36} />
-              <p style={{ fontSize: 13, fontWeight: 700, color: c.text }}>{record.title}</p>
-              <p style={{ fontSize: 12, color: 'var(--muted)' }}>Document preview</p>
-            </div>
+            {signedUrl && record.file_name ? (
+              /* Real file — show download */
+              <a
+                href={signedUrl}
+                download={record.file_name}
+                className="flex items-center gap-3 rounded-2xl px-4 py-3 tap-target active:opacity-80 transition-opacity"
+                style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}
+              >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--card)' }}>
+                  <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2v6h6M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>
+                    <path d="M12 12v6M9 15l3 3 3-3"/>
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold truncate" style={{ color: '#1D4FE0' }}>{record.file_name}</p>
+                  <p className="text-xs" style={{ color: '#2F6BFF' }}>
+                    {getFileTypeLabel(record.file_type, record.file_name)} · {formatFileSize(record.file_size)} · Tap to download
+                  </p>
+                </div>
+                <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+              </a>
+            ) : (
+              /* No file uploaded yet */
+              <div
+                className="rounded-xl flex flex-col items-center justify-center py-8 gap-3"
+                style={{ background: c.bg, border: `2px dashed ${c.stroke}` }}
+              >
+                <RecordTypeIcon type={record.type} strokeColor={c.stroke} size={36} />
+                <p style={{ fontSize: 13, fontWeight: 700, color: c.text }}>{record.title}</p>
+                <p style={{ fontSize: 12, color: 'var(--muted)' }}>No file attached</p>
+              </div>
+            )}
           </div>
         </div>
 

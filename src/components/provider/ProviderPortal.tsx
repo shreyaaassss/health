@@ -11,8 +11,13 @@ interface Props {
   token: string;
 }
 
+interface RecordWithUrl {
+  record: MedicalRecord;
+  signed_url: string | null;
+}
+
 export function ProviderPortal({ session, token }: Props) {
-  const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
+  const [selectedData, setSelectedData] = useState<RecordWithUrl | null>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [accessError, setAccessError] = useState<string | null>(null);
   const [recordError, setRecordError] = useState<string | null>(null);
@@ -26,7 +31,6 @@ export function ProviderPortal({ session, token }: Props) {
       const json = await res.json();
 
       if (!json.success) {
-        // Access was revoked or expired while the portal was open
         if (json.code === 'ACCESS_REVOKED' || json.code === 'ACCESS_EXPIRED') {
           setAccessError(json.code);
         } else {
@@ -35,7 +39,8 @@ export function ProviderPortal({ session, token }: Props) {
         return;
       }
 
-      setSelectedRecord(json.data);
+      // API now returns { record, signed_url }
+      setSelectedData(json.data);
     } catch {
       setRecordError('Network error. Please try again.');
     } finally {
@@ -162,10 +167,11 @@ export function ProviderPortal({ session, token }: Props) {
       </div>
 
       {/* Record detail sheet */}
-      {selectedRecord && (
+      {selectedData && (
         <ProviderRecordDetail
-          record={selectedRecord}
-          onClose={() => setSelectedRecord(null)}
+          record={selectedData.record}
+          signedUrl={selectedData.signed_url}
+          onClose={() => setSelectedData(null)}
           accessError={null}
         />
       )}

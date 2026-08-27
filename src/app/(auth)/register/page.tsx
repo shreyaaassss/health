@@ -18,35 +18,30 @@ export default function RegisterPage() {
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
-    if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
     setLoading(true);
     setError('');
 
-    const supabase = createClient();
-
-    // 1. Create Supabase auth user
-    const { data, error: authErr } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { name } },
+    // 1. Server-side: create auth user + patient row via admin client
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
     });
+    const json = await res.json();
 
-    if (authErr || !data.user) {
-      setError(authErr?.message ?? 'Registration failed. Please try again.');
+    if (!json.success) {
+      setError(json.error ?? 'Registration failed. Please try again.');
       setLoading(false);
       return;
     }
 
-    // 2. Create patient row linked to this auth user
-    const { error: dbErr } = await supabase.from('patients').insert({
-      name,
-      email,
-      user_id: data.user.id,
-    });
+    // 2. Sign in with the newly created credentials to get a session
+    const supabase = createClient();
+    const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
 
-    if (dbErr) {
-      setError('Account created but profile setup failed. Please contact support.');
-      setLoading(false);
+    if (signInErr) {
+      setError('Account created. Please sign in.');
+      router.push('/login');
       return;
     }
 
@@ -63,40 +58,25 @@ export default function RegisterPage() {
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: 'var(--ink-soft)' }}>Full Name</label>
           <input
-            type="text"
-            required
-            className={inputClass}
-            style={inputStyle}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Priya Sharma"
-            autoComplete="name"
+            type="text" required className={inputClass} style={inputStyle}
+            value={name} onChange={(e) => setName(e.target.value)}
+            placeholder="Priya Sharma" autoComplete="name"
           />
         </div>
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: 'var(--ink-soft)' }}>Email</label>
           <input
-            type="email"
-            required
-            className={inputClass}
-            style={inputStyle}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            autoComplete="email"
+            type="email" required className={inputClass} style={inputStyle}
+            value={email} onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com" autoComplete="email"
           />
         </div>
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: 'var(--ink-soft)' }}>Password</label>
           <input
-            type="password"
-            required
-            className={inputClass}
-            style={inputStyle}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Min. 6 characters"
-            autoComplete="new-password"
+            type="password" required className={inputClass} style={inputStyle}
+            value={password} onChange={(e) => setPassword(e.target.value)}
+            placeholder="Min. 6 characters" autoComplete="new-password"
           />
         </div>
 
@@ -107,8 +87,7 @@ export default function RegisterPage() {
         )}
 
         <button
-          type="submit"
-          disabled={loading}
+          type="submit" disabled={loading}
           className="w-full font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-60 flex items-center justify-center gap-2"
           style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
         >
@@ -127,11 +106,6 @@ export default function RegisterPage() {
       <p className="text-center text-sm mt-5" style={{ color: 'var(--muted)' }}>
         Already have an account?{' '}
         <Link href="/login" className="font-semibold" style={{ color: '#2F6BFF' }}>Sign in</Link>
-      </p>
-
-      <p className="text-center text-xs mt-4" style={{ color: 'var(--muted)' }}>
-        Are you a doctor?{' '}
-        <Link href="/login" className="font-semibold" style={{ color: 'var(--muted)' }}>Sign in here</Link>
       </p>
     </div>
   );

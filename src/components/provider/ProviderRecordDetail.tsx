@@ -1,14 +1,16 @@
 import { RECORD_TYPE_COLORS, RECORD_TYPE_LABELS, formatRecordDate } from '@/lib/records';
 import { RecordTypeIcon } from '@/components/RecordTypeIcon';
+import { getFileTypeLabel, formatFileSize } from '@/lib/storage';
 import type { MedicalRecord } from '@/types';
 
 interface Props {
   record: MedicalRecord;
+  signedUrl?: string | null;
   onClose: () => void;
   accessError?: string | null;
 }
 
-export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
+export function ProviderRecordDetail({ record, signedUrl, onClose, accessError }: Props) {
   const c = RECORD_TYPE_COLORS[record.type];
 
   if (accessError) {
@@ -92,6 +94,34 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
             <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 8 }}>Clinical Notes</p>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>{record.description}</p>
           </div>
+
+          {/* File download (only shown if patient attached a file) */}
+          {signedUrl && record.file_name && (
+            <a
+              href={signedUrl}
+              download={record.file_name}
+              className="flex items-center gap-3 rounded-xl px-4 py-3 tap-target active:opacity-80 transition-opacity"
+              style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}
+            >
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--card)' }}>
+                <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2v6h6M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>
+                  <path d="M12 12v6M9 15l3 3 3-3"/>
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold truncate" style={{ color: '#1D4FE0' }}>{record.file_name}</p>
+                <p className="text-xs" style={{ color: '#2F6BFF' }}>
+                  {getFileTypeLabel(record.file_type, record.file_name)} · {formatFileSize(record.file_size)} · Tap to download
+                </p>
+              </div>
+              <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </a>
+          )}
 
           {/* Read-only notice */}
           <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}>

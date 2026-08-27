@@ -1,20 +1,21 @@
 import { NextResponse } from 'next/server';
 import { canAccessRecord, logAccessAction } from '@/lib/access';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getSignedUrl } from '@/lib/storage';
 import type { ApiError, ApiResponse, MedicalRecord } from '@/types';
 
-// Re-validated on every single request.
-// This is the mechanism that makes revocation and expiry instant —
-// the provider cannot cache or replay a previously valid response.
+interface ProviderRecordResponse {
+  record: MedicalRecord;
+  signed_url: string | null; // time-limited file download URL (null if no file)
+}
+
+// Re-validated on every single request — makes revocation instant.
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ token: string; recordId: string }> }
-): Promise<NextResponse<ApiResponse<MedicalRecord>>> {
+): Promise<NextResponse<ApiResponse<ProviderRecordResponse>>> {
   const { token, recordId } = await params;
 
-  // ── 5-check validation pipeline ──────────────
-  // 1. Token exists? 2. Not REVOKED? 3. Not expired?
-  // 4. Record in grant? → all handled by canAccessRecord
   const check = await canAccessRecord(token, recordId);
 
   if (!check.allowed) {
@@ -30,7 +31,6 @@ export async function GET(
     );
   }
 
-  // ── Fetch the record ──────────────────────────
   const supabase = createAdminClient();
   const { data: record, error } = await supabase
     .from('medical_records')
@@ -39,13 +39,12 @@ export async function GET(
     .single();
 
   if (error || !record) {
-    return NextResponse.json(
-      { success: false, error: 'Record not found', code: 'NOT_FOUND' },
-      { status: 404 }
-    );
+    return NextResponse.json({ success: false, error: 'Record not found', code: 'NOT_FOUND' }, { status: 404 });
   }
 
-  // ── Audit log: RECORD_VIEWED ──────────────────
+  // Generate a signed URL for the file (valid 1 hour) — only if file exists
+  const signed_url = record.file_url ? await getSignedUrl(record.file_url, 3600) : null;
+
   await logAccessAction({
     patient_id: check.grant.patient_id,
     provider_id: check.grant.provider_id,
@@ -54,5 +53,5 @@ export async function GET(
     metadata: { record_id: recordId, record_title: record.title },
   });
 
-  return NextResponse.json({ success: true, data: record as MedicalRecord });
+  return NextResponse.json({ success: true, data: { record: record as MedicalRecord, signed_url } });
 }
