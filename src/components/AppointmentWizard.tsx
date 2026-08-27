@@ -15,9 +15,9 @@ interface Props {
 
 function Label({ text, required }: { text: string; required?: boolean }) {
   return (
-    <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">
+    <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#4B5265' }}>
       {text}
-      {required && <span className="text-red-500 ml-0.5">*</span>}
+      {required && <span className="ml-0.5" style={{ color: '#FF6B6B' }}>*</span>}
     </label>
   );
 }
@@ -33,8 +33,9 @@ function Field({
   );
 }
 
-const inputClass =
-  'w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-800 bg-white focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 placeholder:text-slate-300';
+const inputClass = 'w-full rounded-xl px-4 py-3 text-sm bg-white focus:outline-none placeholder:text-slate-300';
+const inputStyle = { border: '1px solid #EEF1F6', color: '#12151C' };
+const inputFocusStyle = { border: '1px solid #2F6BFF' };
 
 export function AppointmentWizard({ profile, source }: Props) {
   const router = useRouter();
@@ -99,22 +100,21 @@ export function AppointmentWizard({ profile, source }: Props) {
       <div className="px-4 pt-4 pb-6 space-y-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-bold text-teal-600 uppercase tracking-widest">Step 1 of 2</span>
-            <span className="text-xs text-slate-400">· Your Details</span>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#2F6BFF' }}>Step 1 of 2</span>
+            <span className="text-xs" style={{ color: '#8A93A3' }}>· Your Details</span>
           </div>
-          <div className="h-1 bg-slate-100 rounded-full">
-            <div className="h-1 bg-teal-500 rounded-full w-1/2" />
+          <div className="h-1 rounded-full" style={{ background: '#EEF1F6' }}>
+            <div className="h-1 rounded-full w-1/2" style={{ background: '#2F6BFF' }} />
           </div>
         </div>
 
         {/* Auto-fill notice */}
         {profile?.name && (
-          <div className="flex items-center gap-2 bg-teal-50 border border-teal-100 rounded-xl px-3 py-2.5">
-            <svg className="w-4 h-4 text-teal-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: '#EAF1FF', border: '1px solid #2F6BFF30' }}>
+            <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+              <path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
-            <p className="text-xs text-teal-700">
+            <p className="text-xs" style={{ color: '#1D4FE0' }}>
               Fields pre-filled from your Health Wallet profile. Review and edit as needed.
             </p>
           </div>
@@ -122,66 +122,71 @@ export function AppointmentWizard({ profile, source }: Props) {
 
         {/* Required section */}
         <div>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
+          <p style={{ fontSize: 10, fontWeight: 700, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
             Required Fields
           </p>
           <div className="space-y-4">
             <Field label="Full Name" required>
               <input
-                className={`${inputClass} ${errors.name ? 'border-red-400' : ''}`}
+                className={inputClass}
+                style={{ ...inputStyle, ...(errors.name ? { borderColor: '#FF6B6B' } : {}) }}
                 value={form.name}
                 onChange={(e) => set('name', e.target.value)}
                 placeholder="Priya Sharma"
                 autoComplete="name"
               />
-              {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+              {errors.name && <p className="text-xs mt-1" style={{ color: '#FF6B6B' }}>{errors.name}</p>}
             </Field>
 
             <Field label="Phone Number" required>
               <input
                 type="tel"
-                className={`${inputClass} ${errors.phone ? 'border-red-400' : ''}`}
+                className={inputClass}
+                style={{ ...inputStyle, ...(errors.phone ? { borderColor: '#FF6B6B' } : {}) }}
                 value={form.phone}
                 onChange={(e) => set('phone', e.target.value)}
                 placeholder="+91 98765 43210"
                 autoComplete="tel"
               />
-              {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+              {errors.phone && <p className="text-xs mt-1" style={{ color: '#FF6B6B' }}>{errors.phone}</p>}
             </Field>
 
             <Field label="Date of Birth" required>
               <input
                 type="date"
-                className={`${inputClass} ${errors.dateOfBirth ? 'border-red-400' : ''}`}
+                className={inputClass}
+                style={{ ...inputStyle, ...(errors.dateOfBirth ? { borderColor: '#FF6B6B' } : {}) }}
                 value={form.dateOfBirth}
                 onChange={(e) => set('dateOfBirth', e.target.value)}
               />
-              {errors.dateOfBirth && <p className="text-xs text-red-500 mt-1">{errors.dateOfBirth}</p>}
+              {errors.dateOfBirth && <p className="text-xs mt-1" style={{ color: '#FF6B6B' }}>{errors.dateOfBirth}</p>}
             </Field>
 
             <Field label="Emergency Contact" required>
               <input
-                className={`${inputClass} ${errors.emergencyContact ? 'border-red-400' : ''}`}
+                className={inputClass}
+                style={{ ...inputStyle, ...(errors.emergencyContact ? { borderColor: '#FF6B6B' } : {}) }}
                 value={form.emergencyContact}
                 onChange={(e) => set('emergencyContact', e.target.value)}
                 placeholder="Name + phone number"
                 autoComplete="off"
               />
-              {errors.emergencyContact && <p className="text-xs text-red-500 mt-1">{errors.emergencyContact}</p>}
+              {errors.emergencyContact && <p className="text-xs mt-1" style={{ color: '#FF6B6B' }}>{errors.emergencyContact}</p>}
             </Field>
           </div>
         </div>
 
         {/* Optional section */}
         <div>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+          <p style={{ fontSize: 10, fontWeight: 700, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 4 }}>
             Optional
           </p>
-          <p className="text-xs text-slate-400 mb-3">Leave blank if not applicable.</p>
+          <p className="text-xs mb-3" style={{ color: '#8A93A3' }}>Leave blank if not applicable.</p>
           <div className="space-y-4">
             <Field label="Known Allergies">
               <textarea
                 className={inputClass + ' resize-none'}
+                style={inputStyle}
                 rows={2}
                 value={form.allergies}
                 onChange={(e) => set('allergies', e.target.value)}
@@ -192,6 +197,7 @@ export function AppointmentWizard({ profile, source }: Props) {
             <Field label="Current Medications">
               <textarea
                 className={inputClass + ' resize-none'}
+                style={inputStyle}
                 rows={2}
                 value={form.currentMedications}
                 onChange={(e) => set('currentMedications', e.target.value)}
@@ -203,7 +209,8 @@ export function AppointmentWizard({ profile, source }: Props) {
 
         <button
           onClick={() => { if (validate()) setStep('review'); }}
-          className="w-full bg-teal-600 text-white font-semibold text-sm py-4 rounded-2xl tap-target active:bg-teal-700"
+          className="w-full font-semibold text-sm py-4 rounded-2xl tap-target"
+          style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
         >
           Review →
         </button>
@@ -217,21 +224,21 @@ export function AppointmentWizard({ profile, source }: Props) {
       <div className="px-4 pt-4 pb-6 space-y-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-bold text-teal-600 uppercase tracking-widest">Step 2 of 2</span>
-            <span className="text-xs text-slate-400">· Review</span>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#2F6BFF' }}>Step 2 of 2</span>
+            <span className="text-xs" style={{ color: '#8A93A3' }}>· Review</span>
           </div>
-          <div className="h-1 bg-slate-100 rounded-full">
-            <div className="h-1 bg-teal-500 rounded-full w-full" />
+          <div className="h-1 rounded-full" style={{ background: '#EEF1F6' }}>
+            <div className="h-1 rounded-full w-full" style={{ background: '#2F6BFF' }} />
           </div>
         </div>
 
-        <p className="text-sm text-slate-600 leading-relaxed">
+        <p className="text-sm leading-relaxed" style={{ color: '#4B5265' }}>
           This information will be saved to your Health Wallet and prepared for your upcoming appointment.
-          <span className="text-slate-400"> Review everything before submitting.</span>
+          <span style={{ color: '#8A93A3' }}> Review everything before submitting.</span>
         </p>
 
         {/* Summary card */}
-        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+        <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #EEF1F6' }}>
           {[
             { label: 'Full Name',          value: form.name,             required: true },
             { label: 'Phone',              value: form.phone,            required: true },
@@ -240,41 +247,42 @@ export function AppointmentWizard({ profile, source }: Props) {
             { label: 'Allergies',          value: form.allergies || '—', required: false },
             { label: 'Current Medications',value: form.currentMedications || '—', required: false },
           ].map(({ label, value, required }, i, arr) => (
-            <div key={label} className={`px-4 py-3 ${i < arr.length - 1 ? 'border-b border-slate-100' : ''}`}>
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-medium mb-0.5">
-                {label}{!required && <span className="ml-1 text-slate-300">(optional)</span>}
+            <div key={label} className={`px-4 py-3 ${i < arr.length - 1 ? 'border-b' : ''}`} style={{ borderColor: '#EEF1F6' }}>
+              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>
+                {label}{!required && <span className="ml-1" style={{ color: '#EEF1F6' }}>(optional)</span>}
               </p>
-              <p className="text-sm font-medium text-slate-800">{value}</p>
+              <p className="text-sm font-medium" style={{ color: '#12151C' }}>{value}</p>
             </div>
           ))}
         </div>
 
         {/* Source badge */}
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-              d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5Z" />
+        <div className="flex items-center gap-2 text-xs" style={{ color: '#8A93A3' }}>
+          <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5Z" />
           </svg>
           Source: {source.type === 'qr_scan' ? 'QR scan' : 'Manual entry'}
           {source.rawCode && source.rawCode !== 'MANUAL' && ` · ${source.rawCode}`}
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{error}</div>
+          <div className="rounded-xl px-4 py-3 text-sm" style={{ background: '#FFEDED', border: '1px solid #FF6B6B30', color: '#C23B3B' }}>{error}</div>
         )}
 
         <div className="flex gap-3">
           <button
             onClick={() => setStep('form')}
             disabled={submitting}
-            className="flex-1 bg-slate-100 text-slate-700 font-semibold text-sm py-4 rounded-2xl tap-target"
+            className="flex-1 font-semibold text-sm py-4 rounded-2xl tap-target"
+            style={{ background: '#EEF1F6', color: '#4B5265' }}
           >
             Edit
           </button>
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="flex-[2] bg-teal-600 text-white font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-60 flex items-center justify-center gap-2"
+            className="flex-[2] font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-60 flex items-center justify-center gap-2"
+            style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
           >
             {submitting ? (
               <>
@@ -294,32 +302,32 @@ export function AppointmentWizard({ profile, source }: Props) {
   // ── Confirm step ──────────────────────────────
   return (
     <div className="flex flex-col items-center text-center px-4 pt-8 pb-6 gap-5">
-      <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center">
-        <svg className="w-10 h-10 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
-            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: '#E9F9F1' }}>
+        <svg viewBox="0 0 24 24" width={40} height={40} fill="none" stroke="#1FAA6D" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Form Submitted</h2>
-        <p className="text-sm text-slate-500 max-w-xs">
+        <h2 className="text-2xl font-bold mb-2" style={{ color: '#12151C' }}>Form Submitted</h2>
+        <p className="text-sm max-w-xs" style={{ color: '#8A93A3' }}>
           Your appointment form has been saved to your Health Wallet. Your details have been updated for future use.
         </p>
       </div>
 
-      <div className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 w-full text-left space-y-1.5">
-        <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">Summary</p>
-        <p className="text-sm font-semibold text-slate-800">{form.name}</p>
-        <p className="text-xs text-slate-500">{form.phone} · DOB {form.dateOfBirth}</p>
+      <div className="rounded-2xl px-4 py-3 w-full text-left space-y-1.5" style={{ background: '#F3F8FF', border: '1px solid #EEF1F6' }}>
+        <p style={{ fontSize: 12, color: '#8A93A3', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Summary</p>
+        <p className="text-sm font-semibold" style={{ color: '#12151C' }}>{form.name}</p>
+        <p className="text-xs" style={{ color: '#8A93A3' }}>{form.phone} · DOB {form.dateOfBirth}</p>
         {savedRecord && (
-          <p className="text-[10px] text-slate-300 font-mono mt-1">ID: {savedRecord.id}</p>
+          <p className="font-mono mt-1" style={{ fontSize: 10, color: '#8A93A3' }}>ID: {savedRecord.id}</p>
         )}
       </div>
 
       <button
         onClick={() => router.push('/patient')}
-        className="w-full bg-teal-600 text-white font-semibold text-sm py-4 rounded-2xl tap-target"
+        className="w-full font-semibold text-sm py-4 rounded-2xl tap-target"
+        style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
       >
         Back to Home
       </button>

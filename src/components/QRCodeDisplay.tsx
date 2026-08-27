@@ -32,17 +32,17 @@ export function QRCodeDisplay({ value, size = 220 }: Props) {
   return (
     <div className="flex flex-col items-center gap-4">
       {/* QR code frame */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+      <div className="bg-white rounded-2xl p-4" style={{ border: '1px solid #EEF1F6' }}>
         <QRCode
           value={value}
           size={size}
           bgColor="#ffffff"
-          fgColor="#0f172a"
+          fgColor="#12151C"
           style={{ display: 'block' }}
         />
       </div>
 
-      <p className="text-xs text-slate-500 text-center">
+      <p className="text-xs text-center" style={{ color: '#8A93A3' }}>
         Doctor scans this to open the secure portal
       </p>
 
@@ -50,20 +50,20 @@ export function QRCodeDisplay({ value, size = 220 }: Props) {
       <div className="w-full space-y-2">
         <button
           onClick={handleCopy}
-          className="w-full flex items-center justify-center gap-2 border border-slate-200 bg-white text-slate-700 font-medium text-sm py-3 rounded-2xl tap-target active:bg-slate-50 transition-colors"
+          className="w-full flex items-center justify-center gap-2 font-medium text-sm py-3 rounded-2xl tap-target transition-colors"
+          style={{ border: '1px solid #EAF1FF', background: '#EAF1FF', color: copied ? '#1FAA6D' : '#2F6BFF' }}
         >
           {copied ? (
             <>
-              <svg className="w-4 h-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+              <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#1FAA6D" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-teal-600">Copied!</span>
+              <span style={{ color: '#1FAA6D' }}>Copied!</span>
             </>
           ) : (
             <>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M8 16H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2m-6 12h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2Z" />
+              <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 16H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2m-6 12h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2Z" />
               </svg>
               Copy Access Link
             </>
@@ -84,11 +84,15 @@ function NativeShareButton({ url }: { url: string }) {
   return (
     <button
       onClick={() => navigator.share({ url, title: 'Medical Record Access Link' }).catch(() => {})}
-      className="w-full flex items-center justify-center gap-2 bg-slate-900 text-white font-medium text-sm py-3 rounded-2xl tap-target active:bg-slate-700 transition-colors"
+      className="w-full flex items-center justify-center gap-2 font-medium text-sm py-3 rounded-2xl tap-target transition-colors"
+      style={{ background: '#EAF1FF', color: '#2F6BFF', border: '1px solid #2F6BFF30' }}
     >
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-          d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+      <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="18" cy="5" r="3"/>
+        <circle cx="6" cy="12" r="3"/>
+        <circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
       </svg>
       Share via…
     </button>

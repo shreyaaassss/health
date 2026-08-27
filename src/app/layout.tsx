@@ -1,9 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { PWARegister } from '@/components/PWARegister';
 
-const geist = Geist({ subsets: ['latin'] });
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
+});
 
 export const metadata: Metadata = {
   title: 'Health Wallet',
@@ -18,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0d9488',
+  themeColor: '#2F6BFF',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -33,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className={`${geist.className} bg-slate-50 text-slate-900 antialiased h-full`}>
+      <body className={`${plusJakarta.variable} plus-jakarta antialiased h-full`} style={{ backgroundColor: 'var(--page)', color: 'var(--ink)' }}>
         <PWARegister />
         {children}
       </body>

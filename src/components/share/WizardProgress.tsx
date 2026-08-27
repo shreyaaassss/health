@@ -7,10 +7,10 @@ export function WizardProgress({ current }: { current: number }) {
     <div className="mb-6">
       {/* Step label */}
       <div className="flex items-center justify-between mb-2">
-        <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest">
+        <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#2F6BFF' }}>
           Step {current + 1} of {STEPS.length}
         </p>
-        <p className="text-xs text-slate-400">{STEPS[current]}</p>
+        <p className="text-xs" style={{ color: '#8A93A3' }}>{STEPS[current]}</p>
       </div>
 
       {/* Track */}
@@ -18,7 +18,8 @@ export function WizardProgress({ current }: { current: number }) {
         {STEPS.map((_, i) => (
           <div
             key={i}
-            className={`flex-1 h-1 rounded-full transition-colors ${i <= current ? 'bg-teal-500' : 'bg-slate-200'}`}
+            className="flex-1 h-1 rounded-full transition-colors"
+            style={{ background: i <= current ? '#2F6BFF' : '#EEF1F6' }}
           />
         ))}
       </div>

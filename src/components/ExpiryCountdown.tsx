@@ -49,27 +49,25 @@ export function ExpiryCountdown({ expiresAt, onExpired }: Props) {
   const isUrgent = remaining < 60_000; // < 1 minute
   const isDanger = remaining < 15_000; // < 15 seconds
 
+  const bg = isDanger ? '#FFEDED' : isUrgent ? '#FFEDED' : '#FEF6E7';
+  const border = isDanger ? '#FF6B6B' : isUrgent ? '#FF6B6B' : '#E5A020';
+  const textColor = isDanger ? '#C23B3B' : isUrgent ? '#C23B3B' : '#E5A020';
+  const subColor = isDanger ? '#FF6B6B' : isUrgent ? '#FF6B6B' : '#E5A020';
+
   return (
-    <div className={`flex items-center gap-2 rounded-xl px-3 py-2 border transition-colors
-      ${isDanger
-        ? 'bg-red-50 border-red-200 animate-pulse'
-        : isUrgent
-          ? 'bg-red-50 border-red-200'
-          : 'bg-amber-50 border-amber-200'
-      }`}
+    <div
+      className={`flex items-center gap-2 rounded-xl px-3 py-2 ${isDanger ? 'animate-pulse' : ''}`}
+      style={{ background: bg, border: `1px solid ${border}30` }}
     >
-      <svg
-        className={`w-4 h-4 flex-shrink-0 ${isDanger ? 'text-red-500' : 'text-amber-500'}`}
-        fill="none" viewBox="0 0 24 24" stroke="currentColor"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke={border} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 3"/>
       </svg>
       <div>
-        <p className={`text-xs font-bold ${isDanger ? 'text-red-700' : 'text-amber-700'}`}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: textColor }}>
           {remaining <= 0 ? 'Expired' : `Expires in ${formatMs(remaining)}`}
         </p>
-        <p className={`text-[10px] ${isDanger ? 'text-red-500' : 'text-amber-600'}`}>
+        <p style={{ fontSize: 10, color: subColor }}>
           {isDanger ? 'Access ending now' : 'Access expiring soon'}
         </p>
       </div>

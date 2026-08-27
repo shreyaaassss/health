@@ -1,6 +1,6 @@
 import React from 'react';
 export function Skeleton({ className = '', style }: { className?: string; style?: React.CSSProperties }) {
-  return <div className={`bg-slate-200 rounded-xl animate-pulse ${className}`} style={style} />;
+  return <div className={`rounded-xl animate-pulse ${className}`} style={{ background: '#EEF1F6', ...style }} />;
 }
 
 export function RecordsPageSkeleton() {
@@ -22,14 +22,14 @@ export function RecordsPageSkeleton() {
       {/* Category tabs */}
       <div className="flex gap-2 mb-4">
         {[60, 44, 88, 72, 96, 80].map((w, i) => (
-          <Skeleton key={i} className={`h-8 w-${w} rounded-full flex-shrink-0`} style={{ width: w }} />
+          <Skeleton key={i} className={`h-8 rounded-full flex-shrink-0`} style={{ width: w }} />
         ))}
       </div>
 
       {/* Record cards */}
       <div className="space-y-3">
         {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="bg-white rounded-2xl px-4 py-4 border border-slate-100 flex items-center gap-4">
+          <div key={i} className="rounded-2xl px-4 py-4 flex items-center gap-4" style={{ background: '#FFFFFF', border: '1px solid #EEF1F6' }}>
             <Skeleton className="w-12 h-12 rounded-xl flex-shrink-0" />
             <div className="flex-1 space-y-2">
               <Skeleton className="h-4 w-3/4" />

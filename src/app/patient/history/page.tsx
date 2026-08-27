@@ -64,28 +64,37 @@ export default async function HistoryPage() {
 
       {/* Header */}
       <div className="mb-5">
-        <h1 className="text-2xl font-bold text-slate-900">Access History</h1>
-        <p className="text-sm text-slate-400 mt-0.5">A complete log of all access you have granted.</p>
+        <h1 className="text-2xl font-bold" style={{ color: '#12151C' }}>Access History</h1>
+        <p className="text-sm mt-0.5" style={{ color: '#8A93A3' }}>A complete log of all access you have granted.</p>
       </div>
 
       {/* Status summary pills */}
       {entries.length > 0 && (
         <div className="flex gap-2 mb-5 flex-wrap">
           {counts.active > 0 && (
-            <span className="inline-flex items-center gap-1.5 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold px-3 py-1.5 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+            <span
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+              style={{ background: '#E9F9F1', color: '#1FAA6D', border: '1px solid #1FAA6D30' }}
+            >
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#1FAA6D' }} />
               {counts.active} Active
             </span>
           )}
           {counts.revoked > 0 && (
-            <span className="inline-flex items-center gap-1.5 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold px-3 py-1.5 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-red-500" />
+            <span
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+              style={{ background: '#FFEDED', color: '#C23B3B', border: '1px solid #FF6B6B30' }}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ background: '#FF6B6B' }} />
               {counts.revoked} Revoked
             </span>
           )}
           {counts.expired > 0 && (
-            <span className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-amber-400" />
+            <span
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+              style={{ background: '#FEF6E7', color: '#E5A020', border: '1px solid #E5A02030' }}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ background: '#E5A020' }} />
               {counts.expired} Expired
             </span>
           )}
@@ -95,19 +104,20 @@ export default async function HistoryPage() {
       {/* History list */}
       {entries.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-            <svg className="w-8 h-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: '#EEF1F6' }}>
+            <svg viewBox="0 0 24 24" width={32} height={32} fill="none" stroke="#8A93A3" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3 3"/>
             </svg>
           </div>
-          <p className="text-slate-500 font-medium text-sm mb-1">No access history yet</p>
-          <p className="text-slate-400 text-xs max-w-[220px] mb-6">
+          <p className="font-medium text-sm mb-1" style={{ color: '#4B5265' }}>No access history yet</p>
+          <p className="text-xs max-w-[220px] mb-6" style={{ color: '#8A93A3' }}>
             Every time you share records with a provider, it will appear here.
           </p>
           <Link
             href="/patient/share"
-            className="bg-teal-600 text-white text-sm font-semibold px-5 py-3 rounded-2xl tap-target"
+            className="text-sm font-semibold px-5 py-3 rounded-2xl tap-target"
+            style={{ background: '#2F6BFF', color: '#FFFFFF' }}
           >
             Share Records
           </Link>
@@ -128,7 +138,7 @@ export default async function HistoryPage() {
 
       {/* Privacy note */}
       {entries.length > 0 && (
-        <p className="text-center text-xs text-slate-300 mt-6">
+        <p className="text-center text-xs mt-6" style={{ color: '#8A93A3' }}>
           {entries.length} total access event{entries.length !== 1 ? 's' : ''} · Tap any card to see the full timeline
         </p>
       )}

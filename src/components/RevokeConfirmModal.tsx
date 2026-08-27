@@ -1,4 +1,5 @@
-import { RECORD_TYPE_ICONS } from '@/lib/records';
+import { RecordTypeIcon } from '@/components/RecordTypeIcon';
+import { RECORD_TYPE_COLORS } from '@/lib/records';
 import type { AccessGrantWithDetails } from '@/types';
 
 interface Props {
@@ -12,38 +13,45 @@ export function RevokeConfirmModal({ grant, onConfirm, onCancel, revoking }: Pro
   return (
     <div className="fixed inset-0 z-50 flex items-end bg-black/50" onClick={onCancel}>
       <div
-        className="w-full bg-white rounded-t-3xl px-5 pt-5 pb-8"
+        className="w-full rounded-t-3xl px-5 pt-5 pb-8"
+        style={{ background: '#FFFFFF' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle */}
         <div className="flex justify-center mb-5">
-          <div className="w-10 h-1 bg-slate-200 rounded-full" />
+          <div className="w-10 h-1 rounded-full" style={{ background: '#EEF1F6' }} />
         </div>
 
-        {/* Warning icon */}
-        <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-7 h-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
-              d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
+        {/* Warning icon — coral SVG circle with X */}
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
+          style={{ background: '#FFEDED' }}
+        >
+          <svg viewBox="0 0 24 24" width={28} height={28} fill="none" stroke="#C23B3B" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M15 9l-6 6M9 9l6 6"/>
           </svg>
         </div>
 
-        <h2 className="text-xl font-bold text-slate-900 text-center mb-1">Revoke Access?</h2>
-        <p className="text-sm text-slate-500 text-center mb-5">
-          <span className="font-semibold text-slate-700">{grant.provider.name}</span> will immediately lose access to:
+        <h2 className="text-xl font-bold text-center mb-1" style={{ color: '#12151C' }}>Revoke Access?</h2>
+        <p className="text-sm text-center mb-5" style={{ color: '#8A93A3' }}>
+          <span className="font-semibold" style={{ color: '#4B5265' }}>{grant.provider.name}</span> will immediately lose access to:
         </p>
 
         {/* Records list */}
-        <div className="bg-red-50 border border-red-100 rounded-2xl px-4 py-3 mb-5 space-y-2">
-          {grant.records.map((r) => (
-            <div key={r.id} className="flex items-center gap-2">
-              <span className="text-base">{RECORD_TYPE_ICONS[r.type]}</span>
-              <span className="text-sm text-slate-700">{r.title}</span>
-            </div>
-          ))}
+        <div className="rounded-2xl px-4 py-3 mb-5 space-y-2" style={{ background: '#FFEDED', border: '1px solid #FF6B6B30' }}>
+          {grant.records.map((r) => {
+            const c = RECORD_TYPE_COLORS[r.type];
+            return (
+              <div key={r.id} className="flex items-center gap-2">
+                <RecordTypeIcon type={r.type} strokeColor={c.stroke} size={16} />
+                <span className="text-sm" style={{ color: '#4B5265' }}>{r.title}</span>
+              </div>
+            );
+          })}
         </div>
 
-        <p className="text-xs text-slate-400 text-center mb-6">
+        <p className="text-xs text-center mb-6" style={{ color: '#8A93A3' }}>
           This cannot be undone. The provider will need a new access link to view records again.
         </p>
 
@@ -52,14 +60,16 @@ export function RevokeConfirmModal({ grant, onConfirm, onCancel, revoking }: Pro
           <button
             onClick={onCancel}
             disabled={revoking}
-            className="flex-1 bg-slate-100 text-slate-700 font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-40"
+            className="flex-1 font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-40"
+            style={{ background: '#EEF1F6', color: '#4B5265' }}
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
             disabled={revoking}
-            className="flex-[2] bg-red-600 text-white font-bold text-sm py-4 rounded-2xl tap-target disabled:opacity-60 active:bg-red-700 transition-colors flex items-center justify-center gap-2"
+            className="flex-[2] font-bold text-sm py-4 rounded-2xl tap-target disabled:opacity-60 transition-colors flex items-center justify-center gap-2"
+            style={{ background: '#FFEDED', color: '#C23B3B' }}
           >
             {revoking ? (
               <>

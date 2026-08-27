@@ -78,10 +78,11 @@ export function ShareWizard({ providers, records, preSelectedRecordId }: Props) 
       {step < 4 && step > 0 && (
         <button
           onClick={() => setStep((s) => s - 1)}
-          className="flex items-center gap-1 text-sm text-slate-500 mb-2 -ml-1 tap-target"
+          className="flex items-center gap-1 text-sm font-medium mb-2 -ml-1 tap-target"
+          style={{ color: '#4B5265' }}
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#4B5265" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 19l-7-7 7-7" />
           </svg>
           Back
         </button>
@@ -91,7 +92,7 @@ export function ShareWizard({ providers, records, preSelectedRecordId }: Props) 
 
       {/* Error banner */}
       {error && (
-        <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
+        <div className="mb-4 rounded-xl px-4 py-3 text-sm" style={{ background: '#EAF1FF', border: '1px solid #2F6BFF30', color: '#1D4FE0' }}>
           {error}
         </div>
       )}

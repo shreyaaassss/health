@@ -1,6 +1,5 @@
 'use client';
 
-import type { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { API } from '@/constants/api';
@@ -41,18 +40,28 @@ export default function ProfilePage() {
     setEditing(false);
   }
 
-  const inputClass = 'w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-800 bg-white focus:outline-none focus:border-teal-500';
+  const inputStyle = {
+    width: '100%',
+    border: '1px solid #EEF1F6',
+    borderRadius: 12,
+    padding: '12px 16px',
+    fontSize: 14,
+    color: '#12151C',
+    background: '#FFFFFF',
+    outline: 'none',
+  };
 
   function Row({ label, value, field, type = 'text' }: {
     label: string; value?: string | null; field: keyof PatientProfile; type?: string;
   }) {
     return (
-      <div className={`px-4 py-3 ${editing ? '' : 'border-b border-slate-100 last:border-0'}`}>
-        <p className="text-[10px] text-slate-400 uppercase tracking-wider font-medium mb-1">{label}</p>
+      <div className={`px-4 py-3 ${editing ? '' : 'border-b last:border-0'}`} style={{ borderColor: '#EEF1F6' }}>
+        <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 4 }}>{label}</p>
         {editing ? (
           field === 'allergies' || field === 'current_medications' ? (
             <textarea
-              className={inputClass + ' resize-none'}
+              className="resize-none"
+              style={inputStyle}
               rows={2}
               value={(form[field] as string) ?? ''}
               onChange={(e) => setForm((f) => ({ ...f, [field]: e.target.value }))}
@@ -60,13 +69,15 @@ export default function ProfilePage() {
           ) : (
             <input
               type={type}
-              className={inputClass}
+              style={inputStyle}
               value={(form[field] as string) ?? ''}
               onChange={(e) => setForm((f) => ({ ...f, [field]: e.target.value }))}
             />
           )
         ) : (
-          <p className="text-sm font-medium text-slate-800">{value || <span className="text-slate-300 italic">Not set</span>}</p>
+          <p className="text-sm font-medium" style={{ color: '#12151C' }}>
+            {value || <span style={{ color: '#EEF1F6', fontStyle: 'italic' }}>Not set</span>}
+          </p>
         )}
       </div>
     );
@@ -76,7 +87,7 @@ export default function ProfilePage() {
     return (
       <div className="px-4 pt-6">
         <div className="space-y-3">
-          {[1,2,3,4].map(i => <div key={i} className="h-14 bg-slate-100 rounded-2xl animate-pulse" />)}
+          {[1,2,3,4].map(i => <div key={i} className="h-14 rounded-2xl animate-pulse" style={{ background: '#EEF1F6' }} />)}
         </div>
       </div>
     );
@@ -84,21 +95,22 @@ export default function ProfilePage() {
 
   return (
     <div className="px-4 pt-6 pb-4">
-      <Link href="/patient" className="inline-flex items-center gap-1 text-sm text-slate-500 mb-4 tap-target">
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+      <Link href="/patient" className="inline-flex items-center gap-1 text-sm mb-4 tap-target" style={{ color: '#8A93A3' }}>
+        <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#8A93A3" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M15 19l-7-7 7-7" />
         </svg>
         Home
       </Link>
 
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">My Profile</h1>
-          <p className="text-sm text-slate-400 mt-0.5">Used to autofill appointment forms</p>
+          <h1 className="text-2xl font-bold" style={{ color: '#12151C' }}>My Profile</h1>
+          <p className="text-sm mt-0.5" style={{ color: '#8A93A3' }}>Used to autofill appointment forms</p>
         </div>
         <button
           onClick={() => setEditing((e) => !e)}
-          className="text-sm font-semibold text-teal-600 tap-target px-3 py-2"
+          className="text-sm font-semibold tap-target px-3 py-2"
+          style={{ color: '#2F6BFF' }}
         >
           {editing ? 'Cancel' : 'Edit'}
         </button>
@@ -106,25 +118,28 @@ export default function ProfilePage() {
 
       {/* Avatar */}
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center text-2xl font-bold text-teal-700">
+        <div
+          className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold"
+          style={{ background: '#EAF1FF', color: '#2F6BFF' }}
+        >
           {profile.name.charAt(0).toUpperCase()}
         </div>
         <div>
-          <p className="font-bold text-slate-900">{profile.name}</p>
-          <p className="text-sm text-slate-500">{profile.email}</p>
+          <p className="font-bold" style={{ color: '#12151C' }}>{profile.name}</p>
+          <p className="text-sm" style={{ color: '#8A93A3' }}>{profile.email}</p>
         </div>
       </div>
 
       {saved && (
-        <div className="mb-4 bg-teal-50 border border-teal-200 rounded-xl px-4 py-2.5 flex items-center gap-2">
-          <svg className="w-4 h-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+        <div className="mb-4 rounded-xl px-4 py-2.5 flex items-center gap-2" style={{ background: '#EAF1FF', border: '1px solid #2F6BFF30' }}>
+          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 13l4 4L19 7" />
           </svg>
-          <p className="text-sm text-teal-700 font-medium">Profile updated</p>
+          <p className="text-sm font-medium" style={{ color: '#1D4FE0' }}>Profile updated</p>
         </div>
       )}
 
-      <div className={`bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden ${editing ? 'space-y-2 p-3' : ''}`}>
+      <div className={`rounded-2xl overflow-hidden ${editing ? 'space-y-2 p-3' : ''}`} style={{ background: '#FFFFFF', border: '1px solid #EEF1F6' }}>
         <Row label="Full Name"         value={profile.name}               field="name" />
         <Row label="Phone"             value={profile.phone}              field="phone" type="tel" />
         <Row label="Date of Birth"     value={profile.date_of_birth}      field="date_of_birth" type="date" />
@@ -137,7 +152,8 @@ export default function ProfilePage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="mt-4 w-full bg-teal-600 text-white font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-60 flex items-center justify-center gap-2"
+          className="mt-4 w-full font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-60 flex items-center justify-center gap-2"
+          style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
         >
           {saving ? (
             <>

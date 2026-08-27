@@ -1,9 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
   --nav-height: 64px;
+
+  /* Brand colors */
+  --blue: #2F6BFF;
+  --blue-dark: #1D4FE0;
+  --blue-tint: #EAF1FF;
+  --blue-tint-2: #F3F8FF;
+  --ink: #12151C;
+  --ink-soft: #4B5265;
+  --muted: #8A93A3;
+  --line: #EEF1F6;
+  --page: #F2F4F8;
+  --card: #FFFFFF;
+  --green: #1FAA6D;
+  --green-tint: #E9F9F1;
+  --amber: #E5A020;
+  --amber-tint: #FEF6E7;
+  --purple: #7B61FF;
+  --purple-tint: #F1EEFF;
+  --coral: #FF6B6B;
+  --coral-tint: #FFEDED;
+  --radius-lg: 26px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
 }
 
 /* Prevent layout shift from system UI on mobile */
@@ -15,6 +39,9 @@
 html, body {
   height: 100%;
   overscroll-behavior: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--page);
+  color: var(--ink);
 }
 
 /* Scrollable content inside patient shell */
@@ -37,3 +64,7 @@ html, body {
 /* Hide scrollbar on category tab row (still scrollable) */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.plus-jakarta {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
