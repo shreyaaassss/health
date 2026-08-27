@@ -1,19 +1,20 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { requirePatientId } from '@/lib/auth';
 import { RecordTypeBadge } from '@/components/RecordTypeBadge';
 import { RecordTypeIcon } from '@/components/RecordTypeIcon';
 import { RECORD_TYPE_COLORS, formatRecordDate } from '@/lib/records';
 import type { MedicalRecord } from '@/types';
 
 async function getRecord(id: string): Promise<MedicalRecord | null> {
+  const patientId = await requirePatientId();
   const supabase = createAdminClient();
   const { data } = await supabase
     .from('medical_records')
     .select('*')
     .eq('id', id)
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .single();
   return data as MedicalRecord | null;
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { requirePatientId } from '@/lib/auth';
 import { RecordsList } from '@/components/RecordsList';
 import type { MedicalRecord } from '@/types';
 import Link from 'next/link';
@@ -8,11 +8,12 @@ import Link from 'next/link';
 export const metadata: Metadata = { title: 'My Records · Health Wallet' };
 
 async function getRecords(): Promise<MedicalRecord[]> {
+  const patientId = await requirePatientId();
   const supabase = createAdminClient();
   const { data } = await supabase
     .from('medical_records')
     .select('*')
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .order('record_date', { ascending: false });
   return (data ?? []) as MedicalRecord[];
 }

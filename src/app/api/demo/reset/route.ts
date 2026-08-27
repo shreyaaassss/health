@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
 import type { ApiResponse } from '@/types';
+
+// Hardcoded demo patient ID — this endpoint only resets the original seed patient
+const DEMO_PATIENT_ID = '00000000-0000-0000-0000-000000000001';
 
 const SEED_RECORDS = [
   {
     id: '00000000-0000-0000-0002-000000000001',
-    patient_id: DEMO.PATIENT_ID,
+    patient_id: DEMO_PATIENT_ID,
     title: 'Blood Test Report',
     type: 'lab_report',
     provider_name: 'City Diagnostics',
@@ -15,7 +17,7 @@ const SEED_RECORDS = [
   },
   {
     id: '00000000-0000-0000-0002-000000000002',
-    patient_id: DEMO.PATIENT_ID,
+    patient_id: DEMO_PATIENT_ID,
     title: 'MRI Scan — Lumbar Spine',
     type: 'imaging',
     provider_name: 'Pune Diagnostics',
@@ -24,7 +26,7 @@ const SEED_RECORDS = [
   },
   {
     id: '00000000-0000-0000-0002-000000000003',
-    patient_id: DEMO.PATIENT_ID,
+    patient_id: DEMO_PATIENT_ID,
     title: 'Prescription — Vitamin D & Calcium',
     type: 'prescription',
     provider_name: 'Dr. Meena Mehta',
@@ -33,7 +35,7 @@ const SEED_RECORDS = [
   },
   {
     id: '00000000-0000-0000-0002-000000000004',
-    patient_id: DEMO.PATIENT_ID,
+    patient_id: DEMO_PATIENT_ID,
     title: 'Vaccination Record',
     type: 'vaccination',
     provider_name: 'Pune City Hospital',
@@ -42,7 +44,7 @@ const SEED_RECORDS = [
   },
   {
     id: '00000000-0000-0000-0002-000000000005',
-    patient_id: DEMO.PATIENT_ID,
+    patient_id: DEMO_PATIENT_ID,
     title: 'Consultation Notes — General Checkup',
     type: 'consultation',
     provider_name: 'Dr. Meena Mehta',
@@ -58,12 +60,12 @@ export async function POST(): Promise<NextResponse<ApiResponse<{ reset_at: strin
   const { data: grants } = await supabase
     .from('access_grants')
     .select('id')
-    .eq('patient_id', DEMO.PATIENT_ID);
+    .eq('patient_id', DEMO_PATIENT_ID);
 
   const grantIds = (grants ?? []).map((g) => g.id);
 
   // ── Step 2: Delete child rows scoped to demo patient ──
-  await supabase.from('access_logs').delete().eq('patient_id', DEMO.PATIENT_ID);
+  await supabase.from('access_logs').delete().eq('patient_id', DEMO_PATIENT_ID);
 
   if (grantIds.length > 0) {
     await supabase.from('access_grant_records').delete().in('access_grant_id', grantIds);
@@ -71,10 +73,10 @@ export async function POST(): Promise<NextResponse<ApiResponse<{ reset_at: strin
   }
 
   // ── Step 3: Delete grants ──────────────────────
-  await supabase.from('access_grants').delete().eq('patient_id', DEMO.PATIENT_ID);
+  await supabase.from('access_grants').delete().eq('patient_id', DEMO_PATIENT_ID);
 
   // ── Step 4: Restore seed medical records ──────
-  await supabase.from('medical_records').delete().eq('patient_id', DEMO.PATIENT_ID);
+  await supabase.from('medical_records').delete().eq('patient_id', DEMO_PATIENT_ID);
 
   const { error: insertErr } = await supabase
     .from('medical_records')

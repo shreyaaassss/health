@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { getPatientIdFromRequest } from '@/lib/auth';
 import type { ApiResponse, PatientProfile } from '@/types';
 
 export async function GET(): Promise<NextResponse<ApiResponse<PatientProfile>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   const supabase = createAdminClient();
 
   const { data, error } = await supabase
     .from('patients')
     .select('*')
-    .eq('id', DEMO.PATIENT_ID)
+    .eq('id', patientId)
     .single();
 
   if (error || !data) {
@@ -20,6 +24,10 @@ export async function GET(): Promise<NextResponse<ApiResponse<PatientProfile>>> 
 }
 
 export async function PATCH(req: NextRequest): Promise<NextResponse<ApiResponse<PatientProfile>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   let body: Partial<PatientProfile>;
   try {
     body = await req.json();
@@ -41,7 +49,7 @@ export async function PATCH(req: NextRequest): Promise<NextResponse<ApiResponse<
   const { data, error } = await supabase
     .from('patients')
     .update(updates)
-    .eq('id', DEMO.PATIENT_ID)
+    .eq('id', patientId)
     .select()
     .single();
 

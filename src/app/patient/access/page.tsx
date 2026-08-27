@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 export const metadata: Metadata = { title: 'Active Access · Health Wallet' };
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { requirePatientId } from '@/lib/auth';
 import { AccessList } from '@/components/AccessList';
 import type { AccessGrant, AccessGrantWithDetails, MedicalRecord, Provider } from '@/types';
 import Link from 'next/link';
 
 async function getActiveGrants(): Promise<AccessGrantWithDetails[]> {
+  const patientId = await requirePatientId();
   const supabase = createAdminClient();
   const now = new Date().toISOString();
 
@@ -15,7 +16,7 @@ async function getActiveGrants(): Promise<AccessGrantWithDetails[]> {
   const { data: expiredRows } = await supabase
     .from('access_grants')
     .select('id, provider_id')
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .eq('status', 'ACTIVE')
     .lt('expires_at', now);
 
@@ -26,7 +27,7 @@ async function getActiveGrants(): Promise<AccessGrantWithDetails[]> {
       supabase.from('access_tokens').update({ expires_at: now }).in('access_grant_id', ids),
       supabase.from('access_logs').insert(
         expiredRows.map((g) => ({
-          patient_id: DEMO.PATIENT_ID,
+          patient_id: patientId,
           provider_id: g.provider_id,
           access_grant_id: g.id,
           action: 'ACCESS_EXPIRED',
@@ -45,7 +46,7 @@ async function getActiveGrants(): Promise<AccessGrantWithDetails[]> {
         medical_records(*)
       )
     `)
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .eq('status', 'ACTIVE')
     .order('created_at', { ascending: false });
 

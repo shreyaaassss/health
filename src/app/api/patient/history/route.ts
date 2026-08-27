@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { getPatientIdFromRequest } from '@/lib/auth';
 import type { AccessGrant, AccessLog, ApiResponse, MedicalRecord, Provider } from '@/types';
 
 export interface HistoryEntry {
@@ -11,6 +11,10 @@ export interface HistoryEntry {
 }
 
 export async function GET(): Promise<NextResponse<ApiResponse<HistoryEntry[]>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   const supabase = createAdminClient();
 
   const { data, error } = await supabase
@@ -21,7 +25,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<HistoryEntry[]>>> 
       access_grant_records( medical_records(*) ),
       access_logs( * )
     `)
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .order('created_at', { ascending: false });
 
   if (error) {

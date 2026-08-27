@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 export const metadata: Metadata = { title: 'Access History · Health Wallet' };
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { requirePatientId } from '@/lib/auth';
 import { HistoryGrantCard } from '@/components/HistoryGrantCard';
 import type { AccessGrant, AccessGrantStatus, AccessLog, MedicalRecord, Provider } from '@/types';
 import Link from 'next/link';
@@ -14,6 +14,7 @@ interface HistoryEntry {
 }
 
 async function getHistory(): Promise<HistoryEntry[]> {
+  const patientId = await requirePatientId();
   const supabase = createAdminClient();
 
   const { data, error } = await supabase
@@ -24,7 +25,7 @@ async function getHistory(): Promise<HistoryEntry[]> {
       access_grant_records( medical_records(*) ),
       access_logs( * )
     `)
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .order('created_at', { ascending: false });
 
   if (error || !data) return [];

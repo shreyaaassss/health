@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { getPatientIdFromRequest } from '@/lib/auth';
 import type { ApiResponse } from '@/types';
 
 // Called before rendering the access page.
 // Marks any ACTIVE grants whose expires_at has passed as EXPIRED,
 // then logs ACCESS_EXPIRED for each one.
 export async function POST(): Promise<NextResponse<ApiResponse<{ expired_count: number }>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   const supabase = createAdminClient();
   const now = new Date().toISOString();
 
@@ -14,7 +18,7 @@ export async function POST(): Promise<NextResponse<ApiResponse<{ expired_count: 
   const { data: expiredGrants } = await supabase
     .from('access_grants')
     .select('id, provider_id')
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .eq('status', 'ACTIVE')
     .lt('expires_at', now);
 
@@ -38,7 +42,7 @@ export async function POST(): Promise<NextResponse<ApiResponse<{ expired_count: 
 
   // 4. Audit log one entry per expired grant
   const logs = expiredGrants.map((g) => ({
-    patient_id: DEMO.PATIENT_ID,
+    patient_id: patientId,
     provider_id: g.provider_id,
     access_grant_id: g.id,
     action: 'ACCESS_EXPIRED' as const,

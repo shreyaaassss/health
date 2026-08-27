@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 export const metadata: Metadata = { title: 'Share Records · Health Wallet' };
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { requirePatientId } from '@/lib/auth';
 import { ShareWizard } from '@/components/ShareWizard';
 import type { MedicalRecord, Provider } from '@/types';
 
 async function getShareData(): Promise<{ providers: Provider[]; records: MedicalRecord[] }> {
+  const patientId = await requirePatientId();
   const supabase = createAdminClient();
 
   const [{ data: providers }, { data: records }] = await Promise.all([
@@ -13,7 +14,7 @@ async function getShareData(): Promise<{ providers: Provider[]; records: Medical
     supabase
       .from('medical_records')
       .select('*')
-      .eq('patient_id', DEMO.PATIENT_ID)
+      .eq('patient_id', patientId)
       .order('record_date', { ascending: false }),
   ]);
 

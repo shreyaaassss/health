@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { getPatientIdFromRequest } from '@/lib/auth';
 import { ACCESS_DURATION_MS } from '@/types';
 import type { AccessDuration, AccessGrant, AccessGrantWithDetails, ApiResponse, MedicalRecord, Provider } from '@/types';
 
 // ── GET: fetch all grants with provider + records joined ──
 export async function GET(): Promise<NextResponse<ApiResponse<AccessGrantWithDetails[]>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   const supabase = createAdminClient();
 
   const { data, error } = await supabase
@@ -17,7 +21,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<AccessGrantWithDet
         medical_records(*)
       )
     `)
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -49,6 +53,10 @@ interface GrantResult {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse<GrantResult>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   let body: CreateGrantBody;
   try {
     body = await req.json();
@@ -74,7 +82,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse<G
   const { data: grant, error: grantErr } = await supabase
     .from('access_grants')
     .insert({
-      patient_id: DEMO.PATIENT_ID,
+      patient_id: patientId,
       provider_id,
       status: 'ACTIVE',
       expires_at,
@@ -114,7 +122,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse<G
 
   // ── 5. Audit log: ACCESS_GRANTED ──────────────
   await supabase.from('access_logs').insert({
-    patient_id: DEMO.PATIENT_ID,
+    patient_id: patientId,
     provider_id,
     access_grant_id: grant.id,
     action: 'ACCESS_GRANTED',

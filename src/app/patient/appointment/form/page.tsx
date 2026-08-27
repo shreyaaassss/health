@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { requirePatientId } from '@/lib/auth';
 import { AppointmentWizard } from '@/components/AppointmentWizard';
 import type { PatientProfile } from '@/types';
 import Link from 'next/link';
@@ -8,11 +8,12 @@ import Link from 'next/link';
 export const metadata: Metadata = { title: 'Appointment Form · Health Wallet' };
 
 async function getProfile(): Promise<PatientProfile | null> {
+  const patientId = await requirePatientId();
   const supabase = createAdminClient();
   const { data } = await supabase
     .from('patients')
     .select('*')
-    .eq('id', DEMO.PATIENT_ID)
+    .eq('id', patientId)
     .single();
   return data as PatientProfile | null;
 }

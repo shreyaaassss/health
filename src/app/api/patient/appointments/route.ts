@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { getPatientIdFromRequest } from '@/lib/auth';
 import type { ApiResponse, AppointmentFormData, AppointmentRecord } from '@/types';
 
 interface CreateAppointmentBody {
@@ -14,12 +14,16 @@ interface CreateAppointmentBody {
 }
 
 export async function GET(): Promise<NextResponse<ApiResponse<AppointmentRecord[]>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   const supabase = createAdminClient();
 
   const { data, error } = await supabase
     .from('appointment_records')
     .select('*')
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -46,6 +50,10 @@ export async function GET(): Promise<NextResponse<ApiResponse<AppointmentRecord[
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse<AppointmentRecord>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   let body: CreateAppointmentBody;
   try {
     body = await req.json();
@@ -69,13 +77,13 @@ export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse<A
     emergency_contact: formData.emergencyContact,
     ...(formData.allergies !== undefined && { allergies: formData.allergies }),
     ...(formData.currentMedications !== undefined && { current_medications: formData.currentMedications }),
-  }).eq('id', DEMO.PATIENT_ID);
+  }).eq('id', patientId);
 
   // ── 2. Create appointment record ──────────────
   const { data, error } = await supabase
     .from('appointment_records')
     .insert({
-      patient_id:          DEMO.PATIENT_ID,
+      patient_id:          patientId,
       source_type:         source.type,
       source_raw_code:     source.rawCode ?? null,
       source_hospital_id:  source.hospitalId ?? null,

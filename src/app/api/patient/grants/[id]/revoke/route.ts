@@ -1,21 +1,25 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { getPatientIdFromRequest } from '@/lib/auth';
 import type { ApiResponse } from '@/types';
 
 export async function POST(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<{ revoked_at: string }>>> {
+  const patientId = await getPatientIdFromRequest();
+  if (!patientId) {
+    return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
+  }
   const { id } = await params;
   const supabase = createAdminClient();
 
-  // ── 1. Verify grant belongs to demo patient and is ACTIVE ──
+  // ── 1. Verify grant belongs to patient and is ACTIVE ──
   const { data: grant, error: fetchErr } = await supabase
     .from('access_grants')
     .select('*')
     .eq('id', id)
-    .eq('patient_id', DEMO.PATIENT_ID)
+    .eq('patient_id', patientId)
     .single();
 
   if (fetchErr || !grant) {
@@ -51,7 +55,7 @@ export async function POST(
 
   // ── 4. Audit log: ACCESS_REVOKED ──────────────
   await supabase.from('access_logs').insert({
-    patient_id: DEMO.PATIENT_ID,
+    patient_id: patientId,
     provider_id: grant.provider_id,
     access_grant_id: id,
     action: 'ACCESS_REVOKED',

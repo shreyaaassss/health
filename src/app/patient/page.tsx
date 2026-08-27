@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { DEMO } from '@/constants/api';
+import { requirePatientId } from '@/lib/auth';
 import { RecordCard } from '@/components/RecordCard';
+import LogoutButton from '@/components/LogoutButton';
 import type { MedicalRecord, AccessGrant, Provider, AccessGrantWithDetails } from '@/types';
 import { RECORD_TYPE_COLORS } from '@/lib/records';
 
 export const metadata: Metadata = { title: 'Home · Health Wallet' };
 
 async function getDashboardData() {
+  const patientId = await requirePatientId();
   const supabase = createAdminClient();
 
   const [
@@ -18,11 +20,11 @@ async function getDashboardData() {
     { data: recentRecords },
     { data: grantData },
   ] = await Promise.all([
-    supabase.from('medical_records').select('*', { count: 'exact', head: true }).eq('patient_id', DEMO.PATIENT_ID),
-    supabase.from('access_grants').select('*', { count: 'exact', head: true }).eq('patient_id', DEMO.PATIENT_ID).eq('status', 'ACTIVE'),
-    supabase.from('patients').select('name').eq('id', DEMO.PATIENT_ID).single(),
-    supabase.from('medical_records').select('*').eq('patient_id', DEMO.PATIENT_ID).order('record_date', { ascending: false }).limit(3),
-    supabase.from('access_grants').select(`*, providers(*), access_grant_records( medical_records(*) )`).eq('patient_id', DEMO.PATIENT_ID).eq('status', 'ACTIVE').order('created_at', { ascending: false }).limit(1),
+    supabase.from('medical_records').select('*', { count: 'exact', head: true }).eq('patient_id', patientId),
+    supabase.from('access_grants').select('*', { count: 'exact', head: true }).eq('patient_id', patientId).eq('status', 'ACTIVE'),
+    supabase.from('patients').select('name').eq('id', patientId).single(),
+    supabase.from('medical_records').select('*').eq('patient_id', patientId).order('record_date', { ascending: false }).limit(3),
+    supabase.from('access_grants').select(`*, providers(*), access_grant_records( medical_records(*) )`).eq('patient_id', patientId).eq('status', 'ACTIVE').order('created_at', { ascending: false }).limit(1),
   ]);
 
   const firstGrant: AccessGrantWithDetails | null = grantData && grantData.length > 0
@@ -88,6 +90,7 @@ export default async function HomePage() {
           >
             <span style={{ fontSize: 16, fontWeight: 800, color: '#FFFFFF' }}>{firstName.charAt(0)}</span>
           </Link>
+          <LogoutButton compact />
         </div>
       </div>
 

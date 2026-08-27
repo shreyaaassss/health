@@ -1,11 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ActiveGrantCard } from '@/components/ActiveGrantCard';
 import { RevokeConfirmModal } from '@/components/RevokeConfirmModal';
 import type { AccessGrantWithDetails } from '@/types';
 
 export function AccessList({ initialGrants }: { initialGrants: AccessGrantWithDetails[] }) {
+  const router = useRouter();
   const [grants, setGrants] = useState(initialGrants);
   const [confirmingGrant, setConfirmingGrant] = useState<AccessGrantWithDetails | null>(null);
   const [revokingId, setRevokingId] = useState<string | null>(null);
@@ -41,6 +43,7 @@ export function AccessList({ initialGrants }: { initialGrants: AccessGrantWithDe
       }
 
       removeGrant(grant.id, `Access revoked. ${grant.provider.name} can no longer view your records.`);
+      router.refresh();
     } catch {
       setError('Network error. Please try again.');
     } finally {

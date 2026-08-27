@@ -1,6 +1,11 @@
 import { redirect } from 'next/navigation';
+import { getUser, getUserRole } from '@/lib/auth';
 
-// Root redirects to patient dashboard (demo identity — no auth gate for MVP)
-export default function Root() {
+export default async function Root() {
+  const user = await getUser();
+  if (!user) redirect('/login');
+
+  const role = await getUserRole(user.id);
+  if (role === 'doctor') redirect('/doctor');
   redirect('/patient');
 }
