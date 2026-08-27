@@ -27,9 +27,9 @@ export function RecordsList({ records }: { records: MedicalRecord[] }) {
               className="flex-shrink-0 px-4 py-2 text-xs font-semibold transition-colors tap-target"
               style={{
                 borderRadius: 20,
-                background: isActive ? '#2F6BFF' : '#FFFFFF',
-                color: isActive ? '#FFFFFF' : '#4B5265',
-                border: isActive ? 'none' : '1px solid #EEF1F6',
+                background: isActive ? '#2F6BFF' : 'var(--card)',
+                color: isActive ? 'var(--card)' : 'var(--ink-soft)',
+                border: isActive ? 'none' : '1px solid var(--line)',
               }}
             >
               {label}
@@ -46,7 +46,7 @@ export function RecordsList({ records }: { records: MedicalRecord[] }) {
       {/* Record list */}
       {filtered.length === 0 ? (
         <div className="text-center py-12">
-          <p style={{ color: '#8A93A3', fontSize: 14 }}>No records in this category</p>
+          <p style={{ color: 'var(--muted)', fontSize: 14 }}>No records in this category</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -56,7 +56,7 @@ export function RecordsList({ records }: { records: MedicalRecord[] }) {
         </div>
       )}
 
-      <p className="text-center text-xs mt-6 mb-2" style={{ color: '#8A93A3' }}>
+      <p className="text-center text-xs mt-6 mb-2" style={{ color: 'var(--muted)' }}>
         {records.length} record{records.length !== 1 ? 's' : ''} total
       </p>
     </>

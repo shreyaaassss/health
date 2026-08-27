@@ -20,8 +20,8 @@ export function StepDuration({ selected, onSelect, onNext, onBack }: Props) {
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1">
-        <h2 className="text-xl font-bold mb-1" style={{ color: '#12151C' }}>Set Access Duration</h2>
-        <p className="text-sm mb-5" style={{ color: '#8A93A3' }}>How long should the provider have access?</p>
+        <h2 className="text-xl font-bold mb-1" style={{ color: 'var(--ink)' }}>Set Access Duration</h2>
+        <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>How long should the provider have access?</p>
 
         <div className="space-y-2">
           {DURATION_OPTIONS.map(({ value, description, isDemo }) => {
@@ -32,21 +32,21 @@ export function StepDuration({ selected, onSelect, onNext, onBack }: Props) {
                 onClick={() => onSelect(value)}
                 className="w-full text-left flex items-start gap-3 p-4 rounded-2xl transition-all tap-target"
                 style={{
-                  border: isSelected ? '2px solid #2F6BFF' : '2px solid #EEF1F6',
-                  background: isSelected ? '#EAF1FF' : '#FFFFFF',
+                  border: isSelected ? '2px solid #2F6BFF' : '2px solid var(--line)',
+                  background: isSelected ? 'var(--blue-tint)' : 'var(--card)',
                 }}
               >
                 {/* Radio circle */}
                 <div
                   className="mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0"
-                  style={{ borderColor: isSelected ? '#2F6BFF' : '#EEF1F6' }}
+                  style={{ borderColor: isSelected ? '#2F6BFF' : 'var(--line)' }}
                 >
                   {isSelected && <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#2F6BFF' }} />}
                 </div>
 
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold" style={{ color: isSelected ? '#1D4FE0' : '#12151C' }}>
+                    <p className="text-sm font-semibold" style={{ color: isSelected ? '#1D4FE0' : 'var(--ink)' }}>
                       {ACCESS_DURATION_LABELS[value]}
                     </p>
                     {isDemo && (
@@ -58,7 +58,7 @@ export function StepDuration({ selected, onSelect, onNext, onBack }: Props) {
                       </span>
                     )}
                   </div>
-                  <p className="text-xs mt-0.5" style={{ color: '#8A93A3' }}>{description}</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>{description}</p>
                 </div>
               </button>
             );
@@ -70,14 +70,14 @@ export function StepDuration({ selected, onSelect, onNext, onBack }: Props) {
         <button
           onClick={onBack}
           className="flex-1 font-semibold text-sm py-4 rounded-2xl tap-target"
-          style={{ background: '#EEF1F6', color: '#4B5265' }}
+          style={{ background: 'var(--line)', color: 'var(--ink-soft)' }}
         >
           Back
         </button>
         <button
           onClick={onNext}
           className="flex-[2] font-semibold text-sm py-4 rounded-2xl tap-target transition-colors"
-          style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
+          style={{ background: '#2F6BFF', color: 'var(--card)', borderRadius: 24 }}
         >
           Continue
         </button>

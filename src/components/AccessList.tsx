@@ -61,7 +61,7 @@ export function AccessList({ initialGrants }: { initialGrants: AccessGrantWithDe
 
       {/* Success / expiry message */}
       {removedMessage && activeGrants.length === 0 && (
-        <div className="mb-4 rounded-xl px-4 py-3 flex items-center gap-2" style={{ background: '#EAF1FF', border: '1px solid #2F6BFF30' }}>
+        <div className="mb-4 rounded-xl px-4 py-3 flex items-center gap-2" style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}>
           <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
             <path d="M5 13l4 4L19 7" />
           </svg>
@@ -71,16 +71,16 @@ export function AccessList({ initialGrants }: { initialGrants: AccessGrantWithDe
 
       {activeGrants.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: '#EEF1F6' }}>
-            <svg viewBox="0 0 24 24" width={32} height={32} fill="none" stroke="#8A93A3" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: 'var(--line)' }}>
+            <svg viewBox="0 0 24 24" width={32} height={32} fill="none" stroke="var(--muted)" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
               <circle cx="7" cy="17" r="3"/>
               <path d="M10 17h4a2 2 0 0 0 2-2v-2"/>
               <path d="M14 10V7a3 3 0 0 1 6 0v3"/>
               <rect x="14" y="10" width="6" height="5" rx="1"/>
             </svg>
           </div>
-          <p className="font-medium text-sm mb-1" style={{ color: '#4B5265' }}>No active access</p>
-          <p className="text-xs max-w-[200px]" style={{ color: '#8A93A3' }}>
+          <p className="font-medium text-sm mb-1" style={{ color: 'var(--ink-soft)' }}>No active access</p>
+          <p className="text-xs max-w-[200px]" style={{ color: 'var(--muted)' }}>
             When you share records with a provider, their access will appear here.
           </p>
         </div>

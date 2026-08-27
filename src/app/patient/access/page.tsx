@@ -71,8 +71,8 @@ export default async function AccessPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: '#12151C' }}>Active Access</h1>
-          <p className="text-sm mt-0.5" style={{ color: '#8A93A3' }}>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>Active Access</h1>
+          <p className="text-sm mt-0.5" style={{ color: 'var(--muted)' }}>
             {activeCount === 0
               ? 'No one currently has access'
               : `${activeCount} provider${activeCount !== 1 ? 's' : ''} with active access`}
@@ -81,9 +81,9 @@ export default async function AccessPage() {
         <Link
           href="/patient/share"
           className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl tap-target"
-          style={{ background: '#2F6BFF', color: '#FFFFFF' }}
+          style={{ background: '#2F6BFF', color: 'var(--card)' }}
         >
-          <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="#FFFFFF" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--card)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
           Share

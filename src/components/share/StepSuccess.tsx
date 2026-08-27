@@ -36,10 +36,10 @@ export function StepSuccess({ token, expiresAt, providerName, recordCount, durat
         </svg>
       </div>
 
-      <h2 className="text-2xl font-bold mb-1" style={{ color: '#12151C' }}>Access Created</h2>
-      <p className="text-sm mb-2" style={{ color: '#8A93A3' }}>
-        <span className="font-semibold" style={{ color: '#4B5265' }}>{providerName}</span> can now access{' '}
-        <span className="font-semibold" style={{ color: '#4B5265' }}>
+      <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--ink)' }}>Access Created</h2>
+      <p className="text-sm mb-2" style={{ color: 'var(--muted)' }}>
+        <span className="font-semibold" style={{ color: 'var(--ink-soft)' }}>{providerName}</span> can now access{' '}
+        <span className="font-semibold" style={{ color: 'var(--ink-soft)' }}>
           {recordCount} record{recordCount !== 1 ? 's' : ''}
         </span>
       </p>
@@ -65,9 +65,9 @@ export function StepSuccess({ token, expiresAt, providerName, recordCount, durat
       </div>
 
       {/* Access URL preview */}
-      <div className="w-full mt-4 rounded-xl px-3 py-2.5 text-left" style={{ background: '#F3F8FF', border: '1px solid #EEF1F6' }}>
-        <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 4 }}>Access URL</p>
-        <p className="font-mono break-all leading-relaxed" style={{ fontSize: 12, color: '#4B5265' }}>{accessUrl}</p>
+      <div className="w-full mt-4 rounded-xl px-3 py-2.5 text-left" style={{ background: 'var(--card-2)', border: '1px solid var(--line)' }}>
+        <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 4 }}>Access URL</p>
+        <p className="font-mono break-all leading-relaxed" style={{ fontSize: 12, color: 'var(--ink-soft)' }}>{accessUrl}</p>
       </div>
 
       {/* Security note */}
@@ -75,7 +75,7 @@ export function StepSuccess({ token, expiresAt, providerName, recordCount, durat
         <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 flex-shrink-0">
           <path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
         </svg>
-        <p className="text-xs" style={{ color: '#8A93A3' }}>
+        <p className="text-xs" style={{ color: 'var(--muted)' }}>
           The link contains only an opaque token. No medical data is exposed in the URL.
           You can revoke access at any time.
         </p>
@@ -86,9 +86,9 @@ export function StepSuccess({ token, expiresAt, providerName, recordCount, durat
         <Link
           href="/patient/access"
           className="w-full flex items-center justify-center gap-2 font-semibold text-sm py-4 rounded-2xl tap-target transition-colors"
-          style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
+          style={{ background: '#2F6BFF', color: 'var(--card)', borderRadius: 24 }}
         >
-          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#FFFFFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--card)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <circle cx="7" cy="17" r="3"/>
             <path d="M10 17h4a2 2 0 0 0 2-2v-2"/>
             <path d="M14 10V7a3 3 0 0 1 6 0v3"/>
@@ -99,7 +99,7 @@ export function StepSuccess({ token, expiresAt, providerName, recordCount, durat
         <Link
           href="/patient/records"
           className="w-full flex items-center justify-center text-sm py-2 tap-target"
-          style={{ color: '#8A93A3' }}
+          style={{ color: 'var(--muted)' }}
         >
           Back to Records
         </Link>

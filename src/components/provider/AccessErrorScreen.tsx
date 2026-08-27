@@ -46,8 +46,8 @@ const ERROR_CONFIG: Record<ErrorCode, {
     ),
     title: 'Invalid Access Link',
     message: 'This access link is not valid. It may have been entered incorrectly. Please ask the patient to share the access link again.',
-    bg: '#F3F8FF',
-    iconBg: '#EAF1FF',
+    bg: 'var(--card-2)',
+    iconBg: 'var(--blue-tint)',
     iconStroke: '#2F6BFF',
     textColor: '#1D4FE0',
   },
@@ -60,10 +60,10 @@ const ERROR_CONFIG: Record<ErrorCode, {
     ),
     title: 'Access Denied',
     message: 'You do not have permission to access this record.',
-    bg: '#F3F8FF',
-    iconBg: '#EEF1F6',
-    iconStroke: '#8A93A3',
-    textColor: '#4B5265',
+    bg: 'var(--card-2)',
+    iconBg: 'var(--line)',
+    iconStroke: 'var(--muted)',
+    textColor: 'var(--ink-soft)',
   },
 };
 
@@ -87,11 +87,11 @@ export function AccessErrorScreen({ code }: { code: ErrorCode }) {
         <h1 className="text-2xl font-bold mb-3" style={{ color: config.textColor }}>{config.title}</h1>
 
         {/* Message */}
-        <p className="text-sm leading-relaxed mb-8" style={{ color: '#4B5265' }}>{config.message}</p>
+        <p className="text-sm leading-relaxed mb-8" style={{ color: 'var(--ink-soft)' }}>{config.message}</p>
 
         {/* Visual separator */}
-        <div className="border-t pt-6" style={{ borderColor: '#EEF1F6' }}>
-          <p className="text-xs" style={{ color: '#8A93A3' }}>Health Wallet · Patient-Controlled Access</p>
+        <div className="border-t pt-6" style={{ borderColor: 'var(--line)' }}>
+          <p className="text-xs" style={{ color: 'var(--muted)' }}>Health Wallet · Patient-Controlled Access</p>
         </div>
       </div>
     </div>

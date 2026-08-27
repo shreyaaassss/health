@@ -25,13 +25,13 @@ export function ActiveGrantCard({ grant, onRevoke, onExpired, revoking }: Props)
     : expires.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
 
   return (
-    <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #EEF1F6' }}>
+    <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
 
       {/* Provider header */}
-      <div className="px-4 py-3 flex items-center gap-3" style={{ background: '#F3F8FF', borderBottom: '1px solid #EEF1F6' }}>
+      <div className="px-4 py-3 flex items-center gap-3" style={{ background: 'var(--card-2)', borderBottom: '1px solid var(--line)' }}>
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: '#EAF1FF' }}
+          style={{ background: 'var(--blue-tint)' }}
         >
           <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -39,8 +39,8 @@ export function ActiveGrantCard({ grant, onRevoke, onExpired, revoking }: Props)
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold truncate" style={{ color: '#12151C' }}>{grant.provider.name}</p>
-          <p className="text-xs truncate" style={{ color: '#8A93A3' }}>{grant.provider.organization}</p>
+          <p className="text-sm font-bold truncate" style={{ color: 'var(--ink)' }}>{grant.provider.name}</p>
+          <p className="text-xs truncate" style={{ color: 'var(--muted)' }}>{grant.provider.organization}</p>
         </div>
         <span
           className="inline-flex items-center gap-1 flex-shrink-0"
@@ -55,7 +55,7 @@ export function ActiveGrantCard({ grant, onRevoke, onExpired, revoking }: Props)
 
         {/* Records shared */}
         <div>
-          <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 8 }}>
+          <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 8 }}>
             Records Shared ({grant.records.length})
           </p>
           <div className="space-y-1.5">
@@ -66,8 +66,8 @@ export function ActiveGrantCard({ grant, onRevoke, onExpired, revoking }: Props)
                   <div style={{ width: 20, height: 20, flexShrink: 0 }}>
                     <RecordTypeIcon type={r.type} strokeColor={c.stroke} size={18} />
                   </div>
-                  <span className="text-sm flex-1 truncate" style={{ color: '#4B5265' }}>{r.title}</span>
-                  <span className="text-xs flex-shrink-0" style={{ color: '#8A93A3' }}>{formatRecordDate(r.record_date)}</span>
+                  <span className="text-sm flex-1 truncate" style={{ color: 'var(--ink-soft)' }}>{r.title}</span>
+                  <span className="text-xs flex-shrink-0" style={{ color: 'var(--muted)' }}>{formatRecordDate(r.record_date)}</span>
                 </div>
               );
             })}
@@ -87,7 +87,7 @@ export function ActiveGrantCard({ grant, onRevoke, onExpired, revoking }: Props)
               <path d="M12 7v5l3 3"/>
             </svg>
             <div>
-              <p style={{ fontSize: 12, fontWeight: 600, color: '#4B5265' }}>Access expires</p>
+              <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink-soft)' }}>Access expires</p>
               <p style={{ fontSize: 12, color: '#E5A020' }}>{expiresLabel}</p>
             </div>
           </div>

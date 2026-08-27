@@ -19,7 +19,7 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
           style={{ background: '#FFEDED' }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: '#FFFFFF' }}>
+          <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: 'var(--card)' }}>
             <svg viewBox="0 0 24 24" width={24} height={24} fill="none" stroke="#C23B3B" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="9"/>
               <path d="M15 9l-6 6M9 9l6 6"/>
@@ -53,7 +53,7 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
       >
         {/* Handle bar */}
         <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full" style={{ background: '#EEF1F6' }} />
+          <div className="w-10 h-1 rounded-full" style={{ background: 'var(--line)' }} />
         </div>
 
         {/* Header band */}
@@ -61,7 +61,7 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
           <div className="flex items-center gap-3">
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: '#FFFFFF' }}
+              style={{ background: 'var(--card)' }}
             >
               <RecordTypeIcon type={record.type} strokeColor={c.stroke} size={24} />
             </div>
@@ -69,7 +69,7 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
               <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', color: c.text, textTransform: 'uppercase' }}>
                 {RECORD_TYPE_LABELS[record.type].toUpperCase()}
               </span>
-              <h2 className="text-base font-bold leading-tight mt-0.5" style={{ color: '#12151C' }}>{record.title}</h2>
+              <h2 className="text-base font-bold leading-tight mt-0.5" style={{ color: 'var(--ink)' }}>{record.title}</h2>
             </div>
           </div>
         </div>
@@ -77,24 +77,24 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
         <div className="px-4 pb-8 space-y-4">
           {/* Meta grid */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl px-3 py-3" style={{ background: '#F3F8FF' }}>
-              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 4 }}>Provider</p>
-              <p className="text-sm font-semibold" style={{ color: '#12151C' }}>{record.provider_name}</p>
+            <div className="rounded-xl px-3 py-3" style={{ background: 'var(--card-2)' }}>
+              <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 4 }}>Provider</p>
+              <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{record.provider_name}</p>
             </div>
-            <div className="rounded-xl px-3 py-3" style={{ background: '#F3F8FF' }}>
-              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 4 }}>Date</p>
-              <p className="text-sm font-semibold" style={{ color: '#12151C' }}>{formatRecordDate(record.record_date)}</p>
+            <div className="rounded-xl px-3 py-3" style={{ background: 'var(--card-2)' }}>
+              <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 4 }}>Date</p>
+              <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{formatRecordDate(record.record_date)}</p>
             </div>
           </div>
 
           {/* Clinical notes */}
-          <div className="rounded-xl px-4 py-4" style={{ background: '#F3F8FF' }}>
-            <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 8 }}>Clinical Notes</p>
-            <p className="text-sm leading-relaxed" style={{ color: '#4B5265' }}>{record.description}</p>
+          <div className="rounded-xl px-4 py-4" style={{ background: 'var(--card-2)' }}>
+            <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 8 }}>Clinical Notes</p>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>{record.description}</p>
           </div>
 
           {/* Read-only notice */}
-          <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: '#EAF1FF', border: '1px solid #2F6BFF30' }}>
+          <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}>
             <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
               <path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
               <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -105,7 +105,7 @@ export function ProviderRecordDetail({ record, onClose, accessError }: Props) {
           <button
             onClick={onClose}
             className="w-full font-semibold py-4 rounded-2xl tap-target"
-            style={{ background: '#12151C', color: '#FFFFFF' }}
+            style={{ background: 'var(--ink)', color: 'var(--card)' }}
           >
             Close
           </button>

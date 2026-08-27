@@ -34,9 +34,9 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
         <Link
           href="/patient/records"
           className="inline-flex items-center gap-1.5 text-sm font-medium mb-4"
-          style={{ color: '#4B5265' }}
+          style={{ color: 'var(--ink-soft)' }}
         >
-          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#4B5265" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--ink-soft)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 19l-7-7 7-7" />
           </svg>
           Records
@@ -45,49 +45,49 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
         <div className="flex items-center gap-3 mb-3">
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center"
-            style={{ background: '#FFFFFF' }}
+            style={{ background: 'var(--card)' }}
           >
             <RecordTypeIcon type={record.type} strokeColor={c.stroke} size={26} />
           </div>
           <div>
             <RecordTypeBadge type={record.type} />
-            <h1 className="text-xl font-bold mt-1 leading-tight" style={{ color: '#12151C' }}>{record.title}</h1>
+            <h1 className="text-xl font-bold mt-1 leading-tight" style={{ color: 'var(--ink)' }}>{record.title}</h1>
           </div>
         </div>
       </div>
 
       {/* Card body */}
       <div className="px-4 -mt-4">
-        <div className="bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid #EEF1F6' }}>
+        <div className="bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid var(--line)' }}>
 
           {/* Meta row */}
-          <div className="grid grid-cols-2 divide-x border-b" style={{ borderColor: '#EEF1F6' }}>
+          <div className="grid grid-cols-2 divide-x border-b" style={{ borderColor: 'var(--line)' }}>
             <div className="px-4 py-3">
-              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>Provider</p>
-              <p style={{ fontSize: 14, fontWeight: 700, color: '#12151C' }}>{record.provider_name}</p>
+              <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>Provider</p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>{record.provider_name}</p>
             </div>
             <div className="px-4 py-3">
-              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>Date</p>
-              <p style={{ fontSize: 14, fontWeight: 700, color: '#12151C' }}>{formatRecordDate(record.record_date)}</p>
+              <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>Date</p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>{formatRecordDate(record.record_date)}</p>
             </div>
           </div>
 
           {/* Description */}
-          <div className="px-4 py-4 border-b" style={{ borderColor: '#EEF1F6' }}>
-            <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 8 }}>Clinical Notes</p>
-            <p style={{ fontSize: 14, color: '#4B5265', lineHeight: 1.6 }}>{record.description}</p>
+          <div className="px-4 py-4 border-b" style={{ borderColor: 'var(--line)' }}>
+            <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 8 }}>Clinical Notes</p>
+            <p style={{ fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.6 }}>{record.description}</p>
           </div>
 
           {/* Document preview placeholder */}
           <div className="px-4 py-4">
-            <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 12 }}>Document</p>
+            <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 12 }}>Document</p>
             <div
               className="rounded-xl flex flex-col items-center justify-center py-8 gap-3"
               style={{ background: c.bg, border: `2px dashed ${c.stroke}` }}
             >
               <RecordTypeIcon type={record.type} strokeColor={c.stroke} size={36} />
               <p style={{ fontSize: 13, fontWeight: 700, color: c.text }}>{record.title}</p>
-              <p style={{ fontSize: 12, color: '#8A93A3' }}>Document preview</p>
+              <p style={{ fontSize: 12, color: 'var(--muted)' }}>Document preview</p>
             </div>
           </div>
         </div>
@@ -96,9 +96,9 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
         <Link
           href={`/patient/share?record=${record.id}`}
           className="mt-4 w-full flex items-center justify-center gap-2 font-semibold text-sm py-4 rounded-2xl tap-target active:opacity-90 transition-opacity"
-          style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
+          style={{ background: '#2F6BFF', color: 'var(--card)', borderRadius: 24 }}
         >
-          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#FFFFFF" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--card)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
             <circle cx="18" cy="5" r="3"/>
             <circle cx="6" cy="12" r="3"/>
             <circle cx="18" cy="19" r="3"/>
@@ -109,7 +109,7 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
         </Link>
 
         {/* Privacy note */}
-        <p className="text-center text-xs mt-3" style={{ color: '#8A93A3' }}>
+        <p className="text-center text-xs mt-3" style={{ color: 'var(--muted)' }}>
           Only you decide who can access this record.
         </p>
       </div>

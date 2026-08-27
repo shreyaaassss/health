@@ -10,7 +10,7 @@ export function WizardProgress({ current }: { current: number }) {
         <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#2F6BFF' }}>
           Step {current + 1} of {STEPS.length}
         </p>
-        <p className="text-xs" style={{ color: '#8A93A3' }}>{STEPS[current]}</p>
+        <p className="text-xs" style={{ color: 'var(--muted)' }}>{STEPS[current]}</p>
       </div>
 
       {/* Track */}
@@ -19,7 +19,7 @@ export function WizardProgress({ current }: { current: number }) {
           <div
             key={i}
             className="flex-1 h-1 rounded-full transition-colors"
-            style={{ background: i <= current ? '#2F6BFF' : '#EEF1F6' }}
+            style={{ background: i <= current ? '#2F6BFF' : 'var(--line)' }}
           />
         ))}
       </div>

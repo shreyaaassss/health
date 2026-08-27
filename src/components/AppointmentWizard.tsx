@@ -15,7 +15,7 @@ interface Props {
 
 function Label({ text, required }: { text: string; required?: boolean }) {
   return (
-    <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#4B5265' }}>
+    <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: 'var(--ink-soft)' }}>
       {text}
       {required && <span className="ml-0.5" style={{ color: '#FF6B6B' }}>*</span>}
     </label>
@@ -34,7 +34,7 @@ function Field({
 }
 
 const inputClass = 'w-full rounded-xl px-4 py-3 text-sm bg-white focus:outline-none placeholder:text-slate-300';
-const inputStyle = { border: '1px solid #EEF1F6', color: '#12151C' };
+const inputStyle = { border: '1px solid var(--line)', color: 'var(--ink)' };
 const inputFocusStyle = { border: '1px solid #2F6BFF' };
 
 export function AppointmentWizard({ profile, source }: Props) {
@@ -101,16 +101,16 @@ export function AppointmentWizard({ profile, source }: Props) {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#2F6BFF' }}>Step 1 of 2</span>
-            <span className="text-xs" style={{ color: '#8A93A3' }}>· Your Details</span>
+            <span className="text-xs" style={{ color: 'var(--muted)' }}>· Your Details</span>
           </div>
-          <div className="h-1 rounded-full" style={{ background: '#EEF1F6' }}>
+          <div className="h-1 rounded-full" style={{ background: 'var(--line)' }}>
             <div className="h-1 rounded-full w-1/2" style={{ background: '#2F6BFF' }} />
           </div>
         </div>
 
         {/* Auto-fill notice */}
         {profile?.name && (
-          <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: '#EAF1FF', border: '1px solid #2F6BFF30' }}>
+          <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}>
             <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
               <path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
@@ -122,7 +122,7 @@ export function AppointmentWizard({ profile, source }: Props) {
 
         {/* Required section */}
         <div>
-          <p style={{ fontSize: 10, fontWeight: 700, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
             Required Fields
           </p>
           <div className="space-y-4">
@@ -178,10 +178,10 @@ export function AppointmentWizard({ profile, source }: Props) {
 
         {/* Optional section */}
         <div>
-          <p style={{ fontSize: 10, fontWeight: 700, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 4 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 4 }}>
             Optional
           </p>
-          <p className="text-xs mb-3" style={{ color: '#8A93A3' }}>Leave blank if not applicable.</p>
+          <p className="text-xs mb-3" style={{ color: 'var(--muted)' }}>Leave blank if not applicable.</p>
           <div className="space-y-4">
             <Field label="Known Allergies">
               <textarea
@@ -210,7 +210,7 @@ export function AppointmentWizard({ profile, source }: Props) {
         <button
           onClick={() => { if (validate()) setStep('review'); }}
           className="w-full font-semibold text-sm py-4 rounded-2xl tap-target"
-          style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
+          style={{ background: '#2F6BFF', color: 'var(--card)', borderRadius: 24 }}
         >
           Review →
         </button>
@@ -225,20 +225,20 @@ export function AppointmentWizard({ profile, source }: Props) {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#2F6BFF' }}>Step 2 of 2</span>
-            <span className="text-xs" style={{ color: '#8A93A3' }}>· Review</span>
+            <span className="text-xs" style={{ color: 'var(--muted)' }}>· Review</span>
           </div>
-          <div className="h-1 rounded-full" style={{ background: '#EEF1F6' }}>
+          <div className="h-1 rounded-full" style={{ background: 'var(--line)' }}>
             <div className="h-1 rounded-full w-full" style={{ background: '#2F6BFF' }} />
           </div>
         </div>
 
-        <p className="text-sm leading-relaxed" style={{ color: '#4B5265' }}>
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>
           This information will be saved to your Health Wallet and prepared for your upcoming appointment.
-          <span style={{ color: '#8A93A3' }}> Review everything before submitting.</span>
+          <span style={{ color: 'var(--muted)' }}> Review everything before submitting.</span>
         </p>
 
         {/* Summary card */}
-        <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #EEF1F6' }}>
+        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
           {[
             { label: 'Full Name',          value: form.name,             required: true },
             { label: 'Phone',              value: form.phone,            required: true },
@@ -247,17 +247,17 @@ export function AppointmentWizard({ profile, source }: Props) {
             { label: 'Allergies',          value: form.allergies || '—', required: false },
             { label: 'Current Medications',value: form.currentMedications || '—', required: false },
           ].map(({ label, value, required }, i, arr) => (
-            <div key={label} className={`px-4 py-3 ${i < arr.length - 1 ? 'border-b' : ''}`} style={{ borderColor: '#EEF1F6' }}>
-              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>
-                {label}{!required && <span className="ml-1" style={{ color: '#EEF1F6' }}>(optional)</span>}
+            <div key={label} className={`px-4 py-3 ${i < arr.length - 1 ? 'border-b' : ''}`} style={{ borderColor: 'var(--line)' }}>
+              <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>
+                {label}{!required && <span className="ml-1" style={{ color: 'var(--line)' }}>(optional)</span>}
               </p>
-              <p className="text-sm font-medium" style={{ color: '#12151C' }}>{value}</p>
+              <p className="text-sm font-medium" style={{ color: 'var(--ink)' }}>{value}</p>
             </div>
           ))}
         </div>
 
         {/* Source badge */}
-        <div className="flex items-center gap-2 text-xs" style={{ color: '#8A93A3' }}>
+        <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--muted)' }}>
           <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5Z" />
           </svg>
@@ -274,7 +274,7 @@ export function AppointmentWizard({ profile, source }: Props) {
             onClick={() => setStep('form')}
             disabled={submitting}
             className="flex-1 font-semibold text-sm py-4 rounded-2xl tap-target"
-            style={{ background: '#EEF1F6', color: '#4B5265' }}
+            style={{ background: 'var(--line)', color: 'var(--ink-soft)' }}
           >
             Edit
           </button>
@@ -282,7 +282,7 @@ export function AppointmentWizard({ profile, source }: Props) {
             onClick={handleSubmit}
             disabled={submitting}
             className="flex-[2] font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-60 flex items-center justify-center gap-2"
-            style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
+            style={{ background: '#2F6BFF', color: 'var(--card)', borderRadius: 24 }}
           >
             {submitting ? (
               <>
@@ -309,25 +309,25 @@ export function AppointmentWizard({ profile, source }: Props) {
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold mb-2" style={{ color: '#12151C' }}>Form Submitted</h2>
-        <p className="text-sm max-w-xs" style={{ color: '#8A93A3' }}>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--ink)' }}>Form Submitted</h2>
+        <p className="text-sm max-w-xs" style={{ color: 'var(--muted)' }}>
           Your appointment form has been saved to your Health Wallet. Your details have been updated for future use.
         </p>
       </div>
 
-      <div className="rounded-2xl px-4 py-3 w-full text-left space-y-1.5" style={{ background: '#F3F8FF', border: '1px solid #EEF1F6' }}>
-        <p style={{ fontSize: 12, color: '#8A93A3', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Summary</p>
-        <p className="text-sm font-semibold" style={{ color: '#12151C' }}>{form.name}</p>
-        <p className="text-xs" style={{ color: '#8A93A3' }}>{form.phone} · DOB {form.dateOfBirth}</p>
+      <div className="rounded-2xl px-4 py-3 w-full text-left space-y-1.5" style={{ background: 'var(--card-2)', border: '1px solid var(--line)' }}>
+        <p style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Summary</p>
+        <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{form.name}</p>
+        <p className="text-xs" style={{ color: 'var(--muted)' }}>{form.phone} · DOB {form.dateOfBirth}</p>
         {savedRecord && (
-          <p className="font-mono mt-1" style={{ fontSize: 10, color: '#8A93A3' }}>ID: {savedRecord.id}</p>
+          <p className="font-mono mt-1" style={{ fontSize: 10, color: 'var(--muted)' }}>ID: {savedRecord.id}</p>
         )}
       </div>
 
       <button
         onClick={() => router.push('/patient')}
         className="w-full font-semibold text-sm py-4 rounded-2xl tap-target"
-        style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
+        style={{ background: '#2F6BFF', color: 'var(--card)', borderRadius: 24 }}
       >
         Back to Home
       </button>

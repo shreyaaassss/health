@@ -10,7 +10,7 @@ const NAV_ITEMS: { href: string; label: string; exactMatch?: boolean; icon: (act
     label: 'Home',
     exactMatch: true,
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : '#8A93A3'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : 'var(--muted)'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 12L12 3l9 9"/>
         <path d="M9 21V12h6v9"/>
         <path d="M3 12v9h18V12"/>
@@ -21,7 +21,7 @@ const NAV_ITEMS: { href: string; label: string; exactMatch?: boolean; icon: (act
     href: '/patient/records',
     label: 'Records',
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : '#8A93A3'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : 'var(--muted)'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <path d="M14 2v6h6M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>
         <path d="M9 13h6M9 17h4"/>
       </svg>
@@ -31,7 +31,7 @@ const NAV_ITEMS: { href: string; label: string; exactMatch?: boolean; icon: (act
     href: '/patient/share',
     label: 'Share',
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : '#8A93A3'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : 'var(--muted)'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <circle cx="18" cy="5" r="3"/>
         <circle cx="6" cy="12" r="3"/>
         <circle cx="18" cy="19" r="3"/>
@@ -44,7 +44,7 @@ const NAV_ITEMS: { href: string; label: string; exactMatch?: boolean; icon: (act
     href: '/patient/access',
     label: 'Access',
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : '#8A93A3'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : 'var(--muted)'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <circle cx="7" cy="17" r="3"/>
         <path d="M10 17h4a2 2 0 0 0 2-2v-2"/>
         <path d="M14 10V7a3 3 0 0 1 6 0v3"/>
@@ -56,7 +56,7 @@ const NAV_ITEMS: { href: string; label: string; exactMatch?: boolean; icon: (act
     href: '/patient/history',
     label: 'History',
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : '#8A93A3'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" width={22} height={22} stroke={active ? '#2F6BFF' : 'var(--muted)'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="9"/>
         <path d="M12 7v5l3 3"/>
       </svg>
@@ -70,7 +70,7 @@ export function BottomNav() {
   return (
     <nav
       className="bottom-nav fixed bottom-0 left-0 right-0 z-50"
-      style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(14px)', borderTop: '1px solid #EEF1F6' }}
+      style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(14px)', borderTop: '1px solid var(--line)' }}
     >
       <div className="flex">
         {NAV_ITEMS.map(({ href, label, icon, exactMatch }) => {
@@ -82,7 +82,7 @@ export function BottomNav() {
               className="flex-1 flex flex-col items-center justify-center py-2 gap-1 tap-target"
             >
               {active ? (
-                <div style={{ background: '#EAF1FF', borderRadius: 14, padding: '6px 16px' }}>
+                <div style={{ background: 'var(--blue-tint)', borderRadius: 14, padding: '6px 16px' }}>
                   {icon(true)}
                 </div>
               ) : (
@@ -90,7 +90,7 @@ export function BottomNav() {
                   {icon(false)}
                 </div>
               )}
-              <span style={{ fontSize: 10, fontWeight: 700, color: active ? '#2F6BFF' : '#8A93A3' }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: active ? '#2F6BFF' : 'var(--muted)' }}>
                 {label}
               </span>
             </Link>

@@ -14,12 +14,12 @@ export default function PatientError({
           <path d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
         </svg>
       </div>
-      <h2 className="text-lg font-bold mb-2" style={{ color: '#12151C' }}>Failed to load</h2>
-      <p className="text-sm mb-6" style={{ color: '#8A93A3' }}>{error.message || 'Please try again.'}</p>
+      <h2 className="text-lg font-bold mb-2" style={{ color: 'var(--ink)' }}>Failed to load</h2>
+      <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>{error.message || 'Please try again.'}</p>
       <button
         onClick={reset}
         className="font-semibold text-sm px-5 py-3 rounded-2xl tap-target"
-        style={{ background: '#2F6BFF', color: '#FFFFFF' }}
+        style={{ background: '#2F6BFF', color: 'var(--card)' }}
       >
         Retry
       </button>

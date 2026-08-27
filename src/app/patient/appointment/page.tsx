@@ -44,28 +44,28 @@ export default function AppointmentEntryPage() {
   return (
     <div className="min-h-full flex flex-col px-4 pt-6 pb-4">
       {/* Back */}
-      <Link href="/patient" className="inline-flex items-center gap-1 text-sm mb-4 tap-target" style={{ color: '#8A93A3' }}>
-        <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#8A93A3" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+      <Link href="/patient" className="inline-flex items-center gap-1 text-sm mb-4 tap-target" style={{ color: 'var(--muted)' }}>
+        <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--muted)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
           <path d="M15 19l-7-7 7-7" />
         </svg>
         Home
       </Link>
 
-      <h1 className="text-2xl font-bold mb-1" style={{ color: '#12151C' }}>Appointment Form</h1>
-      <p className="text-sm mb-6" style={{ color: '#8A93A3' }}>
+      <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--ink)' }}>Appointment Form</h1>
+      <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>
         Scan the QR code from the hospital or enter your appointment code manually.
       </p>
 
       {/* Mode toggle */}
-      <div className="flex gap-1 p-1 rounded-2xl mb-6" style={{ background: '#EEF1F6' }}>
+      <div className="flex gap-1 p-1 rounded-2xl mb-6" style={{ background: 'var(--line)' }}>
         {(['scanner', 'manual'] as Mode[]).map((m) => (
           <button
             key={m}
             onClick={() => setMode(m)}
             className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors tap-target"
             style={{
-              background: mode === m ? '#FFFFFF' : 'transparent',
-              color: mode === m ? '#12151C' : '#8A93A3',
+              background: mode === m ? 'var(--card)' : 'transparent',
+              color: mode === m ? 'var(--ink)' : 'var(--muted)',
               boxShadow: mode === m ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
             }}
           >
@@ -106,18 +106,18 @@ export default function AppointmentEntryPage() {
           <div className="w-full max-w-sm space-y-4">
             <div
               className="border-2 border-dashed rounded-2xl p-6 flex flex-col items-center gap-3"
-              style={{ background: '#F3F8FF', borderColor: '#EEF1F6' }}
+              style={{ background: 'var(--card-2)', borderColor: 'var(--line)' }}
             >
               <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center"
-                style={{ background: '#EAF1FF' }}
+                style={{ background: 'var(--blue-tint)' }}
               >
                 <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2"/>
                   <path d="M3 9h18M9 21V9"/>
                 </svg>
               </div>
-              <p className="text-sm text-center font-medium" style={{ color: '#4B5265' }}>
+              <p className="text-sm text-center font-medium" style={{ color: 'var(--ink-soft)' }}>
                 Enter the appointment or hospital code
               </p>
               <input
@@ -126,7 +126,7 @@ export default function AppointmentEntryPage() {
                 onChange={(e) => setManualCode(e.target.value)}
                 placeholder="e.g. HOSP-2026-12345"
                 className="w-full rounded-xl px-4 py-3 text-sm text-center font-mono focus:outline-none"
-                style={{ border: '1px solid #EEF1F6', background: '#FFFFFF', color: '#12151C' }}
+                style={{ border: '1px solid var(--line)', background: 'var(--card)', color: 'var(--ink)' }}
                 autoFocus
               />
             </div>
@@ -134,12 +134,12 @@ export default function AppointmentEntryPage() {
             <button
               onClick={handleManualSubmit}
               className="w-full font-semibold text-sm py-4 rounded-2xl tap-target"
-              style={{ background: '#2F6BFF', color: '#FFFFFF', borderRadius: 24 }}
+              style={{ background: '#2F6BFF', color: 'var(--card)', borderRadius: 24 }}
             >
               Continue to Form
             </button>
 
-            <p className="text-xs text-center" style={{ color: '#8A93A3' }}>
+            <p className="text-xs text-center" style={{ color: 'var(--muted)' }}>
               No code? Leave it blank and tap Continue — you can fill the form manually.
             </p>
           </div>

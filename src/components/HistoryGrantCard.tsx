@@ -59,7 +59,7 @@ function TimelineIcon({ action }: { action: AccessAction }) {
       );
     case 'ACCESS_DENIED':
       return (
-        <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="#8A93A3" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="9"/>
           <path d="M4.93 4.93l14.14 14.14"/>
         </svg>
@@ -80,11 +80,11 @@ const LOG_LABELS: Record<AccessAction, string> = {
 
 const LOG_ICON_BG: Record<AccessAction, string> = {
   ACCESS_GRANTED:        '#E9F9F1',
-  ACCESS_SESSION_OPENED: '#EAF1FF',
+  ACCESS_SESSION_OPENED: 'var(--blue-tint)',
   RECORD_VIEWED:         '#F1EEFF',
   ACCESS_REVOKED:        '#FFEDED',
   ACCESS_EXPIRED:        '#FEF6E7',
-  ACCESS_DENIED:         '#EEF1F6',
+  ACCESS_DENIED:         'var(--line)',
 };
 
 const LOG_TEXT_COLOR: Record<AccessAction, string> = {
@@ -93,7 +93,7 @@ const LOG_TEXT_COLOR: Record<AccessAction, string> = {
   RECORD_VIEWED:         '#7B61FF',
   ACCESS_REVOKED:        '#C23B3B',
   ACCESS_EXPIRED:        '#E5A020',
-  ACCESS_DENIED:         '#8A93A3',
+  ACCESS_DENIED:         'var(--muted)',
 };
 
 function formatTime(ts: string) {
@@ -117,7 +117,7 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
   );
 
   return (
-    <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #EEF1F6' }}>
+    <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
       {/* Header — always visible */}
       <button
         onClick={() => setExpanded((v) => !v)}
@@ -125,7 +125,7 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
       >
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: '#EAF1FF' }}
+          style={{ background: 'var(--blue-tint)' }}
         >
           <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -135,7 +135,7 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-sm font-bold truncate" style={{ color: '#12151C' }}>{provider.name}</p>
+            <p className="text-sm font-bold truncate" style={{ color: 'var(--ink)' }}>{provider.name}</p>
             <span
               className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
               style={{ background: s.bg, color: s.text }}
@@ -144,16 +144,16 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
               {s.label}
             </span>
           </div>
-          <p className="text-xs mt-0.5" style={{ color: '#8A93A3' }}>{provider.organization}</p>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>{provider.organization}</p>
           <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-            <span className="text-xs" style={{ color: '#8A93A3' }}>
+            <span className="text-xs" style={{ color: 'var(--muted)' }}>
               {records.length} record{records.length !== 1 ? 's' : ''} shared
             </span>
-            <span style={{ color: '#EEF1F6' }}>·</span>
-            <span className="text-xs" style={{ color: '#8A93A3' }}>{formatShortDate(grant.created_at)}</span>
+            <span style={{ color: 'var(--line)' }}>·</span>
+            <span className="text-xs" style={{ color: 'var(--muted)' }}>{formatShortDate(grant.created_at)}</span>
             {viewedRecordIds.size > 0 && (
               <>
-                <span style={{ color: '#EEF1F6' }}>·</span>
+                <span style={{ color: 'var(--line)' }}>·</span>
                 <span className="text-xs font-medium" style={{ color: '#7B61FF' }}>
                   {viewedRecordIds.size} viewed
                 </span>
@@ -165,7 +165,7 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
         {/* Chevron */}
         <svg
           className={`w-4 h-4 flex-shrink-0 mt-1 transition-transform ${expanded ? 'rotate-90' : ''}`}
-          viewBox="0 0 24 24" fill="none" stroke="#8A93A3" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+          viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
         >
           <path d="M9 5l7 7-7 7" />
         </svg>
@@ -173,18 +173,18 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
 
       {/* Expanded detail */}
       {expanded && (
-        <div className="border-t px-4 py-4 space-y-5" style={{ borderColor: '#EEF1F6' }}>
+        <div className="border-t px-4 py-4 space-y-5" style={{ borderColor: 'var(--line)' }}>
 
           {/* Records shared */}
           <div>
-            <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 8 }}>Records Shared</p>
+            <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 8 }}>Records Shared</p>
             <div className="space-y-1.5">
               {records.map((r) => {
                 const c = RECORD_TYPE_COLORS[r.type];
                 return (
                   <div key={r.id} className="flex items-center gap-2">
                     <RecordTypeIcon type={r.type} strokeColor={c.stroke} size={16} />
-                    <span className="text-sm flex-1" style={{ color: '#4B5265' }}>{r.title}</span>
+                    <span className="text-sm flex-1" style={{ color: 'var(--ink-soft)' }}>{r.title}</span>
                     {viewedRecordIds.has(r.id) && (
                       <span
                         className="text-[10px] px-1.5 py-0.5 rounded-full font-semibold"
@@ -201,15 +201,15 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
 
           {/* Expiry / revoke info */}
           <div className="grid grid-cols-2 gap-2">
-            <div className="rounded-xl px-3 py-2" style={{ background: '#F3F8FF' }}>
-              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>Created</p>
-              <p style={{ fontSize: 12, fontWeight: 700, color: '#4B5265' }}>{formatTime(grant.created_at)}</p>
+            <div className="rounded-xl px-3 py-2" style={{ background: 'var(--card-2)' }}>
+              <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>Created</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-soft)' }}>{formatTime(grant.created_at)}</p>
             </div>
-            <div className="rounded-xl px-3 py-2" style={{ background: '#F3F8FF' }}>
-              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>
+            <div className="rounded-xl px-3 py-2" style={{ background: 'var(--card-2)' }}>
+              <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: 2 }}>
                 {grant.status === 'REVOKED' ? 'Revoked' : grant.status === 'EXPIRED' ? 'Expired' : 'Expires'}
               </p>
-              <p style={{ fontSize: 12, fontWeight: 700, color: '#4B5265' }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-soft)' }}>
                 {grant.revoked_at
                   ? formatTime(grant.revoked_at)
                   : formatTime(grant.expires_at)}
@@ -220,15 +220,15 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
           {/* Timeline */}
           {logs.length > 0 && (
             <div>
-              <p style={{ fontSize: 10, color: '#8A93A3', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 12 }}>Timeline</p>
+              <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 12 }}>Timeline</p>
               <div className="relative space-y-3">
                 {/* Vertical line */}
-                <div className="absolute left-[14px] top-2 bottom-2 w-px" style={{ background: '#EEF1F6' }} />
+                <div className="absolute left-[14px] top-2 bottom-2 w-px" style={{ background: 'var(--line)' }} />
 
                 {logs.map((log, i) => {
                   const meta = log.metadata as { record_id?: string; record_title?: string } | null;
-                  const textColor = LOG_TEXT_COLOR[log.action] ?? '#8A93A3';
-                  const iconBg = LOG_ICON_BG[log.action] ?? '#EEF1F6';
+                  const textColor = LOG_TEXT_COLOR[log.action] ?? 'var(--muted)';
+                  const iconBg = LOG_ICON_BG[log.action] ?? 'var(--line)';
                   const label = LOG_LABELS[log.action] ?? 'Unknown event';
 
                   return (
@@ -246,7 +246,7 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
                             ? `"${meta.record_title}" viewed`
                             : label}
                         </p>
-                        <p style={{ fontSize: 10, color: '#8A93A3', marginTop: 2 }}>{formatTime(log.timestamp)}</p>
+                        <p style={{ fontSize: 10, color: 'var(--muted)', marginTop: 2 }}>{formatTime(log.timestamp)}</p>
                       </div>
                     </div>
                   );

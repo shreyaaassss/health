@@ -1,6 +1,6 @@
 import React from 'react';
 export function Skeleton({ className = '', style }: { className?: string; style?: React.CSSProperties }) {
-  return <div className={`rounded-xl animate-pulse ${className}`} style={{ background: '#EEF1F6', ...style }} />;
+  return <div className={`rounded-xl animate-pulse ${className}`} style={{ background: 'var(--line)', ...style }} />;
 }
 
 export function RecordsPageSkeleton() {
@@ -29,7 +29,7 @@ export function RecordsPageSkeleton() {
       {/* Record cards */}
       <div className="space-y-3">
         {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="rounded-2xl px-4 py-4 flex items-center gap-4" style={{ background: '#FFFFFF', border: '1px solid #EEF1F6' }}>
+          <div key={i} className="rounded-2xl px-4 py-4 flex items-center gap-4" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
             <Skeleton className="w-12 h-12 rounded-xl flex-shrink-0" />
             <div className="flex-1 space-y-2">
               <Skeleton className="h-4 w-3/4" />

@@ -32,17 +32,17 @@ export function QRCodeDisplay({ value, size = 220 }: Props) {
   return (
     <div className="flex flex-col items-center gap-4">
       {/* QR code frame */}
-      <div className="bg-white rounded-2xl p-4" style={{ border: '1px solid #EEF1F6' }}>
+      <div className="bg-white rounded-2xl p-4" style={{ border: '1px solid var(--line)' }}>
         <QRCode
           value={value}
           size={size}
           bgColor="#ffffff"
-          fgColor="#12151C"
+          fgColor="var(--ink)"
           style={{ display: 'block' }}
         />
       </div>
 
-      <p className="text-xs text-center" style={{ color: '#8A93A3' }}>
+      <p className="text-xs text-center" style={{ color: 'var(--muted)' }}>
         Doctor scans this to open the secure portal
       </p>
 
@@ -51,7 +51,7 @@ export function QRCodeDisplay({ value, size = 220 }: Props) {
         <button
           onClick={handleCopy}
           className="w-full flex items-center justify-center gap-2 font-medium text-sm py-3 rounded-2xl tap-target transition-colors"
-          style={{ border: '1px solid #EAF1FF', background: '#EAF1FF', color: copied ? '#1FAA6D' : '#2F6BFF' }}
+          style={{ border: '1px solid var(--blue-tint)', background: 'var(--blue-tint)', color: copied ? '#1FAA6D' : '#2F6BFF' }}
         >
           {copied ? (
             <>
@@ -85,7 +85,7 @@ function NativeShareButton({ url }: { url: string }) {
     <button
       onClick={() => navigator.share({ url, title: 'Medical Record Access Link' }).catch(() => {})}
       className="w-full flex items-center justify-center gap-2 font-medium text-sm py-3 rounded-2xl tap-target transition-colors"
-      style={{ background: '#EAF1FF', color: '#2F6BFF', border: '1px solid #2F6BFF30' }}
+      style={{ background: 'var(--blue-tint)', color: '#2F6BFF', border: '1px solid #2F6BFF30' }}
     >
       <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <circle cx="18" cy="5" r="3"/>

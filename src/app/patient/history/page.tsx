@@ -64,8 +64,8 @@ export default async function HistoryPage() {
 
       {/* Header */}
       <div className="mb-5">
-        <h1 className="text-2xl font-bold" style={{ color: '#12151C' }}>Access History</h1>
-        <p className="text-sm mt-0.5" style={{ color: '#8A93A3' }}>A complete log of all access you have granted.</p>
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>Access History</h1>
+        <p className="text-sm mt-0.5" style={{ color: 'var(--muted)' }}>A complete log of all access you have granted.</p>
       </div>
 
       {/* Status summary pills */}
@@ -104,20 +104,20 @@ export default async function HistoryPage() {
       {/* History list */}
       {entries.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: '#EEF1F6' }}>
-            <svg viewBox="0 0 24 24" width={32} height={32} fill="none" stroke="#8A93A3" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: 'var(--line)' }}>
+            <svg viewBox="0 0 24 24" width={32} height={32} fill="none" stroke="var(--muted)" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="9"/>
               <path d="M12 7v5l3 3"/>
             </svg>
           </div>
-          <p className="font-medium text-sm mb-1" style={{ color: '#4B5265' }}>No access history yet</p>
-          <p className="text-xs max-w-[220px] mb-6" style={{ color: '#8A93A3' }}>
+          <p className="font-medium text-sm mb-1" style={{ color: 'var(--ink-soft)' }}>No access history yet</p>
+          <p className="text-xs max-w-[220px] mb-6" style={{ color: 'var(--muted)' }}>
             Every time you share records with a provider, it will appear here.
           </p>
           <Link
             href="/patient/share"
             className="text-sm font-semibold px-5 py-3 rounded-2xl tap-target"
-            style={{ background: '#2F6BFF', color: '#FFFFFF' }}
+            style={{ background: '#2F6BFF', color: 'var(--card)' }}
           >
             Share Records
           </Link>
@@ -138,7 +138,7 @@ export default async function HistoryPage() {
 
       {/* Privacy note */}
       {entries.length > 0 && (
-        <p className="text-center text-xs mt-6" style={{ color: '#8A93A3' }}>
+        <p className="text-center text-xs mt-6" style={{ color: 'var(--muted)' }}>
           {entries.length} total access event{entries.length !== 1 ? 's' : ''} · Tap any card to see the full timeline
         </p>
       )}

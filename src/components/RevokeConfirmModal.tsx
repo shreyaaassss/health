@@ -14,12 +14,12 @@ export function RevokeConfirmModal({ grant, onConfirm, onCancel, revoking }: Pro
     <div className="fixed inset-0 z-50 flex items-end bg-black/50" onClick={onCancel}>
       <div
         className="w-full rounded-t-3xl px-5 pt-5 pb-8"
-        style={{ background: '#FFFFFF' }}
+        style={{ background: 'var(--card)' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle */}
         <div className="flex justify-center mb-5">
-          <div className="w-10 h-1 rounded-full" style={{ background: '#EEF1F6' }} />
+          <div className="w-10 h-1 rounded-full" style={{ background: 'var(--line)' }} />
         </div>
 
         {/* Warning icon — coral SVG circle with X */}
@@ -33,9 +33,9 @@ export function RevokeConfirmModal({ grant, onConfirm, onCancel, revoking }: Pro
           </svg>
         </div>
 
-        <h2 className="text-xl font-bold text-center mb-1" style={{ color: '#12151C' }}>Revoke Access?</h2>
-        <p className="text-sm text-center mb-5" style={{ color: '#8A93A3' }}>
-          <span className="font-semibold" style={{ color: '#4B5265' }}>{grant.provider.name}</span> will immediately lose access to:
+        <h2 className="text-xl font-bold text-center mb-1" style={{ color: 'var(--ink)' }}>Revoke Access?</h2>
+        <p className="text-sm text-center mb-5" style={{ color: 'var(--muted)' }}>
+          <span className="font-semibold" style={{ color: 'var(--ink-soft)' }}>{grant.provider.name}</span> will immediately lose access to:
         </p>
 
         {/* Records list */}
@@ -45,13 +45,13 @@ export function RevokeConfirmModal({ grant, onConfirm, onCancel, revoking }: Pro
             return (
               <div key={r.id} className="flex items-center gap-2">
                 <RecordTypeIcon type={r.type} strokeColor={c.stroke} size={16} />
-                <span className="text-sm" style={{ color: '#4B5265' }}>{r.title}</span>
+                <span className="text-sm" style={{ color: 'var(--ink-soft)' }}>{r.title}</span>
               </div>
             );
           })}
         </div>
 
-        <p className="text-xs text-center mb-6" style={{ color: '#8A93A3' }}>
+        <p className="text-xs text-center mb-6" style={{ color: 'var(--muted)' }}>
           This cannot be undone. The provider will need a new access link to view records again.
         </p>
 
@@ -61,7 +61,7 @@ export function RevokeConfirmModal({ grant, onConfirm, onCancel, revoking }: Pro
             onClick={onCancel}
             disabled={revoking}
             className="flex-1 font-semibold text-sm py-4 rounded-2xl tap-target disabled:opacity-40"
-            style={{ background: '#EEF1F6', color: '#4B5265' }}
+            style={{ background: 'var(--line)', color: 'var(--ink-soft)' }}
           >
             Cancel
           </button>

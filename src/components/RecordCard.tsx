@@ -11,7 +11,7 @@ export function RecordCard({ record }: { record: MedicalRecord }) {
     <Link
       href={`/patient/records/${record.id}`}
       className="flex items-center gap-4 rounded-2xl px-4 py-4 active:scale-[0.98] transition-transform"
-      style={{ background: '#FFFFFF', borderRadius: 18 }}
+      style={{ background: 'var(--card)', borderRadius: 18 }}
     >
       {/* Type icon */}
       <div
@@ -23,17 +23,17 @@ export function RecordCard({ record }: { record: MedicalRecord }) {
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <p className="truncate" style={{ fontSize: 14.5, fontWeight: 700, color: '#12151C' }}>{record.title}</p>
-        <p className="truncate mt-0.5" style={{ fontSize: 12, color: '#8A93A3' }}>{record.provider_name}</p>
+        <p className="truncate" style={{ fontSize: 14.5, fontWeight: 700, color: 'var(--ink)' }}>{record.title}</p>
+        <p className="truncate mt-0.5" style={{ fontSize: 12, color: 'var(--muted)' }}>{record.provider_name}</p>
         <div className="flex items-center gap-2 mt-2">
           <RecordTypeBadge type={record.type} />
-          <span style={{ fontSize: 12, color: '#8A93A3' }}>{formatRecordDate(record.record_date)}</span>
+          <span style={{ fontSize: 12, color: 'var(--muted)' }}>{formatRecordDate(record.record_date)}</span>
         </div>
       </div>
 
       {/* Chevron */}
-      <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="#EEF1F6" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
-        <path d="M9 5l7 7-7 7" stroke="#8A93A3"/>
+      <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="var(--line)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+        <path d="M9 5l7 7-7 7" stroke="var(--muted)"/>
       </svg>
     </Link>
   );
