@@ -1,17 +1,23 @@
+'use client';
+
+import { useState } from 'react';
 import { RECORD_TYPE_COLORS, RECORD_TYPE_LABELS, formatRecordDate } from '@/lib/records';
 import { RecordTypeIcon } from '@/components/RecordTypeIcon';
 import { getFileTypeLabel, formatFileSize } from '@/lib/storage';
+import { AddPrescriptionForm } from '@/components/provider/AddPrescriptionForm';
 import type { MedicalRecord } from '@/types';
 
 interface Props {
   record: MedicalRecord;
   signedUrl?: string | null;
+  token: string;
   onClose: () => void;
   accessError?: string | null;
 }
 
-export function ProviderRecordDetail({ record, signedUrl, onClose, accessError }: Props) {
+export function ProviderRecordDetail({ record, signedUrl, token, onClose, accessError }: Props) {
   const c = RECORD_TYPE_COLORS[record.type];
+  const [showRx, setShowRx] = useState(false);
 
   if (accessError) {
     return (
@@ -123,14 +129,35 @@ export function ProviderRecordDetail({ record, signedUrl, onClose, accessError }
             </a>
           )}
 
-          {/* Read-only notice */}
-          <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}>
-            <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
-              <path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-              <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-            <p className="text-xs font-medium" style={{ color: '#1D4FE0' }}>Read-only access granted by patient</p>
-          </div>
+          {/* Add / view prescription for this record */}
+          {!showRx ? (
+            <button
+              onClick={() => setShowRx(true)}
+              className="w-full flex items-center gap-3 rounded-xl px-4 py-3 tap-target active:opacity-80"
+              style={{ background: 'var(--blue-tint-2)', border: '1px solid var(--line)' }}
+            >
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--blue-tint)' }}>
+                <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 2v4M14 2v4M9 16l2 2 4-4"/><rect x="4" y="4" width="16" height="18" rx="2"/>
+                </svg>
+              </div>
+              <p className="text-sm font-semibold flex-1 text-left" style={{ color: 'var(--ink)' }}>Add Prescription</p>
+              <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          ) : (
+            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--line)' }}>
+              <div className="px-4 py-3" style={{ background: 'var(--blue-tint-2)' }}>
+                <AddPrescriptionForm
+                  token={token}
+                  recordId={record.id}
+                  onSuccess={() => setShowRx(false)}
+                  onCancel={() => setShowRx(false)}
+                />
+              </div>
+            </div>
+          )}
 
           <button
             onClick={onClose}

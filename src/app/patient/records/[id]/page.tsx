@@ -23,15 +23,27 @@ async function getRecord(id: string): Promise<MedicalRecord | null> {
 
 export const dynamic = 'force-dynamic';
 
+async function getPrescriptions(patientId: string, recordId: string) {
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from('prescriptions')
+    .select('*, providers(name, specialty)')
+    .eq('patient_id', patientId)
+    .eq('medical_record_id', recordId)
+    .order('prescribed_at', { ascending: false });
+  return data ?? [];
+}
+
 export default async function RecordDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const record = await getRecord(id);
 
   if (!record) notFound();
 
+  const patientId = record.patient_id;
   const c = RECORD_TYPE_COLORS[record.type];
-  // Generate a 1-hour signed URL so the patient can download their own file
   const signedUrl = record.file_url ? await getSignedUrl(record.file_url, 3600) : null;
+  const prescriptions = await getPrescriptions(patientId, id);
 
   return (
     <div className="pb-6">
@@ -143,6 +155,51 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
           </svg>
           Share This Record
         </Link>
+
+        {/* Prescriptions from doctor for this record */}
+        {prescriptions.length > 0 && (
+          <div className="mt-4 space-y-3">
+            <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Prescriptions for this record
+            </p>
+            {prescriptions.map((p: Record<string, unknown>) => {
+              const meds = p.medications as { name: string; dosage: string; frequency: string; duration: string }[];
+              const provider = p.providers as { name: string; specialty: string } | null;
+              return (
+                <div key={p.id as string} className="rounded-2xl overflow-hidden" style={{ border: '1px solid #2F6BFF30' }}>
+                  <div className="px-4 py-2.5 flex items-center justify-between" style={{ background: 'var(--blue-tint)', borderBottom: '1px solid #2F6BFF20' }}>
+                    <div>
+                      <p className="text-xs font-bold" style={{ color: '#1D4FE0' }}>{provider?.name}</p>
+                      <p className="text-[10px]" style={{ color: '#2F6BFF' }}>
+                        {new Date(p.prescribed_at as string).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </p>
+                    </div>
+                    <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M10 2v4M14 2v4M9 16l2 2 4-4"/><rect x="4" y="4" width="16" height="18" rx="2"/>
+                    </svg>
+                  </div>
+                  <div className="px-4 py-3 space-y-1.5" style={{ background: 'var(--card)' }}>
+                    {meds.map((m, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#2F6BFF' }} />
+                        <div>
+                          <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{m.name}</p>
+                          <p className="text-xs" style={{ color: 'var(--muted)' }}>{[m.dosage, m.frequency, m.duration].filter(Boolean).join(' · ')}</p>
+                        </div>
+                      </div>
+                    ))}
+                    {p.instructions != null && (
+                      <p className="text-xs mt-1 pt-1" style={{ color: 'var(--ink-soft)', borderTop: '1px solid var(--line)' }}>{String(p.instructions)}</p>
+                    )}
+                    {p.follow_up_date != null && (
+                      <p className="text-xs" style={{ color: 'var(--muted)' }}>Follow-up: {new Date(String(p.follow_up_date)).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Delete record */}
         <div className="mt-3">

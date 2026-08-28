@@ -6,6 +6,7 @@ interface Medication { name: string; dosage: string; frequency: string; duration
 
 interface Props {
   token: string;
+  recordId?: string;   // links prescription to the specific medical record
   onSuccess: () => void;
   onCancel: () => void;
 }
@@ -13,7 +14,7 @@ interface Props {
 const FREQUENCIES = ['Once daily', 'Twice daily', 'Three times daily', 'Every 8 hours', 'Every 12 hours', 'As needed', 'Weekly'];
 const inputStyle = { border: '1px solid var(--line)', background: 'var(--card)', color: 'var(--ink)', borderRadius: 12, padding: '10px 14px', fontSize: 13, width: '100%', outline: 'none' };
 
-export function AddPrescriptionForm({ token, onSuccess, onCancel }: Props) {
+export function AddPrescriptionForm({ token, recordId, onSuccess, onCancel }: Props) {
   const [meds, setMeds] = useState<Medication[]>([{ name: '', dosage: '', frequency: 'Once daily', duration: '' }]);
   const [instructions, setInstructions] = useState('');
   const [followUp, setFollowUp] = useState('');
@@ -41,7 +42,7 @@ export function AddPrescriptionForm({ token, onSuccess, onCancel }: Props) {
     const res = await fetch(`/api/provider/access/${token}/prescriptions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ medications: meds, instructions: instructions || undefined, follow_up_date: followUp || undefined }),
+      body: JSON.stringify({ medications: meds, instructions: instructions || undefined, follow_up_date: followUp || undefined, medical_record_id: recordId || undefined }),
     });
     const json = await res.json();
 

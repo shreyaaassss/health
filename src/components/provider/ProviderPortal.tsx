@@ -5,7 +5,6 @@ import { ProviderRecordCard } from '@/components/provider/ProviderRecordCard';
 import { ProviderRecordDetail } from '@/components/provider/ProviderRecordDetail';
 import { AccessErrorScreen } from '@/components/provider/AccessErrorScreen';
 import { AccessTimer } from '@/components/provider/AccessTimer';
-import { AddPrescriptionForm } from '@/components/provider/AddPrescriptionForm';
 import type { MedicalRecord, ProviderAccessSession } from '@/types';
 
 interface Props {
@@ -16,6 +15,7 @@ interface Props {
 interface RecordWithUrl {
   record: MedicalRecord;
   signed_url: string | null;
+  openedAt: number; // timestamp — ensures key changes on every open, fixing re-open bug
 }
 
 export function ProviderPortal({ session, token }: Props) {
@@ -23,7 +23,6 @@ export function ProviderPortal({ session, token }: Props) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [accessError, setAccessError] = useState<string | null>(null);
   const [recordError, setRecordError] = useState<string | null>(null);
-  const [showPrescription, setShowPrescription] = useState(false);
 
   async function handleRecordOpen(recordId: string) {
     setLoadingId(recordId);
@@ -36,7 +35,7 @@ export function ProviderPortal({ session, token }: Props) {
         else setRecordError(json.code);
         return;
       }
-      setSelectedData(json.data);
+      setSelectedData({ ...json.data, openedAt: Date.now() });
     } catch {
       setRecordError('Network error. Please try again.');
     } finally {
@@ -125,38 +124,6 @@ export function ProviderPortal({ session, token }: Props) {
           ))}
         </div>
 
-        {/* Add Prescription section */}
-        <div className="rounded-2xl overflow-hidden mb-6" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
-          {!showPrescription ? (
-            <button
-              onClick={() => setShowPrescription(true)}
-              className="w-full flex items-center gap-3 px-4 py-4 tap-target active:opacity-80"
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--blue-tint)' }}>
-                <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M10 2v4M14 2v4M9 16l2 2 4-4"/>
-                  <rect x="4" y="4" width="16" height="18" rx="2"/>
-                </svg>
-              </div>
-              <div className="flex-1 text-left">
-                <p className="text-sm font-bold" style={{ color: 'var(--ink)' }}>Add Prescription</p>
-                <p className="text-xs" style={{ color: 'var(--muted)' }}>Prescribe medications for this patient</p>
-              </div>
-              <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 5l7 7-7 7"/>
-              </svg>
-            </button>
-          ) : (
-            <div className="px-4 py-4">
-              <AddPrescriptionForm
-                token={token}
-                onSuccess={() => setShowPrescription(false)}
-                onCancel={() => setShowPrescription(false)}
-              />
-            </div>
-          )}
-        </div>
-
         {/* Privacy footer */}
         <div className="flex items-start gap-2 rounded-2xl px-4 py-3" style={{ background: 'var(--line)' }}>
           <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 flex-shrink-0">
@@ -168,10 +135,13 @@ export function ProviderPortal({ session, token }: Props) {
         </div>
       </div>
 
+      {/* key forces fresh mount each time so state (showRx) resets on re-open */}
       {selectedData && (
         <ProviderRecordDetail
+          key={selectedData.record.id + '_' + selectedData.openedAt}
           record={selectedData.record}
           signedUrl={selectedData.signed_url}
+          token={token}
           onClose={() => setSelectedData(null)}
           accessError={null}
         />

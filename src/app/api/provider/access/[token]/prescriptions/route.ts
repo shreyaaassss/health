@@ -14,6 +14,7 @@ interface PrescriptionBody {
   medications: Medication[];
   instructions?: string;
   follow_up_date?: string;
+  medical_record_id?: string;
 }
 
 export async function POST(
@@ -45,6 +46,7 @@ export async function POST(
       medications: body.medications,
       instructions: body.instructions ?? null,
       follow_up_date: body.follow_up_date ?? null,
+      medical_record_id: body.medical_record_id ?? null,
     })
     .select('id')
     .single();

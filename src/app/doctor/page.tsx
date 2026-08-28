@@ -72,7 +72,8 @@ export default async function DoctorPage() {
         </div>
       </div>
 
-      <div className="px-5 pt-5 space-y-6">
+      <div className="px-5 pt-5 space-y-5">
+        {/* Stats */}
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-2xl p-4" style={{ background: pendingCount > 0 ? '#FEF6E7' : 'var(--card)', border: `1px solid ${pendingCount > 0 ? '#E5A02030' : 'var(--line)'}` }}>
             <p style={{ fontSize: 28, fontWeight: 800, color: pendingCount > 0 ? '#E5A020' : 'var(--ink)' }}>{pendingCount}</p>
@@ -87,6 +88,13 @@ export default async function DoctorPage() {
           </div>
         </div>
 
+        {/* Scan QR — primary action, always visible near top */}
+        <div className="rounded-2xl p-4" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
+          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)', marginBottom: 10 }}>Access patient records</p>
+          <DoctorQRScanner />
+        </div>
+
+        {/* Appointments + recent accesses (capped) */}
         <DoctorDashboard
           initialAppointments={appointments.map((a: Record<string, unknown>) => ({
             id: a.id as string,
@@ -101,7 +109,7 @@ export default async function DoctorPage() {
             doctor_notes: a.doctor_notes as string | null,
             created_at: a.created_at as string,
           }))}
-          recentAccesses={accesses.map((g: Record<string, unknown>) => ({
+          recentAccesses={accesses.slice(0, 3).map((g: Record<string, unknown>) => ({
             grant_id: g.id as string,
             patient_name: (g.patients as { name: string } | null)?.name ?? 'Patient',
             status: g.status as string,
@@ -110,11 +118,6 @@ export default async function DoctorPage() {
             created_at: g.created_at as string,
           }))}
         />
-
-        <div>
-          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)', marginBottom: 10 }}>Scan or enter patient access link</p>
-          <DoctorQRScanner />
-        </div>
       </div>
     </div>
   );

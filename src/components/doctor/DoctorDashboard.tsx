@@ -109,10 +109,17 @@ export function DoctorDashboard({ initialAppointments, recentAccesses }: Props) 
         </div>
       )}
 
-      {/* Recent patient accesses */}
+      {/* Recent patient accesses — capped at 3, collapsible */}
       {recentAccesses.length > 0 && (
+        <details>
+          <summary className="flex items-center justify-between cursor-pointer tap-target list-none mb-3">
+            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>Recent Accesses</p>
+            <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-open:rotate-180">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </summary>
         <div>
-          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)', marginBottom: 12 }}>Recent Patient Accesses</p>
+          <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)', marginBottom: 12, display: 'none' }}>Recent Patient Accesses</div>
           <div className="space-y-2">
             {recentAccesses.map((a) => (
               <div key={a.grant_id} className="flex items-center gap-3 rounded-xl px-4 py-3"
@@ -137,6 +144,7 @@ export function DoctorDashboard({ initialAppointments, recentAccesses }: Props) 
             ))}
           </div>
         </div>
+        </details>
       )}
     </div>
   );
