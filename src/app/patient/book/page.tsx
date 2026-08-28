@@ -3,6 +3,8 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = { title: 'My Appointments · Health Wallet' };
 
 async function getAppointments(patientId: string) {

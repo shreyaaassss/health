@@ -38,6 +38,8 @@ async function getDoctorData() {
   return { provider, appointments: appointments ?? [], accesses: accesses ?? [], pendingCount, activeShares };
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function DoctorPage() {
   await requireDoctorId();
   const data = await getDoctorData();

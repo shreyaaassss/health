@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { AppointmentRequestCard } from '@/components/doctor/AppointmentRequestCard';
 import type { DoctorAppointment } from '@/app/api/doctor/appointments/route';
 import type { RecentAccess } from '@/app/api/doctor/accesses/route';
@@ -20,12 +21,20 @@ function timeAgo(ts: string) {
 }
 
 export function DoctorDashboard({ initialAppointments, recentAccesses }: Props) {
+  const router = useRouter();
   const [appointments, setAppointments] = useState<DoctorAppointment[]>(initialAppointments);
+  const [isPending, startTransition] = useTransition();
 
   function handleUpdate(id: string, status: 'confirmed' | 'cancelled') {
     setAppointments((prev) =>
       prev.map((a) => (a.id === id ? { ...a, status } : a))
     );
+    // Refresh server data so stats + recent accesses update
+    startTransition(() => router.refresh());
+  }
+
+  function handleRefresh() {
+    startTransition(() => router.refresh());
   }
 
   const pending = appointments.filter((a) => a.status === 'pending');
@@ -36,15 +45,29 @@ export function DoctorDashboard({ initialAppointments, recentAccesses }: Props) 
       {/* Appointment Requests */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>
-            Appointment Requests
+          <div className="flex items-center gap-2">
+            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>Appointment Requests</p>
             {pending.length > 0 && (
-              <span className="ml-2 inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold"
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold"
                 style={{ background: '#E5A020', color: '#FFF' }}>
                 {pending.length}
               </span>
             )}
-          </p>
+          </div>
+          <button
+            onClick={handleRefresh}
+            disabled={isPending}
+            className="flex items-center justify-center w-7 h-7 rounded-full tap-target disabled:opacity-40"
+            style={{ background: 'var(--line)' }}
+            title="Refresh"
+          >
+            <svg viewBox="0 0 24 24" width={13} height={13} fill="none" stroke="var(--muted)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"
+              className={isPending ? 'animate-spin' : ''}>
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+              <path d="M16 16h5v5"/>
+            </svg>
+          </button>
         </div>
 
         {pending.length === 0 ? (

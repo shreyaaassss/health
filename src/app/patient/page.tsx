@@ -7,6 +7,8 @@ import LogoutButton from '@/components/LogoutButton';
 import type { MedicalRecord, AccessGrant, Provider, AccessGrantWithDetails } from '@/types';
 import { RECORD_TYPE_COLORS } from '@/lib/records';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = { title: 'Home · Health Wallet' };
 
 async function getDashboardData() {

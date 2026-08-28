@@ -20,6 +20,8 @@ async function getRecord(id: string): Promise<MedicalRecord | null> {
   return data as MedicalRecord | null;
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function RecordDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const record = await getRecord(id);

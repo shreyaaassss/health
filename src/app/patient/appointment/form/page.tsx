@@ -5,6 +5,8 @@ import { AppointmentWizard } from '@/components/AppointmentWizard';
 import type { PatientProfile } from '@/types';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = { title: 'Appointment Form · Health Wallet' };
 
 async function getProfile(): Promise<PatientProfile | null> {

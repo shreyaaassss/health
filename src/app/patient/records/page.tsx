@@ -5,6 +5,8 @@ import { RecordsList } from '@/components/RecordsList';
 import type { MedicalRecord } from '@/types';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = { title: 'My Records · Health Wallet' };
 
 async function getRecords(): Promise<MedicalRecord[]> {

@@ -74,8 +74,8 @@ export default function AddRecordPage() {
       return;
     }
 
+    router.refresh(); // invalidate cached pages before navigation
     router.push(`/patient/records/${json.data.id}`);
-    router.refresh();
   }
 
   return (
