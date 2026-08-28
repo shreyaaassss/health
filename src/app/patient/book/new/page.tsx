@@ -13,7 +13,13 @@ const TIME_SLOTS = ['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','02:0
 export default function BookNewPage() {
   const router = useRouter();
   const [providers, setProviders] = useState<Provider[]>([]);
-  const [providerId, setProviderId] = useState('');
+  // Pre-select provider from ?provider_id= (used by reschedule flow)
+  const [providerId, setProviderId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return new URLSearchParams(window.location.search).get('provider_id') ?? '';
+    }
+    return '';
+  });
   const [reason, setReason] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -23,7 +29,14 @@ export default function BookNewPage() {
   useEffect(() => {
     fetch('/api/patient/providers')
       .then((r) => r.json())
-      .then((j) => { if (j.success) { setProviders(j.data); setProviderId(j.data[0]?.id ?? ''); } });
+      .then((j) => {
+        if (j.success) {
+          setProviders(j.data);
+          // Only set default if not already pre-selected via URL
+          if (!providerId) setProviderId(j.data[0]?.id ?? '');
+        }
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
