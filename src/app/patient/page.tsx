@@ -209,32 +209,43 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* ── Appointment Form card ─────────────────── */}
-      <Link
-        href="/patient/appointment"
-        className="flex items-center gap-4 mb-4 active:scale-[0.98] transition-transform tap-target"
-        style={{ background: 'var(--card)', borderRadius: 18, padding: '14px 16px' }}
-      >
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#E9F9F1' }}>
-          <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#1FAA6D" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-            <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
-          </svg>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>Appointment Form</p>
-            <span style={{ fontSize: 10, fontWeight: 700, background: '#2F6BFF', color: '#FFFFFF', borderRadius: 20, padding: '2px 7px' }}>NEW</span>
+      {/* ── Quick actions row ─────────────────────── */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {/* Book appointment */}
+        <Link
+          href="/patient/book"
+          className="flex flex-col gap-2 active:scale-[0.98] transition-transform tap-target p-4 rounded-2xl"
+          style={{ background: 'var(--card)', border: '1px solid var(--line)' }}
+        >
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#E9F9F1' }}>
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#1FAA6D" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              <path d="M8 14h.01M12 14h.01M16 14h.01"/>
+            </svg>
           </div>
-          <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Fill your details for an upcoming visit</p>
-        </div>
-        <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
-          <path d="M9 5l7 7-7 7"/>
-        </svg>
-      </Link>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>Book Appointment</p>
+            <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 1 }}>Request a visit</p>
+          </div>
+        </Link>
+        {/* Access history */}
+        <Link
+          href="/patient/history"
+          className="flex flex-col gap-2 active:scale-[0.98] transition-transform tap-target p-4 rounded-2xl"
+          style={{ background: 'var(--card)', border: '1px solid var(--line)' }}
+        >
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#F1EEFF' }}>
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#7B61FF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
+            </svg>
+          </div>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>Access History</p>
+            <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 1 }}>Who saw your data</p>
+          </div>
+        </Link>
+      </div>
 
       {/* ── My health records ─────────────────────── */}
       <div className="mb-4">
