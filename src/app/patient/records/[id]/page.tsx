@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { requirePatientId } from '@/lib/auth';
 import { RecordTypeBadge } from '@/components/RecordTypeBadge';
+import { DeleteRecordButton } from '@/components/DeleteRecordButton';
 import { RecordTypeIcon } from '@/components/RecordTypeIcon';
 import { RECORD_TYPE_COLORS, formatRecordDate } from '@/lib/records';
 import { getSignedUrl, getFileTypeLabel, formatFileSize } from '@/lib/storage';
@@ -143,7 +144,11 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
           Share This Record
         </Link>
 
-        {/* Privacy note */}
+        {/* Delete record */}
+        <div className="mt-3">
+          <DeleteRecordButton recordId={record.id} recordTitle={record.title} />
+        </div>
+
         <p className="text-center text-xs mt-3" style={{ color: 'var(--muted)' }}>
           Only you decide who can access this record.
         </p>
