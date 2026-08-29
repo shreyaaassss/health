@@ -67,9 +67,13 @@ export function ProviderPortal({ session, token }: Props) {
 
         <div className="flex items-center gap-2 mb-3">
           <span className="text-xs" style={{ color: 'var(--muted)' }}>Viewing as</span>
-          <span className="text-xs font-semibold text-white">{session.provider.name}</span>
-          <span style={{ color: 'var(--ink-soft)' }}>·</span>
-          <span className="text-xs" style={{ color: 'var(--muted)' }}>{session.provider.organization}</span>
+          <span className="text-xs font-semibold text-white">{session.provider?.name ?? 'Verified Provider'}</span>
+          {session.provider?.organization && (
+            <>
+              <span style={{ color: 'var(--ink-soft)' }}>·</span>
+              <span className="text-xs" style={{ color: 'var(--muted)' }}>{session.provider.organization}</span>
+            </>
+          )}
         </div>
 
         {/* Access status + live timer */}

@@ -1,10 +1,8 @@
 /**
  * Access Validation Library
  *
- * Uses the service-role (admin) client throughout — the provider portal
- * is token-based (no user session), so the anon client would be blocked
- * by RLS on access_tokens, access_grants, etc.
- * Security is enforced by the can_access_record() DB function.
+ * Uses service-role (admin) client — provider portal is token-based (no user session).
+ * Security enforced by can_access_record() DB function.
  */
 
 import { createAdminClient } from '@/lib/supabase/admin';
@@ -32,7 +30,7 @@ export async function canAccessRecord(
     .eq('id', data.access_grant_id)
     .single();
 
-  return { allowed: true, grant, patient_id: data.patient_id, provider_id: data.provider_id };
+  return { allowed: true, grant, patient_id: data.patient_id, provider_id: data.provider_id ?? '' };
 }
 
 export async function validateTokenSession(token: string): Promise<
@@ -58,8 +56,13 @@ export async function validateTokenSession(token: string): Promise<
     return { valid: false, code: 'ACCESS_EXPIRED' };
   }
 
-  const { data: provider } = await supabase
-    .from('providers').select('*').eq('id', grant.provider_id).single() as { data: Provider | null };
+  // provider may be null when grant has no specific provider_id (open QR)
+  let provider: Provider | null = null;
+  if (grant.provider_id) {
+    const { data } = await supabase
+      .from('providers').select('*').eq('id', grant.provider_id).single();
+    provider = data as Provider | null;
+  }
 
   const { data: grantRecords } = await supabase
     .from('access_grant_records').select('medical_records(*)').eq('access_grant_id', grant.id);
@@ -73,23 +76,29 @@ export async function validateTokenSession(token: string): Promise<
 
   return {
     valid: true,
-    session: { grant, provider: provider!, patient_name: patient?.name ?? 'Patient', records, expires_at: grant.expires_at },
+    session: {
+      grant,
+      provider,           // null when no specific provider — resolved later from doctor's session
+      patient_name: patient?.name ?? 'Patient',
+      records,
+      expires_at: grant.expires_at,
+    },
   };
 }
 
 export async function logAccessAction(params: {
   patient_id: string;
-  provider_id: string;
+  provider_id?: string | null; // nullable — grants may have no specific provider
   access_grant_id: string;
   action: AccessAction;
   metadata?: Record<string, unknown>;
 }) {
   const supabase = createAdminClient();
   await supabase.from('access_logs').insert({
-    patient_id: params.patient_id,
-    provider_id: params.provider_id,
+    patient_id:      params.patient_id,
+    provider_id:     params.provider_id ?? null,
     access_grant_id: params.access_grant_id,
-    action: params.action,
-    metadata: params.metadata ?? null,
+    action:          params.action,
+    metadata:        params.metadata ?? null,
   });
 }

@@ -158,7 +158,7 @@ export interface AccessGrantWithDetails extends AccessGrant {
 // What the doctor portal receives after token validation
 export interface ProviderAccessSession {
   grant: AccessGrant;
-  provider: Provider;
+  provider: Provider | null; // null when grant has no specific provider_id
   patient_name: string;
   records: MedicalRecord[];
   expires_at: string;

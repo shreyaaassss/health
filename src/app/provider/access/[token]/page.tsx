@@ -1,9 +1,11 @@
 import { validateTokenSession, logAccessAction } from '@/lib/access';
+import { getUser } from '@/lib/auth';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { ProviderPortal } from '@/components/provider/ProviderPortal';
 import { AccessErrorScreen } from '@/components/provider/AccessErrorScreen';
+import type { Provider } from '@/types';
 
-// Re-validates on every request — this is what makes revocation instant.
-// Patient revokes → doctor refreshes → sees ACCESS_REVOKED immediately.
+// Re-validates on every request — revocation is instant.
 export default async function ProviderAccessPage({
   params,
 }: {
@@ -24,13 +26,37 @@ export default async function ProviderAccessPage({
 
   const { session } = result;
 
-  // Log session opened (server-side, before rendering)
+  // If grant has no specific provider_id, identify the doctor from their session
+  // (doctors are logged in on their own device when they scan the QR)
+  let resolvedProvider = session.provider;
+  if (!resolvedProvider) {
+    const user = await getUser();
+    if (user) {
+      const supabase = createAdminClient();
+      const { data: doctorRow } = await supabase
+        .from('providers')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+      if (doctorRow) {
+        resolvedProvider = doctorRow as Provider;
+        // Link this grant to the scanning doctor so future requests know who accessed it
+        await supabase
+          .from('access_grants')
+          .update({ provider_id: doctorRow.id })
+          .eq('id', session.grant.id);
+      }
+    }
+  }
+
+  const enhancedSession = { ...session, provider: resolvedProvider };
+
   await logAccessAction({
-    patient_id: session.grant.patient_id,
-    provider_id: session.grant.provider_id,
+    patient_id:      session.grant.patient_id,
+    provider_id:     resolvedProvider?.id ?? null,
     access_grant_id: session.grant.id,
-    action: 'ACCESS_SESSION_OPENED',
+    action:          'ACCESS_SESSION_OPENED',
   });
 
-  return <ProviderPortal session={session} token={token} />;
+  return <ProviderPortal session={enhancedSession} token={token} />;
 }
