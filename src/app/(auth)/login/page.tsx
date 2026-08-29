@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
@@ -13,6 +13,17 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Set mountains background directly on body — overrides CSS variable
+  useEffect(() => {
+    const prev = document.body.style.cssText;
+    document.body.style.backgroundImage = 'url(/login-bg.jpeg)';
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center center';
+    document.body.style.backgroundAttachment = 'fixed';
+    document.body.style.backgroundColor = 'transparent';
+    return () => { document.body.style.cssText = prev; };
+  }, []);
   const [error, setError] = useState('');
 
   async function handleLogin(e: React.FormEvent) {
@@ -46,13 +57,6 @@ export default function LoginPage() {
 
   return (
     <>
-      {/* Background image — login page only, fixed behind all content */}
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: -1,
-        backgroundImage: 'url(/login-bg.jpeg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }} />
     <div className="rounded-2xl p-6" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
       <h2 className="font-bold mb-1" style={{ fontSize: 18, color: 'var(--ink)' }}>Welcome back</h2>
       <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>Sign in to your account</p>
