@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-export const metadata: Metadata = { title: 'Share Records · Health Wallet' };
+export const metadata: Metadata = { title: 'Share Records · Inochi' };
 export const dynamic = 'force-dynamic';
 
 import { ShareWizard } from '@/components/ShareWizard';

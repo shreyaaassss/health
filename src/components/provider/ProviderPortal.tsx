@@ -14,7 +14,7 @@ interface Props {
 
 interface RecordWithUrl {
   record: MedicalRecord;
-  signed_url: string | null;
+  view_url: string | null;
   openedAt: number; // timestamp — ensures key changes on every open, fixing re-open bug
 }
 
@@ -58,7 +58,7 @@ export function ProviderPortal({ session, token }: Props) {
             </svg>
           </div>
           <div>
-            <p style={{ fontSize: 10, fontWeight: 700, color: '#2F6BFF', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Health Wallet</p>
+            <p style={{ fontSize: 10, fontWeight: 700, color: '#2F6BFF', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Inochi</p>
             <p style={{ fontSize: 10, color: 'var(--muted)' }}>Provider Access Portal</p>
           </div>
         </div>
@@ -144,7 +144,7 @@ export function ProviderPortal({ session, token }: Props) {
         <ProviderRecordDetail
           key={selectedData.record.id + '_' + selectedData.openedAt}
           record={selectedData.record}
-          signedUrl={null}
+          viewUrl={selectedData.view_url}
           token={token}
           doctorName={session.provider?.name}
           onClose={() => setSelectedData(null)}

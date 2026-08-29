@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = { title: 'Appointment Form · Health Wallet' };
+export const metadata: Metadata = { title: 'Appointment Form · Inochi' };
 
 async function getProfile(): Promise<PatientProfile | null> {
   const patientId = await requirePatientId();

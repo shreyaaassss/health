@@ -6,7 +6,7 @@ import { AppointmentList } from '@/components/patient/AppointmentList';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = { title: 'My Appointments · Health Wallet' };
+export const metadata: Metadata = { title: 'My Appointments · Inochi' };
 
 async function getData(patientId: string) {
   const supabase = createAdminClient();

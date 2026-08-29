@@ -9,7 +9,7 @@ import { RECORD_TYPE_COLORS } from '@/lib/records';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = { title: 'Home · Health Wallet' };
+export const metadata: Metadata = { title: 'Home · Inochi' };
 
 async function getDashboardData() {
   const patientId = await requirePatientId();
@@ -110,7 +110,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="flex-1 min-w-0">
-            <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Health Wallet</p>
+            <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Inochi</p>
             <p style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)', marginTop: 4, lineHeight: 1.3 }}>Your records, your control</p>
             <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>
               {recordCount} record{recordCount !== 1 ? 's' : ''} synced &middot; Last updated today

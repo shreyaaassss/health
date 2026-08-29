@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import { canAccessRecord, logAccessAction } from '@/lib/access';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getSignedUrl } from '@/lib/storage';
 import type { ApiError, ApiResponse, MedicalRecord } from '@/types';
 
 interface ProviderRecordResponse {
   record: MedicalRecord;
-  signed_url: null; // Doctors cannot download files — view-only access
+  view_url: string | null;  // short-lived URL for in-browser viewing (no download attribute used)
 }
 
-// Re-validated on every single request — makes revocation instant.
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ token: string; recordId: string }> }
@@ -41,7 +41,10 @@ export async function GET(
     return NextResponse.json({ success: false, error: 'Record not found', code: 'NOT_FOUND' }, { status: 404 });
   }
 
-  // signed_url is intentionally null — doctors get VIEW access only, no download
+  // Generate a 30-min signed URL for in-browser viewing (no download, opens in new tab)
+  // This is view-only access — the browser renders the file, no download attribute is applied
+  const view_url = record.file_url ? await getSignedUrl(record.file_url, 1800) : null;
+
   await logAccessAction({
     patient_id: check.grant.patient_id,
     provider_id: check.grant.provider_id || null,
@@ -50,5 +53,5 @@ export async function GET(
     metadata: { record_id: recordId, record_title: record.title },
   });
 
-  return NextResponse.json({ success: true, data: { record: record as MedicalRecord, signed_url: null } });
+  return NextResponse.json({ success: true, data: { record: record as MedicalRecord, view_url } });
 }

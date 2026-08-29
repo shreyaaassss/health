@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = { title: 'Active Access · Health Wallet' };
+export const metadata: Metadata = { title: 'Active Access · Inochi' };
 import { createAdminClient } from '@/lib/supabase/admin';
 import { requirePatientId } from '@/lib/auth';
 import { AccessList } from '@/components/AccessList';

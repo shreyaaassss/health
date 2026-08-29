@@ -83,7 +83,7 @@ export default function DemoResetPage() {
             </svg>
           </div>
           <div>
-            <p className="text-white font-bold text-sm">Health Wallet</p>
+            <p className="text-white font-bold text-sm">Inochi</p>
             <p className="text-xs" style={{ color: '#8A93A3' }}>Demo Control Panel</p>
           </div>
         </div>
@@ -190,7 +190,7 @@ export default function DemoResetPage() {
         </div>
 
         <p className="text-xs text-center mt-4" style={{ color: '#4B5265' }}>
-          Health Wallet · Demo Control Panel · Not visible to patients
+          Inochi · Demo Control Panel · Not visible to patients
         </p>
       </div>
     </div>

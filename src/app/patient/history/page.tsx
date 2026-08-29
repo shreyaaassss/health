@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = { title: 'Access History · Health Wallet' };
+export const metadata: Metadata = { title: 'Access History · Inochi' };
 import { createAdminClient } from '@/lib/supabase/admin';
 import { requirePatientId } from '@/lib/auth';
 import { HistoryGrantCard } from '@/components/HistoryGrantCard';

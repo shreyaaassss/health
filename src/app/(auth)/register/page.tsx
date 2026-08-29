@@ -51,7 +51,7 @@ export default function RegisterPage() {
 
   return (
     <div className="rounded-2xl p-6" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
-      <h2 className="font-bold mb-1" style={{ fontSize: 18, color: 'var(--ink)' }}>Create your Health Wallet</h2>
+      <h2 className="font-bold mb-1" style={{ fontSize: 18, color: 'var(--ink)' }}>Create your account</h2>
       <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>Register as a patient — free forever</p>
 
       <form onSubmit={handleRegister} className="space-y-4">

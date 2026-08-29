@@ -10,13 +10,13 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Health Wallet',
+  title: 'Inochi',
   description: 'Your Health. Your Data. Your Control.',
-  applicationName: 'Health Wallet',
+  applicationName: 'Inochi',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Health Wallet',
+    title: 'Inochi',
   },
   formatDetection: { telephone: false },
 };

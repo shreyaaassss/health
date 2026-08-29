@@ -6,7 +6,7 @@ import type { MedicalRecord } from '@/types';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = { title: 'My Records · Health Wallet' };
+export const metadata: Metadata = { title: 'My Records · Inochi' };
 
 async function getPageData() {
   const patientId = await requirePatientId();
@@ -62,63 +62,8 @@ export default async function RecordsPage() {
       </div>
 
       {/* Records list with category tabs */}
-      <RecordsList records={records} />
-
-      {/* Doctor-issued prescriptions */}
-      {prescriptions.length > 0 && (
-        <div className="mt-6">
-          <div className="flex items-center gap-2 mb-3">
-            <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M10 2v4M14 2v4M9 16l2 2 4-4"/><rect x="4" y="4" width="16" height="18" rx="2"/>
-            </svg>
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>Prescriptions from Doctors</p>
-          </div>
-          <div className="space-y-3">
-            {prescriptions.map((p: Record<string, unknown>) => {
-              const meds = p.medications as { name: string; dosage: string; frequency: string; duration: string }[];
-              const provider = p.providers as { name: string; specialty: string } | null;
-              return (
-                <div key={p.id as string} className="rounded-2xl overflow-hidden" style={{ background: 'var(--card)', border: '1.5px solid #2F6BFF20' }}>
-                  <div className="px-4 py-3 flex items-center justify-between border-b" style={{ borderColor: 'var(--line)', background: 'var(--blue-tint-2)' }}>
-                    <div>
-                      <p className="text-sm font-bold" style={{ color: 'var(--ink)' }}>{provider?.name ?? 'Doctor'}</p>
-                      <p className="text-xs" style={{ color: 'var(--muted)' }}>{provider?.specialty}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xs font-semibold" style={{ color: 'var(--ink-soft)' }}>
-                        {new Date(p.prescribed_at as string).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      </p>
-                      <p className="text-[10px]" style={{ color: 'var(--muted)' }}>
-                        {new Date(p.prescribed_at as string).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="px-4 py-3 space-y-1.5">
-                    {meds.map((m, i) => (
-                      <div key={i} className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#2F6BFF' }} />
-                        <div>
-                          <p className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{m.name}</p>
-                          <p className="text-xs" style={{ color: 'var(--muted)' }}>{[m.dosage, m.frequency, m.duration].filter(Boolean).join(' · ')}</p>
-                        </div>
-                      </div>
-                    ))}
-                    {p.instructions != null && (
-                      <p className="text-xs pt-1.5 mt-1" style={{ color: 'var(--ink-soft)', borderTop: '1px solid var(--line)' }}>{String(p.instructions)}</p>
-                    )}
-                    <div className="flex items-center justify-between pt-1.5 border-t" style={{ borderColor: 'var(--line)' }}>
-                      <p className="text-xs font-semibold" style={{ color: 'var(--ink-soft)' }}>
-                        ✦ Signed by: {p.signed_by != null ? String(p.signed_by) : (provider?.name ?? 'Doctor')}
-                      </p>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#E9F9F1', color: '#1FAA6D' }}>VERIFIED</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      {/* RecordsList handles both records + doctor prescriptions, filtered by tab */}
+      <RecordsList records={records} prescriptions={prescriptions as Parameters<typeof RecordsList>[0]['prescriptions']} />
     </div>
   );
 }

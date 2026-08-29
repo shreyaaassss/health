@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  Health Wallet — Core Data Models
+//  Inochi — Core Data Models
 //  Matches Phase 1 data model definitions exactly
 // ─────────────────────────────────────────────
 

@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Health Wallet',
-    short_name: 'HealthWallet',
+    name: 'Inochi',
+    short_name: 'Inochi',
     description: 'Your Health. Your Data. Your Control.',
     start_url: '/patient',
     display: 'standalone',

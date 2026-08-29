@@ -47,7 +47,7 @@ export default function LoginPage() {
   return (
     <div className="rounded-2xl p-6" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
       <h2 className="font-bold mb-1" style={{ fontSize: 18, color: 'var(--ink)' }}>Welcome back</h2>
-      <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>Sign in to your Health Wallet</p>
+      <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>Sign in to your account</p>
 
       <form onSubmit={handleLogin} className="space-y-4">
         <div>

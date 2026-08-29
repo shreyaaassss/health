@@ -91,7 +91,7 @@ export function AccessErrorScreen({ code }: { code: ErrorCode }) {
 
         {/* Visual separator */}
         <div className="border-t pt-6" style={{ borderColor: 'var(--line)' }}>
-          <p className="text-xs" style={{ color: 'var(--muted)' }}>Health Wallet · Patient-Controlled Access</p>
+          <p className="text-xs" style={{ color: 'var(--muted)' }}>Inochi · Patient-Controlled Access</p>
         </div>
       </div>
     </div>

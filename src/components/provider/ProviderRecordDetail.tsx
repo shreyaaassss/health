@@ -9,14 +9,14 @@ import type { MedicalRecord } from '@/types';
 
 interface Props {
   record: MedicalRecord;
-  signedUrl?: string | null; // always null for doctors — view-only
+  viewUrl?: string | null; // short-lived URL for in-browser viewing
   token: string;
   doctorName?: string;
   onClose: () => void;
   accessError?: string | null;
 }
 
-export function ProviderRecordDetail({ record, token, doctorName, onClose, accessError }: Props) {
+export function ProviderRecordDetail({ record, viewUrl, token, doctorName, onClose, accessError }: Props) {
   const c = RECORD_TYPE_COLORS[record.type];
   const [showRx, setShowRx] = useState(false);
 
@@ -105,18 +105,40 @@ export function ProviderRecordDetail({ record, token, doctorName, onClose, acces
             <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>{record.description}</p>
           </div>
 
-          {/* File indicator — view only, no download for doctors */}
+          {/* File — view in browser (no download attribute) */}
           {record.file_name && (
-            <div className="flex items-center gap-3 rounded-xl px-4 py-3"
-              style={{ background: 'var(--line)', border: '1px solid var(--line)' }}>
-              <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
-                <path d="M14 2v6h6M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>
-              </svg>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs truncate font-medium" style={{ color: 'var(--ink-soft)' }}>{record.file_name}</p>
-                <p className="text-[10px]" style={{ color: 'var(--muted)' }}>File attached · View-only access</p>
+            viewUrl ? (
+              <a
+                href={viewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 rounded-xl px-4 py-3 tap-target active:opacity-80"
+                style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}
+              >
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--card)' }}>
+                  <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2v6h6M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>
+                    <path d="M9 13h6M9 17h4"/>
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold truncate" style={{ color: '#1D4FE0' }}>{record.file_name}</p>
+                  <p className="text-xs" style={{ color: '#2F6BFF' }}>Tap to view document in browser</p>
+                </div>
+                <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </a>
+            ) : (
+              <div className="flex items-center gap-3 rounded-xl px-3 py-2.5" style={{ background: 'var(--line)' }}>
+                <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2v6h6M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>
+                </svg>
+                <p className="text-xs truncate" style={{ color: 'var(--muted)' }}>{record.file_name} · Loading…</p>
               </div>
-            </div>
+            )
           )}
 
           {/* Add / view prescription for this record */}

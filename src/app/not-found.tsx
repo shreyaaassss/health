@@ -15,7 +15,7 @@ export default function NotFound() {
         className="font-semibold text-sm px-6 py-3 rounded-2xl tap-target"
         style={{ background: '#2F6BFF', color: 'var(--card)' }}
       >
-        Go to Health Wallet
+        Go to Inochi
       </Link>
     </div>
   );

@@ -115,7 +115,7 @@ export function AppointmentWizard({ profile, source }: Props) {
               <path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
             <p className="text-xs" style={{ color: '#1D4FE0' }}>
-              Fields pre-filled from your Health Wallet profile. Review and edit as needed.
+              Fields pre-filled from your Inochi profile. Review and edit as needed.
             </p>
           </div>
         )}
@@ -233,7 +233,7 @@ export function AppointmentWizard({ profile, source }: Props) {
         </div>
 
         <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>
-          This information will be saved to your Health Wallet and prepared for your upcoming appointment.
+          This information will be saved to your Inochi and prepared for your upcoming appointment.
           <span style={{ color: 'var(--muted)' }}> Review everything before submitting.</span>
         </p>
 
@@ -311,7 +311,7 @@ export function AppointmentWizard({ profile, source }: Props) {
       <div>
         <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--ink)' }}>Form Submitted</h2>
         <p className="text-sm max-w-xs" style={{ color: 'var(--muted)' }}>
-          Your appointment form has been saved to your Health Wallet. Your details have been updated for future use.
+          Your appointment form has been saved to your Inochi. Your details have been updated for future use.
         </p>
       </div>
 

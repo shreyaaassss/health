@@ -1,18 +1,51 @@
+import Image from 'next/image';
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-5" style={{ background: 'var(--page)' }}>
-      <div className="w-full max-w-sm">
-        {/* Logo */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3" style={{ background: '#2F6BFF' }}>
-            <svg viewBox="0 0 24 24" width={28} height={28} fill="none" stroke="#FFFFFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-            </svg>
-          </div>
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--ink)' }}>Health Wallet</p>
-          <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 2 }}>Your Health. Your Data. Your Control.</p>
+    <div className="min-h-screen flex flex-col" style={{ background: '#F2F4F8' }}>
+      {/* Top hero with logo background */}
+      <div
+        className="relative flex flex-col items-center justify-center py-12 px-5"
+        style={{
+          background: 'linear-gradient(160deg, #EAF1FF 0%, #F3F8FF 50%, #E9F9F1 100%)',
+          borderBottomLeftRadius: 32,
+          borderBottomRightRadius: 32,
+        }}
+      >
+        {/* Background logo — large, low opacity */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden" style={{ borderBottomLeftRadius: 32, borderBottomRightRadius: 32 }}>
+          <Image
+            src="/inochi-logo.jpeg"
+            alt=""
+            width={260}
+            height={260}
+            className="object-contain"
+            style={{ opacity: 0.07 }}
+            priority
+          />
         </div>
-        {children}
+
+        {/* Foreground: logo + name */}
+        <div className="relative flex flex-col items-center gap-3 z-10">
+          <Image
+            src="/inochi-logo.jpeg"
+            alt="Inochi logo"
+            width={80}
+            height={80}
+            className="object-contain rounded-2xl"
+            style={{ background: '#FFFFFF', padding: 8, boxShadow: '0 4px 20px rgba(47,107,255,0.15)' }}
+            priority
+          />
+          <p style={{ fontSize: 26, fontWeight: 800, color: '#12151C', letterSpacing: '-0.02em' }}>INOCHI</p>
+          <p style={{ fontSize: 13, color: '#8A93A3', fontWeight: 500, textAlign: 'center' }}>Your Health. Your Data. Your Control.</p>
+        </div>
+      </div>
+
+      {/* Form */}
+      <div className="flex-1 flex flex-col items-center justify-center px-5 py-8">
+        <div className="w-full max-w-sm">
+          {children}
+        </div>
       </div>
     </div>
   );
