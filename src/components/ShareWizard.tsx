@@ -1,18 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WizardProgress } from '@/components/share/WizardProgress';
-import { StepProvider } from '@/components/share/StepProvider';
 import { StepRecords } from '@/components/share/StepRecords';
 import { StepDuration } from '@/components/share/StepDuration';
 import { StepReview } from '@/components/share/StepReview';
 import { StepSuccess } from '@/components/share/StepSuccess';
 import { API } from '@/constants/api';
-import type { AccessDuration, MedicalRecord, Provider } from '@/types';
+import type { AccessDuration, MedicalRecord } from '@/types';
 
 interface Props {
-  providers: Provider[];
-  records: MedicalRecord[];
   preSelectedRecordId?: string | null;
 }
 
@@ -21,9 +18,19 @@ interface SuccessState {
   expiresAt: string;
 }
 
-export function ShareWizard({ providers, records, preSelectedRecordId }: Props) {
-  const [step, setStep] = useState(0);
-  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
+export function ShareWizard({ preSelectedRecordId }: Props) {
+  // Fetch records client-side — fixes "no records" bug on direct navigation from home
+  const [records, setRecords] = useState<MedicalRecord[]>([]);
+  const [loadingRecords, setLoadingRecords] = useState(true);
+
+  useEffect(() => {
+    fetch(API.patient.records)
+      .then((r) => r.json())
+      .then((j) => { if (j.success) setRecords(j.data); })
+      .finally(() => setLoadingRecords(false));
+  }, []);
+
+  const [step, setStep] = useState(0); // 0:Records 1:Duration 2:Review 3:Success
   const [selectedRecordIds, setSelectedRecordIds] = useState<string[]>(
     preSelectedRecordId ? [preSelectedRecordId] : []
   );
@@ -39,30 +46,19 @@ export function ShareWizard({ providers, records, preSelectedRecordId }: Props) 
   }
 
   async function handleConfirm() {
-    if (!selectedProvider || selectedRecordIds.length === 0) return;
+    if (!selectedRecordIds.length) return;
     setLoading(true);
     setError(null);
-
     try {
       const res = await fetch(API.patient.grants, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          provider_id: selectedProvider.id,
-          record_ids: selectedRecordIds,
-          duration,
-        }),
+        body: JSON.stringify({ record_ids: selectedRecordIds, duration }),
       });
-
       const json = await res.json();
-
-      if (!json.success) {
-        setError(json.error ?? 'Failed to create access grant.');
-        return;
-      }
-
+      if (!json.success) { setError(json.error ?? 'Failed to create access grant.'); return; }
       setSuccess({ token: json.data.token, expiresAt: json.data.expires_at });
-      setStep(4); // success screen
+      setStep(3);
     } catch {
       setError('Network error. Please try again.');
     } finally {
@@ -74,8 +70,7 @@ export function ShareWizard({ providers, records, preSelectedRecordId }: Props) 
 
   return (
     <div className="flex flex-col min-h-full px-4 pt-6 pb-4">
-      {/* Back button (not shown on success) */}
-      {step < 4 && step > 0 && (
+      {step < 3 && step > 0 && (
         <button
           onClick={() => setStep((s) => s - 1)}
           className="flex items-center gap-1 text-sm font-medium mb-2 -ml-1 tap-target"
@@ -90,59 +85,58 @@ export function ShareWizard({ providers, records, preSelectedRecordId }: Props) 
 
       <WizardProgress current={step} />
 
-      {/* Error banner */}
       {error && (
         <div className="mb-4 rounded-xl px-4 py-3 text-sm" style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30', color: '#1D4FE0' }}>
           {error}
         </div>
       )}
 
-      {/* Step content */}
       <div className="flex-1">
         {step === 0 && (
-          <StepProvider
-            providers={providers}
-            selected={selectedProvider}
-            onSelect={setSelectedProvider}
-            onNext={() => setStep(1)}
-          />
+          loadingRecords ? (
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
+              <svg className="w-8 h-8 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="#2F6BFF" strokeWidth="4"/>
+                <path className="opacity-75" fill="#2F6BFF" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+              </svg>
+              <p className="text-sm" style={{ color: 'var(--muted)' }}>Loading your records…</p>
+            </div>
+          ) : (
+            <StepRecords
+              records={records}
+              selected={selectedRecordIds}
+              onToggle={toggleRecord}
+              onNext={() => setStep(1)}
+              onBack={() => {}}
+            />
+          )
         )}
 
         {step === 1 && (
-          <StepRecords
-            records={records}
-            selected={selectedRecordIds}
-            onToggle={toggleRecord}
+          <StepDuration
+            selected={duration}
+            onSelect={setDuration}
             onNext={() => setStep(2)}
             onBack={() => setStep(0)}
           />
         )}
 
         {step === 2 && (
-          <StepDuration
-            selected={duration}
-            onSelect={setDuration}
-            onNext={() => setStep(3)}
-            onBack={() => setStep(1)}
-          />
-        )}
-
-        {step === 3 && selectedProvider && (
           <StepReview
-            provider={selectedProvider}
+            provider={null}
             records={selectedRecords}
             duration={duration}
             onConfirm={handleConfirm}
-            onBack={() => setStep(2)}
+            onBack={() => setStep(1)}
             loading={loading}
           />
         )}
 
-        {step === 4 && success && selectedProvider && (
+        {step === 3 && success && (
           <StepSuccess
             token={success.token}
             expiresAt={success.expiresAt}
-            providerName={selectedProvider.name}
+            providerName="any registered doctor"
             recordCount={selectedRecordIds.length}
             duration={duration}
           />

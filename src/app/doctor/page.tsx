@@ -19,10 +19,12 @@ async function getDoctorData() {
   if (!provider) return null;
 
   const [{ data: appointments }, { data: accesses }] = await Promise.all([
+    // Show all appointments that aren't completed — doctor sees them until marked done
     supabase
       .from('appointments')
       .select('*, patients(name)')
       .eq('provider_id', provider.id)
+      .neq('status', 'completed')
       .order('created_at', { ascending: false }),
     supabase
       .from('access_grants')

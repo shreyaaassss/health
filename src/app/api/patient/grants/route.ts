@@ -14,13 +14,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<AccessGrantWithDet
 
   const { data, error } = await supabase
     .from('access_grants')
-    .select(`
-      *,
-      providers(*),
-      access_grant_records(
-        medical_records(*)
-      )
-    `)
+    .select(`*, providers(*), access_grant_records(medical_records(*))`)
     .eq('patient_id', patientId)
     .order('created_at', { ascending: false });
 
@@ -32,8 +26,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<AccessGrantWithDet
     ...(raw as AccessGrant),
     provider: raw.providers as Provider,
     records: (raw.access_grant_records as { medical_records: MedicalRecord }[])
-      .map((r) => r.medical_records)
-      .filter(Boolean),
+      .map((r) => r.medical_records).filter(Boolean),
     token: null,
   }));
 
@@ -41,9 +34,9 @@ export async function GET(): Promise<NextResponse<ApiResponse<AccessGrantWithDet
 }
 
 interface CreateGrantBody {
-  provider_id: string;
   record_ids: string[];
   duration: AccessDuration;
+  provider_id?: string; // optional — null means any registered doctor can scan
 }
 
 interface GrantResult {
@@ -57,80 +50,54 @@ export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse<G
   if (!patientId) {
     return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' as const }, { status: 401 });
   }
+
   let body: CreateGrantBody;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ success: false, error: 'Invalid request body', code: 'SERVER_ERROR' }, { status: 400 });
-  }
+  try { body = await req.json(); }
+  catch { return NextResponse.json({ success: false, error: 'Invalid request body', code: 'SERVER_ERROR' }, { status: 400 }); }
 
-  const { provider_id, record_ids, duration } = body;
+  const { record_ids, duration, provider_id } = body;
 
-  if (!provider_id || !record_ids?.length || !duration) {
+  if (!record_ids?.length || !duration) {
     return NextResponse.json({ success: false, error: 'Missing required fields', code: 'SERVER_ERROR' }, { status: 400 });
   }
 
   const supabase = createAdminClient();
 
-  // ── 1. Calculate expires_at ───────────────────
   const ms = ACCESS_DURATION_MS[duration];
   const expires_at = ms
     ? new Date(Date.now() + ms).toISOString()
-    : new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000).toISOString(); // ~100 years = until revoked
+    : new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000).toISOString();
 
-  // ── 2. Create AccessGrant ──────────────────────
   const { data: grant, error: grantErr } = await supabase
     .from('access_grants')
-    .insert({
-      patient_id: patientId,
-      provider_id,
-      status: 'ACTIVE',
-      expires_at,
-    })
-    .select()
-    .single();
+    .insert({ patient_id: patientId, provider_id: provider_id ?? null, status: 'ACTIVE', expires_at })
+    .select().single();
 
   if (grantErr || !grant) {
     return NextResponse.json({ success: false, error: grantErr?.message ?? 'Failed to create grant', code: 'SERVER_ERROR' }, { status: 500 });
   }
 
-  // ── 3. Create AccessGrantRecords (bulk) ────────
-  const grantRecords = record_ids.map((rid) => ({
-    access_grant_id: grant.id,
-    medical_record_id: rid,
-  }));
-
-  const { error: grErr } = await supabase.from('access_grant_records').insert(grantRecords);
+  const { error: grErr } = await supabase.from('access_grant_records')
+    .insert(record_ids.map((rid) => ({ access_grant_id: grant.id, medical_record_id: rid })));
   if (grErr) {
-    // Rollback grant
     await supabase.from('access_grants').delete().eq('id', grant.id);
     return NextResponse.json({ success: false, error: grErr.message, code: 'SERVER_ERROR' }, { status: 500 });
   }
 
-  // ── 4. Generate opaque access token ───────────
   const token = crypto.randomUUID();
-
-  const { error: tokenErr } = await supabase.from('access_tokens').insert({
-    access_grant_id: grant.id,
-    token,
-    expires_at,
-  });
-
+  const { error: tokenErr } = await supabase.from('access_tokens')
+    .insert({ access_grant_id: grant.id, token, expires_at });
   if (tokenErr) {
     return NextResponse.json({ success: false, error: tokenErr.message, code: 'SERVER_ERROR' }, { status: 500 });
   }
 
-  // ── 5. Audit log: ACCESS_GRANTED ──────────────
   await supabase.from('access_logs').insert({
     patient_id: patientId,
-    provider_id,
+    provider_id: provider_id ?? null,
     access_grant_id: grant.id,
     action: 'ACCESS_GRANTED',
     metadata: { record_count: record_ids.length, duration },
   });
 
-  return NextResponse.json({
-    success: true,
-    data: { grant_id: grant.id, token, expires_at },
-  });
+  return NextResponse.json({ success: true, data: { grant_id: grant.id, token, expires_at } });
 }

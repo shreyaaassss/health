@@ -12,10 +12,12 @@ async function getData(patientId: string) {
   const supabase = createAdminClient();
 
   const [{ data: appointments }, { data: prescriptions }] = await Promise.all([
+    // Show all non-completed appointments; completed collapse to history
     supabase
       .from('appointments')
       .select('*, providers(id, name, specialty)')
       .eq('patient_id', patientId)
+      .neq('status', 'completed')
       .order('created_at', { ascending: false }),
     supabase
       .from('prescriptions')

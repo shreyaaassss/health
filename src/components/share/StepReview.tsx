@@ -4,7 +4,7 @@ import { RecordTypeIcon } from '@/components/RecordTypeIcon';
 import type { AccessDuration, MedicalRecord, Provider } from '@/types';
 
 interface Props {
-  provider: Provider;
+  provider: Provider | null; // null = any registered doctor can scan
   records: MedicalRecord[];
   duration: AccessDuration;
   onConfirm: () => void;
@@ -22,19 +22,24 @@ export function StepReview({ provider, records, duration, onConfirm, onBack, loa
         {/* Summary card */}
         <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
 
-          {/* Provider */}
+          {/* Access scope */}
           <div className="px-4 py-4 border-b" style={{ borderColor: 'var(--line)' }}>
-            <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 8 }}>Sharing with</p>
+            <p style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 8 }}>Accessible by</p>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'var(--blue-tint)' }}>
                 <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-bold" style={{ color: 'var(--ink)' }}>{provider.name}</p>
-                <p className="text-xs" style={{ color: 'var(--muted)' }}>{provider.organization}</p>
+                <p className="text-sm font-bold" style={{ color: 'var(--ink)' }}>
+                  {provider ? provider.name : 'Any registered doctor'}
+                </p>
+                <p className="text-xs" style={{ color: 'var(--muted)' }}>
+                  {provider ? provider.organization : 'Whoever scans your QR code'}
+                </p>
               </div>
             </div>
           </div>

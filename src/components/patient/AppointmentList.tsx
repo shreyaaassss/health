@@ -12,7 +12,7 @@ interface Appointment {
   reason: string;
   preferred_date: string | null;
   preferred_time: string | null;
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   confirmed_date: string | null;
   confirmed_time: string | null;
   doctor_notes: string | null;
@@ -39,7 +39,8 @@ const STATUS = {
   pending:   { bg: '#FEF6E7', text: '#E5A020', dot: '#E5A020', label: 'Pending' },
   confirmed: { bg: '#E9F9F1', text: '#1FAA6D', dot: '#1FAA6D', label: 'Confirmed' },
   cancelled: { bg: '#FFEDED', text: '#C23B3B', dot: '#FF6B6B', label: 'Cancelled' },
-};
+  completed: { bg: '#EAF1FF', text: '#1D4FE0', dot: '#2F6BFF', label: 'Completed' },
+} as const;
 
 export function AppointmentList({ initialAppointments, prescriptions }: Props) {
   const router = useRouter();

@@ -3,8 +3,8 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { getUser } from '@/lib/auth';
 import type { ApiResponse } from '@/types';
 
-interface ConfirmBody {
-  action: 'confirm' | 'cancel';
+interface ActionBody {
+  action: 'confirm' | 'cancel' | 'complete';
   confirmed_date?: string;
   confirmed_time?: string;
   doctor_notes?: string;
@@ -18,17 +18,18 @@ export async function PATCH(
   if (!user) return NextResponse.json({ success: false, error: 'Unauthorized', code: 'UNAUTHORIZED' }, { status: 401 });
 
   const { id } = await params;
-  const body: ConfirmBody = await req.json();
+  const body: ActionBody = await req.json();
 
   const supabase = createAdminClient();
-
   const { data: provider } = await supabase.from('providers').select('id').eq('user_id', user.id).single();
   if (!provider) return NextResponse.json({ success: false, error: 'Not a provider', code: 'UNAUTHORIZED' }, { status: 403 });
 
+  const statusMap = { confirm: 'confirmed', cancel: 'cancelled', complete: 'completed' };
   const updates: Record<string, unknown> = {
-    status: body.action === 'confirm' ? 'confirmed' : 'cancelled',
+    status: statusMap[body.action] ?? 'cancelled',
     updated_at: new Date().toISOString(),
   };
+
   if (body.action === 'confirm') {
     if (body.confirmed_date) updates.confirmed_date = body.confirmed_date;
     if (body.confirmed_time) updates.confirmed_time = body.confirmed_time;

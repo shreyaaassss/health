@@ -1,4 +1,4 @@
-const STEPS = ['Provider', 'Records', 'Duration', 'Review'];
+const STEPS = ['Records', 'Duration', 'Review'];
 
 export function WizardProgress({ current }: { current: number }) {
   if (current >= STEPS.length) return null; // hide on success screen
