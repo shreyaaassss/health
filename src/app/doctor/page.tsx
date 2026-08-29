@@ -81,13 +81,16 @@ export default async function DoctorPage() {
             <p style={{ fontSize: 28, fontWeight: 800, color: pendingCount > 0 ? '#E5A020' : 'var(--ink)' }}>{pendingCount}</p>
             <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Pending Requests</p>
           </div>
-          <div className="rounded-2xl p-4" style={{ background: activeShares > 0 ? '#E9F9F1' : 'var(--card)', border: `1px solid ${activeShares > 0 ? '#1FAA6D30' : 'var(--line)'}` }}>
+          {/* Active shares → taps to Active Patients page */}
+          <a href="/doctor/patients" className="rounded-2xl p-4 block active:scale-[0.98] transition-transform tap-target"
+            style={{ background: activeShares > 0 ? '#E9F9F1' : 'var(--card)', border: `1px solid ${activeShares > 0 ? '#1FAA6D30' : 'var(--line)'}` }}>
             <div className="flex items-center gap-1.5">
               <p style={{ fontSize: 28, fontWeight: 800, color: activeShares > 0 ? '#1FAA6D' : 'var(--ink)' }}>{activeShares}</p>
               {activeShares > 0 && <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#1FAA6D', marginTop: 4 }} />}
             </div>
             <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Active Shares</p>
-          </div>
+            {activeShares > 0 && <p style={{ fontSize: 10, color: '#1FAA6D', fontWeight: 600, marginTop: 4 }}>Tap to view →</p>}
+          </a>
         </div>
 
         {/* Scan QR — primary action, always visible near top */}

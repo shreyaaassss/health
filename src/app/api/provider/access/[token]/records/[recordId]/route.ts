@@ -44,7 +44,7 @@ export async function GET(
   // signed_url is intentionally null — doctors get VIEW access only, no download
   await logAccessAction({
     patient_id: check.grant.patient_id,
-    provider_id: (check.grant.provider_id || '') as string,
+    provider_id: check.grant.provider_id || null,
     access_grant_id: check.grant.id,
     action: 'RECORD_VIEWED',
     metadata: { record_id: recordId, record_title: record.title },

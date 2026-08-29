@@ -30,7 +30,7 @@ export async function canAccessRecord(
     .eq('id', data.access_grant_id)
     .single();
 
-  return { allowed: true, grant, patient_id: data.patient_id, provider_id: data.provider_id ?? '' };
+  return { allowed: true, grant, patient_id: data.patient_id, provider_id: data.provider_id || null };
 }
 
 export async function validateTokenSession(token: string): Promise<
@@ -96,7 +96,7 @@ export async function logAccessAction(params: {
   const supabase = createAdminClient();
   await supabase.from('access_logs').insert({
     patient_id:      params.patient_id,
-    provider_id:     params.provider_id ?? null,
+    provider_id:     params.provider_id || null,  // '' or null → stored as NULL
     access_grant_id: params.access_grant_id,
     action:          params.action,
     metadata:        params.metadata ?? null,
