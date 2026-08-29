@@ -23,11 +23,12 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <p
             style={{
               fontSize: 13,
-              color: '#8A93A3',
-              fontWeight: 500,
+              color: '#FFFFFF',
+              fontWeight: 600,
               textAlign: 'center',
               marginTop: 4,
-              letterSpacing: '0.01em',
+              letterSpacing: '0.02em',
+              textShadow: '0 1px 4px rgba(0,0,0,0.25)',
             }}
           >
             Your Health. Your Data. Your Control.

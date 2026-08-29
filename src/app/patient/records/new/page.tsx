@@ -24,6 +24,7 @@ export default function AddRecordPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const [saved, setSaved] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -74,12 +75,28 @@ export default function AddRecordPage() {
       return;
     }
 
-    router.refresh(); // invalidate cached pages before navigation
-    router.push(`/patient/records/${json.data.id}`);
+    // Show success toast then redirect to records list
+    setSaved(true);
+    router.refresh();
+    setTimeout(() => router.push('/patient/records'), 1400);
   }
 
   return (
     <div className="px-4 pt-6 pb-8">
+
+      {/* Success toast */}
+      {saved && (
+        <div
+          className="fixed top-5 left-1/2 -translate-x-1/2 flex items-center gap-2 px-5 py-3 rounded-2xl shadow-lg z-50 animate-pulse"
+          style={{ background: '#1FAA6D', color: '#FFFFFF', fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap' }}
+        >
+          <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#FFFFFF" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 13l4 4L19 7"/>
+          </svg>
+          Record saved successfully!
+        </div>
+      )}
+
       {/* Header */}
       <Link href="/patient/records" className="inline-flex items-center gap-1 text-sm mb-4 tap-target" style={{ color: 'var(--muted)' }}>
         <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
