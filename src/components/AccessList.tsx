@@ -26,7 +26,7 @@ export function AccessList({ initialGrants }: { initialGrants: AccessGrantWithDe
 
   // Called when ExpiryCountdown hits zero — auto-removes grant
   const handleExpired = useCallback((grant: AccessGrantWithDetails) => {
-    removeGrant(grant.id, `${grant.provider.name}'s access has expired.`);
+    removeGrant(grant.id, `${grant.provider?.name ?? 'Doctor'}'s access has expired.`);
   }, []);
 
   async function handleRevoke(grant: AccessGrantWithDetails) {
@@ -42,7 +42,7 @@ export function AccessList({ initialGrants }: { initialGrants: AccessGrantWithDe
         return;
       }
 
-      removeGrant(grant.id, `Access revoked. ${grant.provider.name} can no longer view your records.`);
+      removeGrant(grant.id, `Access revoked. ${grant.provider?.name ?? 'Doctor'} can no longer view your records.`);
       router.refresh();
     } catch {
       setError('Network error. Please try again.');

@@ -32,7 +32,7 @@ async function getDashboardData() {
   const firstGrant: AccessGrantWithDetails | null = grantData && grantData.length > 0
     ? {
         ...(grantData[0] as AccessGrant),
-        provider: grantData[0].providers as Provider,
+        provider: (grantData[0].providers as Provider) ?? { id: '', name: 'Doctor', organization: '', specialty: '' },
         records: ((grantData[0].access_grant_records as { medical_records: MedicalRecord }[]) ?? [])
           .map((r) => r.medical_records)
           .filter(Boolean),
@@ -168,8 +168,8 @@ export default async function HomePage() {
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="truncate" style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>{firstGrant.provider.name}</p>
-                <p className="truncate" style={{ fontSize: 12, color: 'var(--muted)' }}>{firstGrant.provider.organization}</p>
+                <p className="truncate" style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>{firstGrant.provider?.name ?? 'Doctor'}</p>
+                <p className="truncate" style={{ fontSize: 12, color: 'var(--muted)' }}>{firstGrant.provider?.organization}</p>
               </div>
               <span className="inline-flex items-center gap-1 flex-shrink-0" style={{ background: '#E9F9F1', color: '#1FAA6D', fontSize: 10, fontWeight: 700, borderRadius: 20, padding: '4px 10px' }}>
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#1FAA6D' }} />

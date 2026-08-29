@@ -135,7 +135,7 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-sm font-bold truncate" style={{ color: 'var(--ink)' }}>{provider.name}</p>
+            <p className="text-sm font-bold truncate" style={{ color: 'var(--ink)' }}>{provider?.name ?? 'Doctor'}</p>
             <span
               className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
               style={{ background: s.bg, color: s.text }}
@@ -144,7 +144,7 @@ export function HistoryGrantCard({ grant, provider, records, logs }: Props) {
               {s.label}
             </span>
           </div>
-          <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>{provider.organization}</p>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>{provider?.organization ?? ''}</p>
           <div className="flex items-center gap-3 mt-1.5 flex-wrap">
             <span className="text-xs" style={{ color: 'var(--muted)' }}>
               {records.length} record{records.length !== 1 ? 's' : ''} shared

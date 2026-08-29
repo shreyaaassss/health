@@ -42,7 +42,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<HistoryEntry[]>>> 
       created_at: raw.created_at,
       revoked_at: raw.revoked_at,
     } as AccessGrant,
-    provider: raw.providers as Provider,
+    provider: (raw.providers as Provider) ?? { id: '', name: 'Doctor', organization: '', specialty: '' },
     records: (raw.access_grant_records as { medical_records: MedicalRecord }[])
       .map((r) => r.medical_records)
       .filter(Boolean),

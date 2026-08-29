@@ -39,8 +39,8 @@ export function ActiveGrantCard({ grant, onRevoke, onExpired, revoking }: Props)
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold truncate" style={{ color: 'var(--ink)' }}>{grant.provider.name}</p>
-          <p className="text-xs truncate" style={{ color: 'var(--muted)' }}>{grant.provider.organization}</p>
+          <p className="text-sm font-bold truncate" style={{ color: 'var(--ink)' }}>{grant.provider?.name ?? 'Doctor'}</p>
+          <p className="text-xs truncate" style={{ color: 'var(--muted)' }}>{grant.provider?.organization ?? ''}</p>
         </div>
         <span
           className="inline-flex items-center gap-1 flex-shrink-0"
