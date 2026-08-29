@@ -45,6 +45,14 @@ export default function LoginPage() {
   }
 
   return (
+    <>
+      {/* Background image — login page only, fixed behind all content */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: -1,
+        backgroundImage: 'url(/login-bg.jpeg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }} />
     <div className="rounded-2xl p-6" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
       <h2 className="font-bold mb-1" style={{ fontSize: 18, color: 'var(--ink)' }}>Welcome back</h2>
       <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>Sign in to your account</p>
@@ -106,5 +114,6 @@ export default function LoginPage() {
         <Link href="/register" className="font-semibold" style={{ color: '#2F6BFF' }}>Create account</Link>
       </p>
     </div>
+    </>
   );
 }
