@@ -52,15 +52,10 @@ export function ProviderPortal({ session, token }: Props) {
       {/* Portal header */}
       <div className="px-4 pt-10 pb-6" style={{ background: 'var(--ink)' }}>
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: '#2F6BFF' }}>
-            <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--card)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-            </svg>
-          </div>
-          <div>
-            <p style={{ fontSize: 10, fontWeight: 700, color: '#2F6BFF', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Inochi</p>
-            <p style={{ fontSize: 10, color: 'var(--muted)' }}>Provider Access Portal</p>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/inochi-logo.jpeg" alt="Inochi" width={28} height={28}
+            style={{ borderRadius: 6, mixBlendMode: 'screen', opacity: 0.9 }} />
+          <p style={{ fontSize: 10, color: 'var(--muted)' }}>Provider Access Portal</p>
         </div>
 
         <h1 className="text-xl font-bold text-white mb-1">Patient Medical Records</h1>
