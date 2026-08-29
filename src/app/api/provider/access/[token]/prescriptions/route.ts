@@ -35,6 +35,9 @@ export async function POST(
   const providerName = provider?.name ?? 'Unknown Doctor';
   const signed_by = providerName;
 
+  const now = new Date();
+  const locked_at = new Date(now.getTime() + 60 * 60 * 1000).toISOString(); // prescribed_at + 1 hour
+
   const { data, error } = await supabase
     .from('prescriptions')
     .insert({
@@ -45,7 +48,8 @@ export async function POST(
       instructions:      body.instructions ?? null,
       follow_up_date:    body.follow_up_date ?? null,
       medical_record_id: body.medical_record_id ?? null,
-      signed_by,         // digital signature: doctor's name at time of signing
+      signed_by,
+      locked_at,
     })
     .select('id, signed_by, prescribed_at, locked_at')
     .single();
