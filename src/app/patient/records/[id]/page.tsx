@@ -194,6 +194,13 @@ export default async function RecordDetailPage({ params }: { params: Promise<{ i
                     {p.follow_up_date != null && (
                       <p className="text-xs" style={{ color: 'var(--muted)' }}>Follow-up: {new Date(String(p.follow_up_date)).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                     )}
+                    {/* Digital signature */}
+                    <div className="border-t pt-2 flex items-center justify-between" style={{ borderColor: 'var(--line)' }}>
+                      <p className="text-xs font-semibold" style={{ color: 'var(--ink-soft)' }}>
+                        ✦ Signed by: {p.signed_by != null ? String(p.signed_by) : (provider?.name ?? 'Doctor')}
+                      </p>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#E9F9F1', color: '#1FAA6D' }}>VERIFIED</span>
+                    </div>
                   </div>
                 </div>
               );

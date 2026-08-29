@@ -140,8 +140,9 @@ export function ProviderPortal({ session, token }: Props) {
         <ProviderRecordDetail
           key={selectedData.record.id + '_' + selectedData.openedAt}
           record={selectedData.record}
-          signedUrl={selectedData.signed_url}
+          signedUrl={null}
           token={token}
+          doctorName={session.provider?.name}
           onClose={() => setSelectedData(null)}
           accessError={null}
         />

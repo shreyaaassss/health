@@ -11,6 +11,8 @@ export interface PatientPrescription {
   instructions: string | null;
   follow_up_date: string | null;
   prescribed_at: string;
+  signed_by: string | null;
+  locked_at: string | null;
 }
 
 export async function GET(): Promise<NextResponse<ApiResponse<PatientPrescription[]>>> {
@@ -35,6 +37,8 @@ export async function GET(): Promise<NextResponse<ApiResponse<PatientPrescriptio
     instructions: row.instructions,
     follow_up_date: row.follow_up_date,
     prescribed_at: row.prescribed_at,
+    signed_by: row.signed_by ?? null,
+    locked_at: row.locked_at ?? null,
   }));
 
   return NextResponse.json({ success: true, data: prescriptions });

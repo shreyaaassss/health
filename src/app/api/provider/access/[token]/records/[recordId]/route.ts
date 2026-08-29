@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import { canAccessRecord, logAccessAction } from '@/lib/access';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getSignedUrl } from '@/lib/storage';
 import type { ApiError, ApiResponse, MedicalRecord } from '@/types';
 
 interface ProviderRecordResponse {
   record: MedicalRecord;
-  signed_url: string | null; // time-limited file download URL (null if no file)
+  signed_url: null; // Doctors cannot download files — view-only access
 }
 
 // Re-validated on every single request — makes revocation instant.
@@ -42,16 +41,14 @@ export async function GET(
     return NextResponse.json({ success: false, error: 'Record not found', code: 'NOT_FOUND' }, { status: 404 });
   }
 
-  // Generate a signed URL for the file (valid 1 hour) — only if file exists
-  const signed_url = record.file_url ? await getSignedUrl(record.file_url, 3600) : null;
-
+  // signed_url is intentionally null — doctors get VIEW access only, no download
   await logAccessAction({
     patient_id: check.grant.patient_id,
-    provider_id: check.grant.provider_id,
+    provider_id: (check.grant.provider_id || '') as string,
     access_grant_id: check.grant.id,
     action: 'RECORD_VIEWED',
     metadata: { record_id: recordId, record_title: record.title },
   });
 
-  return NextResponse.json({ success: true, data: { record: record as MedicalRecord, signed_url } });
+  return NextResponse.json({ success: true, data: { record: record as MedicalRecord, signed_url: null } });
 }

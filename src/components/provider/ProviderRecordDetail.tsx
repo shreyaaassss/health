@@ -3,19 +3,20 @@
 import { useState } from 'react';
 import { RECORD_TYPE_COLORS, RECORD_TYPE_LABELS, formatRecordDate } from '@/lib/records';
 import { RecordTypeIcon } from '@/components/RecordTypeIcon';
-import { getFileTypeLabel, formatFileSize } from '@/lib/storage';
 import { AddPrescriptionForm } from '@/components/provider/AddPrescriptionForm';
+import { ConfidentialWatermark } from '@/components/provider/ConfidentialWatermark';
 import type { MedicalRecord } from '@/types';
 
 interface Props {
   record: MedicalRecord;
-  signedUrl?: string | null;
+  signedUrl?: string | null; // always null for doctors — view-only
   token: string;
+  doctorName?: string;
   onClose: () => void;
   accessError?: string | null;
 }
 
-export function ProviderRecordDetail({ record, signedUrl, token, onClose, accessError }: Props) {
+export function ProviderRecordDetail({ record, token, doctorName, onClose, accessError }: Props) {
   const c = RECORD_TYPE_COLORS[record.type];
   const [showRx, setShowRx] = useState(false);
 
@@ -83,6 +84,9 @@ export function ProviderRecordDetail({ record, signedUrl, token, onClose, access
         </div>
 
         <div className="px-4 pb-8 space-y-4">
+          {/* Confidential watermark — traceable if screenshot is taken */}
+          <ConfidentialWatermark doctorName={doctorName ?? 'Provider'} />
+
           {/* Meta grid */}
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl px-3 py-3" style={{ background: 'var(--card-2)' }}>
@@ -101,32 +105,18 @@ export function ProviderRecordDetail({ record, signedUrl, token, onClose, access
             <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-soft)' }}>{record.description}</p>
           </div>
 
-          {/* File download (only shown if patient attached a file) */}
-          {signedUrl && record.file_name && (
-            <a
-              href={signedUrl}
-              download={record.file_name}
-              className="flex items-center gap-3 rounded-xl px-4 py-3 tap-target active:opacity-80 transition-opacity"
-              style={{ background: 'var(--blue-tint)', border: '1px solid #2F6BFF30' }}
-            >
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--card)' }}>
-                <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14 2v6h6M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>
-                  <path d="M12 12v6M9 15l3 3 3-3"/>
-                </svg>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold truncate" style={{ color: '#1D4FE0' }}>{record.file_name}</p>
-                <p className="text-xs" style={{ color: '#2F6BFF' }}>
-                  {getFileTypeLabel(record.file_type, record.file_name)} · {formatFileSize(record.file_size)} · Tap to download
-                </p>
-              </div>
-              <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="#2F6BFF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
+          {/* File indicator — view only, no download for doctors */}
+          {record.file_name && (
+            <div className="flex items-center gap-3 rounded-xl px-4 py-3"
+              style={{ background: 'var(--line)', border: '1px solid var(--line)' }}>
+              <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--muted)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                <path d="M14 2v6h6M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>
               </svg>
-            </a>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs truncate font-medium" style={{ color: 'var(--ink-soft)' }}>{record.file_name}</p>
+                <p className="text-[10px]" style={{ color: 'var(--muted)' }}>File attached · View-only access</p>
+              </div>
+            </div>
           )}
 
           {/* Add / view prescription for this record */}

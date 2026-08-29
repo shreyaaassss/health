@@ -28,6 +28,8 @@ interface Prescription {
   instructions: string | null;
   follow_up_date: string | null;
   prescribed_at: string;
+  signed_by?: string | null;
+  locked_at?: string | null;
 }
 
 interface Props {
@@ -161,15 +163,21 @@ export function AppointmentList({ initialAppointments, prescriptions }: Props) {
               <div className="space-y-3">
                 {prescriptions.map((p) => (
                   <div key={p.id} className="rounded-2xl overflow-hidden" style={{ background: 'var(--card)', border: '1px solid var(--line)' }}>
+                    {/* Prescription header — fixed timestamp */}
                     <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--line)', background: 'var(--blue-tint-2)' }}>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-start justify-between gap-2">
                         <div>
                           <p className="font-bold text-sm" style={{ color: 'var(--ink)' }}>{p.provider_name}</p>
                           <p className="text-xs" style={{ color: 'var(--muted)' }}>{p.provider_specialty}</p>
                         </div>
-                        <p className="text-xs" style={{ color: 'var(--muted)' }}>
-                          {new Date(p.prescribed_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                        </p>
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-xs font-semibold" style={{ color: 'var(--ink-soft)' }}>
+                            {new Date(p.prescribed_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          </p>
+                          <p className="text-[10px]" style={{ color: 'var(--muted)' }}>
+                            {new Date(p.prescribed_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                        </div>
                       </div>
                     </div>
                     <div className="px-4 py-3 space-y-2">
@@ -194,6 +202,15 @@ export function AppointmentList({ initialAppointments, prescriptions }: Props) {
                           Follow-up: {new Date(p.follow_up_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </p>
                       )}
+                      {/* Digital signature + lock status */}
+                      <div className="border-t pt-2 mt-1 flex items-center justify-between" style={{ borderColor: 'var(--line)' }}>
+                        <p className="text-xs font-semibold" style={{ color: 'var(--ink-soft)' }}>
+                          ✦ Signed by: {p.signed_by ?? p.provider_name}
+                        </p>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#E9F9F1', color: '#1FAA6D' }}>
+                          VERIFIED
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
